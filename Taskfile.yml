@@ -1,0 +1,17 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - rm -R dist
+      - mkdir dist
+      - GOOS=windows GOARCH=amd64 go build -o dist/darktool-windows-amd64.exe main.go
+      - GOOS=linux GOARCH=amd64 go build -o dist/darktool-linux-amd64 main.go
+
+  run:
+    cmds:
+      - go run .
+
+  cobra-cli-get:
+    cmds:
+      - go install github.com/spf13/cobra-cli@latest
