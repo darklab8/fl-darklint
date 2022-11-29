@@ -11,7 +11,6 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -24,9 +23,9 @@ func toFixed(num float64, precision int) float64 {
 	return float64(round(num*output)) / output
 }
 
-// randCoordsCmd represents the randCoords command
-var randCoordsCmd = &cobra.Command{
-	Use:   "randCoords",
+// randRotatorCmd represents the randRotator command
+var randRotatorCmd = &cobra.Command{
+	Use:   "randRotator",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -35,10 +34,6 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("randCoords called")
-		log.Info("Delimiter=", Delimiter)
-		log.Info("RoundedNumbers=", RoundedNumbers)
-
 		rand.Seed(time.Now().UnixNano())
 
 		x := rand.Float64() * 180
@@ -60,9 +55,9 @@ var Delimiter string
 var RoundedNumbers string
 
 func init() {
-	rootCmd.AddCommand(randCoordsCmd)
+	rootCmd.AddCommand(randRotatorCmd)
 
 	// set delimiter
-	randCoordsCmd.PersistentFlags().StringVarP(&Delimiter, "delimiter", "d", ", ", "delimiter to separate")
-	randCoordsCmd.PersistentFlags().StringVarP(&RoundedNumbers, "rounded_to", "r", "1", "rounded_numbers")
+	randRotatorCmd.PersistentFlags().StringVarP(&Delimiter, "delimiter", "d", ", ", "delimiter to separate")
+	randRotatorCmd.PersistentFlags().StringVarP(&RoundedNumbers, "rounded_to", "r", "1", "rounded_numbers")
 }
