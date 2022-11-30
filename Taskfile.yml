@@ -3,8 +3,8 @@ version: '3'
 tasks:
   build:
     cmds:
-      - rm -R dist
-      - mkdir dist
+      - mkdir -p dist
+      - rm dist/* | true
       - GOOS=windows GOARCH=amd64 go build -v -o dist/darktool-windows-amd64.exe main.go
       - GOOS=linux GOARCH=amd64 go build -v -o dist/darktool-linux-amd64 main.go
 
