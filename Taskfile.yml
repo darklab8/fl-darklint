@@ -18,4 +18,5 @@ tasks:
 
   test:
     cmds:
+      - mkdir -p tools/randline/tests/temp
       - go test ./... -v
