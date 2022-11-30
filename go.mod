@@ -1,4 +1,4 @@
-module github.com/darklab8/darklab_freelancer_darktool/darktool
+module darktool
 
 go 1.19
 

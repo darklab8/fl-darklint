@@ -21,7 +21,7 @@ func toFixed(num float64, precision int) float64 {
 	return float64(round(num*output)) / output
 }
 
-func Run() {
+func Run() string {
 	rand.Seed(time.Now().UnixNano())
 
 	x := rand.Float64() * 180
@@ -35,5 +35,5 @@ func Run() {
 	sb.WriteString(fmt.Sprintf("%v", Delimiter))
 	sb.WriteString(fmt.Sprintf("%v", toFixed(z, roundedNeeded)))
 
-	fmt.Printf(fmt.Sprintf("%v\n", sb.String()))
+	return fmt.Sprintf("%v\n", sb.String())
 }

@@ -6,7 +6,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/darklab8/darklab_freelancer_darktool/darktool/tools/randline"
+	"darktool/tools/randline"
 )
 
 // randLineCmd represents the randLine command
