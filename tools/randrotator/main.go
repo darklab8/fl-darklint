@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func round(num float64) int {
@@ -24,6 +26,7 @@ type InputData struct {
 }
 
 func Run(input InputData) string {
+	log.Info("randrotator: Run - start")
 	rand.Seed(time.Now().UnixNano())
 
 	x := rand.Float64() * 180
@@ -37,5 +40,6 @@ func Run(input InputData) string {
 	sb.WriteString(fmt.Sprintf("%v", input.Delimiter))
 	sb.WriteString(fmt.Sprintf("%v", toFixed(z, roundedNeeded)))
 
+	log.Info("randrotator: Run - finished")
 	return fmt.Sprintf("%v\n", sb.String())
 }

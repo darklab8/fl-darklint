@@ -56,4 +56,6 @@ func Run(input Input) {
 			log.Fatal(err2)
 		}
 	}
+
+	fmt.Println("OK")
 }

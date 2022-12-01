@@ -5,13 +5,24 @@ package main
 
 import (
 	"darktool/cmd"
+	"os"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 )
 
 func main() {
-	log.SetFormatter(&log.TextFormatter{
-		FullTimestamp: true,
-	})
+	DEBUG := os.Getenv("DEBUG")
+	logEnabled := (strings.Compare(DEBUG, "") != 0)
+	if logEnabled {
+
+		log.SetFormatter(&log.TextFormatter{
+			FullTimestamp: true,
+		})
+		log.SetLevel(log.DebugLevel)
+		log.Info("log enabled")
+	} else {
+		log.SetLevel(log.ErrorLevel)
+	}
 	cmd.Execute()
 }
