@@ -25,12 +25,11 @@ to quickly create a Cobra application.`,
 	},
 }
 
-var inputCMD randrotator.InputData
+var inputCMD randrotator.Input
 
 func init() {
 	rootCmd.AddCommand(randRotatorCmd)
 
-	// set delimiter
 	randRotatorCmd.PersistentFlags().StringVarP(&inputCMD.Delimiter, "delimiter", "d", ", ", "delimiter to separate")
-	randRotatorCmd.PersistentFlags().StringVarP(&inputCMD.RoundedNumbers, "rounded_to", "r", "1", "rounded_numbers")
+	inputCMD.RoundedNumbers = randRotatorCmd.PersistentFlags().IntP("rounded_to", "r", 1, "rounded_numbers")
 }

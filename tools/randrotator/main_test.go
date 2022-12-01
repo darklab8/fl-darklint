@@ -7,9 +7,10 @@ import (
 )
 
 func TestSimple(t *testing.T) {
-	input := InputData{
+	roundedN := 2
+	input := Input{
 		Delimiter:      ", ",
-		RoundedNumbers: "2",
+		RoundedNumbers: &roundedN,
 	}
 	result := Run(input)
 	fmt.Println(result)

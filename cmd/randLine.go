@@ -35,6 +35,6 @@ func init() {
 	randLineCmd.PersistentFlags().StringVarP(&Input.OutputFilePath, "output", "o", "", "output input (required)")
 	randLineCmd.MarkPersistentFlagRequired("output")
 
-	randLineCmd.PersistentFlags().StringVarP(&Input.Times, "k", "k", "", "k-times elements to select randomly to new file (required)")
+	Input.Times = randLineCmd.PersistentFlags().IntP("k", "k", 0, "k-times elements to select randomly to new file (required)")
 	randLineCmd.MarkPersistentFlagRequired("k")
 }

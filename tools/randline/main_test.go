@@ -5,10 +5,11 @@ import (
 )
 
 func TestSimple(t *testing.T) {
+	times := 5
 	input := Input{
 		InputFilePath:  "tests/data/input.txt",
 		OutputFilePath: "tests/temp/output.txt",
-		Times:          "5",
+		Times:          &times,
 	}
 	Run(input)
 }

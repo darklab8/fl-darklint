@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
-	"strconv"
 	"strings"
 	"time"
 
@@ -20,12 +19,12 @@ func toFixed(num float64, precision int) float64 {
 	return float64(round(num*output)) / output
 }
 
-type InputData struct {
+type Input struct {
 	Delimiter      string
-	RoundedNumbers string
+	RoundedNumbers *int
 }
 
-func Run(input InputData) string {
+func Run(input Input) string {
 	log.Info("randrotator: Run - start")
 	rand.Seed(time.Now().UnixNano())
 
@@ -33,12 +32,12 @@ func Run(input InputData) string {
 	y := rand.Float64() * 180
 	z := rand.Float64() * 180
 	var sb strings.Builder
-	roundedNeeded, _ := strconv.Atoi(input.RoundedNumbers)
-	sb.WriteString(fmt.Sprintf("%v", toFixed(x, roundedNeeded)))
+
+	sb.WriteString(fmt.Sprintf("%v", toFixed(x, *input.RoundedNumbers)))
 	sb.WriteString(fmt.Sprintf("%v", input.Delimiter))
-	sb.WriteString(fmt.Sprintf("%v", toFixed(y, roundedNeeded)))
+	sb.WriteString(fmt.Sprintf("%v", toFixed(y, *input.RoundedNumbers)))
 	sb.WriteString(fmt.Sprintf("%v", input.Delimiter))
-	sb.WriteString(fmt.Sprintf("%v", toFixed(z, roundedNeeded)))
+	sb.WriteString(fmt.Sprintf("%v", toFixed(z, *input.RoundedNumbers)))
 
 	log.Info("randrotator: Run - finished")
 	return fmt.Sprintf("%v\n", sb.String())

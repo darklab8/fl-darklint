@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"strconv"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -14,7 +13,7 @@ import (
 type Input struct {
 	InputFilePath  string
 	OutputFilePath string
-	Times          string
+	Times          *int
 }
 
 func Run(input Input) {
@@ -46,9 +45,8 @@ func Run(input Input) {
 
 	defer output_file.Close()
 
-	n, err := strconv.Atoi(input.Times)
 	rand.Seed(time.Now().UnixNano())
-	for i := 0; i < n; i++ {
+	for i := 0; i < *input.Times; i++ {
 		randomIndex := rand.Intn(len(text))
 		_, err2 := output_file.WriteString(fmt.Sprintf("%v\n", text[randomIndex]))
 
