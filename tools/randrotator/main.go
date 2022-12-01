@@ -1,3 +1,6 @@
+/*
+Package generating random rotation for object
+*/
 package randrotator
 
 import (
@@ -19,8 +22,15 @@ func toFixed(num float64, precision int) float64 {
 	return float64(round(num*output)) / output
 }
 
+/*
+input to use this module
+For easy binding to Cobra/Viper integration, we define input purely as reference objects
+*/
 type Input struct {
-	Delimiter      string
+	// delimiter separating x,y,z
+	Delimiter string
+
+	// precision of rounding floats. 2 = 0.34
 	RoundedNumbers *int
 }
 
