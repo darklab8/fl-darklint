@@ -1,10 +1,9 @@
 package randline
 
 import (
-	"bufio"
+	"darktool/tools/utils"
 	"fmt"
 	"math/rand"
-	"os"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -22,37 +21,19 @@ func Run(input Input) {
 	log.Info("OutputFile=", input.OutputFilePath)
 	log.Info("Times=", input.Times)
 
-	input_file, err := os.Open(input.InputFilePath)
+	input_file := utils.File{Filepath: input.InputFilePath}.OpenToReadF()
 	defer input_file.Close()
-	if err != nil {
-		log.Fatalf("failed to open")
-
-	}
-	scanner := bufio.NewScanner(input_file)
-	var text []string
-
-	for scanner.Scan() {
-		text = append(text, scanner.Text())
-	}
+	input_lines := input_file.ReadLines()
 
 	// write result
 
-	output_file, err := os.Create(input.OutputFilePath)
-
-	if err != nil {
-		log.Panic(err)
-	}
-
+	output_file := utils.File{Filepath: input.OutputFilePath}.CreateToWriteF()
 	defer output_file.Close()
 
 	rand.Seed(time.Now().UnixNano())
 	for i := 0; i < *input.Times; i++ {
-		randomIndex := rand.Intn(len(text))
-		_, err2 := output_file.WriteString(fmt.Sprintf("%v\n", text[randomIndex]))
-
-		if err2 != nil {
-			log.Fatal(err2)
-		}
+		randomIndex := rand.Intn(len(input_lines))
+		output_file.WriteF(fmt.Sprintf("%v\n", input_lines[randomIndex]))
 	}
 
 	fmt.Println("OK")

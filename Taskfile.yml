@@ -21,6 +21,6 @@ tasks:
       - mkdir -p tools/randline/tests/temp
       - go test ./... -v
 
-  godoc-http:
+  doc-web:
     cmds:
       - godoc -http=:6060
