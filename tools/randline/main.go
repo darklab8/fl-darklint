@@ -11,17 +11,19 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var InputFilePath string
-var OutputFilePath string
-var Times string
+type Input struct {
+	InputFilePath  string
+	OutputFilePath string
+	Times          string
+}
 
-func Run() {
+func Run(input Input) {
 	log.Info("Starting randLine")
-	log.Info("InputFile=", InputFilePath)
-	log.Info("OutputFile=", OutputFilePath)
-	log.Info("Times=", Times)
+	log.Info("InputFile=", input.InputFilePath)
+	log.Info("OutputFile=", input.OutputFilePath)
+	log.Info("Times=", input.Times)
 
-	input_file, err := os.Open(InputFilePath)
+	input_file, err := os.Open(input.InputFilePath)
 	defer input_file.Close()
 	if err != nil {
 		log.Fatalf("failed to open")
@@ -36,7 +38,7 @@ func Run() {
 
 	// write result
 
-	output_file, err := os.Create(OutputFilePath)
+	output_file, err := os.Create(input.OutputFilePath)
 
 	if err != nil {
 		log.Panic(err)
@@ -44,7 +46,7 @@ func Run() {
 
 	defer output_file.Close()
 
-	n, err := strconv.Atoi(Times)
+	n, err := strconv.Atoi(input.Times)
 	rand.Seed(time.Now().UnixNano())
 	for i := 0; i < n; i++ {
 		randomIndex := rand.Intn(len(text))

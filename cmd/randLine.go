@@ -20,19 +20,21 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		randline.Run()
+		randline.Run(Input)
 	},
 }
+
+var Input randline.Input
 
 func init() {
 	rootCmd.AddCommand(randLineCmd)
 
-	randLineCmd.PersistentFlags().StringVarP(&randline.InputFilePath, "input", "i", "", "input input (required)")
+	randLineCmd.PersistentFlags().StringVarP(&Input.InputFilePath, "input", "i", "", "input input (required)")
 	randLineCmd.MarkPersistentFlagRequired("input")
 
-	randLineCmd.PersistentFlags().StringVarP(&randline.OutputFilePath, "output", "o", "", "output input (required)")
+	randLineCmd.PersistentFlags().StringVarP(&Input.OutputFilePath, "output", "o", "", "output input (required)")
 	randLineCmd.MarkPersistentFlagRequired("output")
 
-	randLineCmd.PersistentFlags().StringVarP(&randline.Times, "k", "k", "", "k-times elements to select randomly to new file (required)")
+	randLineCmd.PersistentFlags().StringVarP(&Input.Times, "k", "k", "", "k-times elements to select randomly to new file (required)")
 	randLineCmd.MarkPersistentFlagRequired("k")
 }

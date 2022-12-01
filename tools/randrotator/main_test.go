@@ -7,9 +7,11 @@ import (
 )
 
 func TestSimple(t *testing.T) {
-	Delimiter = ", "
-	RoundedNumbers = "2"
-	result := Run()
+	input := InputData{
+		Delimiter:      ", ",
+		RoundedNumbers: "2",
+	}
+	result := Run(input)
 	fmt.Println(result)
 
 	if strings.Count(result, ", ") != 2 {
