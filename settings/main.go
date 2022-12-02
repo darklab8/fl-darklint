@@ -10,4 +10,9 @@ func init() {
 	if len(FreelancerFolderLocation) == 0 {
 		FreelancerFolderLocation = "/home/naa/repos/pet_projects/darklab_freelancer_darktool/Discovery-DEV-Groshyr"
 	}
+
+	if len(os.Getenv("TEST_INTEGRATION")) != 0 {
+		TestingIntegration = true
+	}
+
 }
