@@ -1,4 +1,7 @@
-package file1discovery
+/*
+Package with reusable code for discovery of files and other reusable stuff like universal ini reader
+*/
+package parserutils
 
 import (
 	"darktool/settings"

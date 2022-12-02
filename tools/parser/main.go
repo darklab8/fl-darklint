@@ -5,10 +5,10 @@ package parser
 
 import (
 	"darktool/tools/parser/data/equipment/market1ships"
-	"darktool/tools/parser/file1discovery"
+	"darktool/tools/parser/parserutils"
 )
 
 func Run() {
-	file1discovery.DiscoverFiles()
+	parserutils.DiscoverFiles()
 	market1ships.Parse()
 }
