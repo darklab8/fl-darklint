@@ -14,3 +14,9 @@ func CheckFatal(err error, msg ...string) {
 		log.Fatalf(strings.Join(msg, ""))
 	}
 }
+
+func CheckPanic(err error) {
+	if err != nil {
+		panic(err)
+	}
+}

@@ -3,14 +3,12 @@ Tool to parse freelancer configs
 */
 package parser
 
-type BaseGood struct {
-	// delimiter separating x,y,z
-	Delimiter string
-
-	// precision of rounding floats. 2 = 0.34
-	RoundedNumbers *int
-}
+import (
+	"darktool/tools/parser/data/equipment/market1ships"
+	"darktool/tools/parser/file1discovery"
+)
 
 func Run() {
-
+	file1discovery.DiscoverFiles()
+	market1ships.Parse()
 }
