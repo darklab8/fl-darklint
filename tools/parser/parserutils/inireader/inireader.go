@@ -94,13 +94,13 @@ func init() {
 	initRegexExpression(&regexParam, `^([a-zA-Z_]+)\s=\s([a-zA-Z_, 0-9-]+)`)
 }
 
-func INIFileRead(file1path string) INIFile {
-	log.Debug("started reading INIFileRead for", file1path)
-	config := INIFile{File: utils.File{Filepath: file1path}}
+func INIFileRead(fileref utils.File) INIFile {
+	log.Debug("started reading INIFileRead for", fileref.Filepath)
+	config := INIFile{File: fileref}
 
-	log.Debug("opening file", file1path)
-	file := utils.File.OpenToReadF(utils.File{Filepath: file1path})
-	log.Debug("defer file close", file1path)
+	log.Debug("opening file", fileref.Filepath)
+	file := fileref.OpenToReadF()
+	log.Debug("defer file close", fileref.Filepath)
 	defer file.Close()
 
 	log.Debug("reading lines")
