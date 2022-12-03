@@ -12,3 +12,10 @@ func GetCurrrentTestFolder() string {
 	test_directory := filepath.Join(directory, "testdata")
 	return test_directory
 }
+
+func GetCurrentFile() string {
+	_, filename, _, _ := runtime.Caller(1)
+	directory := filepath.Dir(filename)
+	test_directory := filepath.Join(directory, "testdata")
+	return test_directory
+}
