@@ -7,6 +7,8 @@ import (
 	"darktool/tools/utils"
 	"path/filepath"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestReader(t *testing.T) {
@@ -14,6 +16,5 @@ func TestReader(t *testing.T) {
 	fileref := utils.File{Filepath: filepath.Join(test_directory, filename)}
 	_ = Read(fileref)
 
-	// assert.Greater(t, len(parsed_data.Base_goods), 0)
-	// assert.Greater(t, len(parsed_data.Base_goods[0].Goods), 0)
+	assert.Greater(t, len(LoadedConfig.Bases), 0)
 }
