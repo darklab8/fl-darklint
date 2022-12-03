@@ -24,7 +24,7 @@ func FindConfigs(folderpath string) Filesystem {
 
 	err := filepath.WalkDir(folderpath, func(path string, d fs.DirEntry, err error) error {
 
-		if !strings.Contains(path, ".ini") {
+		if !strings.Contains(path, ".ini") && !strings.Contains(path, ".txt") {
 			return nil
 		}
 

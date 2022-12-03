@@ -25,7 +25,7 @@ type Config struct {
 	Bases []Base
 }
 
-var LoadedConfig Config
+var Loaded Config
 
 func Read(input_file utils.File) Config {
 	var frelconfig Config
@@ -41,7 +41,7 @@ func Read(input_file utils.File) Config {
 		base_to_add.nickname = base.ParamMap["nickname"][0].First.(inireader.ValueString)
 		base_to_add.strid_name = base.ParamMap["strid_name"][0].First
 
-		LoadedConfig.Bases = append(LoadedConfig.Bases, base_to_add)
+		Loaded.Bases = append(Loaded.Bases, base_to_add)
 	}
 
 	return frelconfig
