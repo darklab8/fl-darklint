@@ -19,13 +19,16 @@ type BaseGood struct {
 	Goods []MarketGood
 }
 
-var MarketShips struct {
+type MarketShips struct {
 	Intro      []string
 	Base_goods []*BaseGood
 }
 
-func Parse() {
-	file := utils.File.OpenToReadF(utils.File{Filepath: filefind.FreelancerFolder.Hashmap["market_ships.ini"].AbsPath})
+var LoadedMarketShips MarketShips
+
+func Read(input_file utils.File) MarketShips {
+	var config MarketShips
+	file := utils.File.OpenToReadF(input_file)
 	defer file.Close()
 
 	lines := file.ReadLines()
@@ -49,7 +52,7 @@ func Parse() {
 
 		if len(comment_match) > 0 {
 			if is_intro {
-				MarketShips.Intro = append(MarketShips.Intro, comment_match[1])
+				config.Intro = append(config.Intro, comment_match[1])
 			} else {
 				current_base_good.Name = comment_match[1]
 			}
@@ -61,7 +64,7 @@ func Parse() {
 
 		if len(base_group_match) > 0 {
 			current_base_good = &BaseGood{}
-			MarketShips.Base_goods = append(MarketShips.Base_goods, current_base_good)
+			config.Base_goods = append(config.Base_goods, current_base_good)
 			continue
 		}
 
@@ -82,4 +85,11 @@ func Parse() {
 			continue
 		}
 	}
+
+	return config
+}
+
+func Load() {
+	file := utils.File{Filepath: filefind.FreelancerFolder.Hashmap["market_ships.ini"].AbsPath}
+	LoadedMarketShips = Read(file)
 }
