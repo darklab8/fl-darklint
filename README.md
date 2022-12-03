@@ -10,4 +10,6 @@
 - cobra generator https://github.com/spf13/cobra-cli/blob/main/README.md
 - cobra guide https://github.com/spf13/cobra/blob/main/user_guide.md
 
-test hook
+# Git hooks
+
+- Conventional commits: https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
