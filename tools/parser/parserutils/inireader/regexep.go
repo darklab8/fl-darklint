@@ -5,15 +5,9 @@ import (
 	"regexp"
 )
 
-var numberParser *regexp.Regexp
-
-func initNumberParser() {
-	regex_exp := `[0-9\-]+(?:\.)?([0-9\-]*)`
+func initRegexExpression(regex **regexp.Regexp, expression string) {
 	var err error
-	numberParser, err = regexp.Compile(regex_exp)
-	utils.CheckFatal(err, "failed to parse regex_exp=", regex_exp)
-}
 
-func init() {
-	initNumberParser()
+	*regex, err = regexp.Compile(expression)
+	utils.CheckFatal(err, "failed to parse numberParser in ", utils.GetCurrentFile())
 }

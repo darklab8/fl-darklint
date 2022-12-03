@@ -1,9 +1,14 @@
 package settings
 
-import "os"
+import (
+	"os"
+	"strings"
+)
 
 var FreelancerFolderLocation string
 var TestingIntegration bool = false
+var Debug bool = false
+var LogEnabled = false
 
 func init() {
 	FreelancerFolderLocation = os.Getenv("DARKTOOL_FREELANCER_FOLDER")
@@ -15,4 +20,7 @@ func init() {
 		TestingIntegration = true
 	}
 
+	Debug = strings.Compare(os.Getenv("DARKTOOL_DEBUG"), "") != 0
+
+	LogEnabled = Debug
 }
