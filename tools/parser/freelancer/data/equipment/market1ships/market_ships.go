@@ -90,6 +90,6 @@ func Read(input_file utils.File) MarketShips {
 }
 
 func Load() {
-	file := utils.File{Filepath: filefind.FreelancerFolder.Hashmap["market_ships.ini"].AbsPath}
+	file := utils.File{Filepath: filefind.FreelancerFolder.Hashmap["market_ships.ini"].Filepath}
 	LoadedMarketShips = Read(file)
 }

@@ -4,18 +4,20 @@ Okay we need to create syntax. To augment currently possible stuff
 package inireader
 
 import (
-	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/utils"
+	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 )
 
 type INIFile struct {
-	File     filefind.FileInfo
-	Sections []*Section
+	File     utils.File
 	Comments []string
+
+	Sections []*Section
 }
 
 /*
@@ -64,10 +66,18 @@ func UniParse(input string) UniValue {
 		parsed_number, err := strconv.ParseFloat(input, 64)
 		utils.CheckFatal(err, "failed to read number, input=", input)
 
-		return ValueNumber{value: parsed_number, precision: len(numberMatch[1])}
+		var precision int
+		if len(numberMatch) == 1 {
+			precision = 0
+		} else {
+			precision = len(numberMatch[1])
+		}
+
+		return ValueNumber{value: parsed_number, precision: precision}
 	}
 
-	return ValueString(input)
+	v := ValueString(input)
+	return v
 }
 
 var regexNumber *regexp.Regexp
@@ -76,7 +86,7 @@ var regexSection *regexp.Regexp
 var regexParam *regexp.Regexp
 
 func init() {
-	initRegexExpression(&regexNumber, `[0-9\-]+(?:\.)?([0-9\-]*)`)
+	initRegexExpression(&regexNumber, `^[0-9\-]+(?:\.)?([0-9\-]*)`)
 	initRegexExpression(&regexComment, `;(.*)`)
 	initRegexExpression(&regexSection, `^\[.*\]`)
 	initRegexExpression(&regexParam, `^([a-zA-Z_]+)\s=\s([a-zA-Z_, 0-9-]+)`)
@@ -84,7 +94,7 @@ func init() {
 
 func INIFileRead(file1path string) INIFile {
 	log.Debug("started reading INIFileRead for", file1path)
-	config := INIFile{}
+	config := INIFile{File: utils.File{Filepath: file1path}}
 
 	log.Debug("opening file", file1path)
 	file := utils.File.OpenToReadF(utils.File{Filepath: file1path})
@@ -101,43 +111,39 @@ func INIFileRead(file1path string) INIFile {
 		log.Debug("reading regex")
 		comment_match := regexComment.FindStringSubmatch(line)
 		section_match := regexSection.FindStringSubmatch(line)
-		// param_match := regexParam.FindStringSubmatch(line)
+		param_match := regexParam.FindStringSubmatch(line)
 
 		if len(comment_match) > 0 {
 			config.Comments = append(config.Comments, comment_match[1])
 		} else if len(section_match) > 0 {
-			cur_section = &Section{}
-			config.Sections = append(config.Sections, cur_section)
-			continue
+			cur_section := Section{}
+			config.Sections = append(config.Sections, &cur_section)
+			cur_section.Type = section_match[0]
+		} else if len(param_match) > 0 {
+			fmt.Println("123")
+			key := param_match[1]
+			splitted_values := strings.Split(param_match[2], ", ")
+			first_value := UniParse(splitted_values[0])
+			var values []UniValue
+			for _, value := range splitted_values {
+				values = append(values, UniParse(value))
+			}
+
+			// TODO add reading commented param
+			param := Param{Key: key, First: first_value, Values: values, IsComment: false}
+			cur_section.Params = append(cur_section.Params, param)
+
+			// Denormalization
+			if cur_section.ParamMap == nil {
+				cur_section.ParamMap = make(map[string][]Param)
+			}
+			if _, ok := cur_section.ParamMap[key]; !ok {
+				cur_section.ParamMap[key] = make([]Param, 0)
+			}
+			cur_section.ParamMap[key] = append(cur_section.ParamMap[key], param)
 		}
 
-		// 	if len(param_match) > 0 {
-		// 		if strings.Compare(param_match[1], "base") == 0 {
-		// 			current_base_good.Base = param_match[2]
-		// 		} else if strings.Compare(param_match[1], "MarketGood") == 0 {
-		// 			params := strings.Split(param_match[2], ", ") // data example: dsy_arrow_package, 1, -1, 1, 1, 0, 1, 1
-		// 			var floats []float32
-
-		// 			for _, string_number := range params {
-		// 				parsed_float, _ := strconv.ParseFloat(string_number, 32)
-		// 				floats = append(floats, float32(parsed_float))
-		// 			}
-
-		// 			current_base_good.Goods = append(current_base_good.Goods, MarketGood{Name: params[0], Values: floats})
-		// 		}
-		// 		continue
-		// 	}
 	}
 
 	return config
 }
-
-// // comments
-// comment_exp, err := regexp.Compile(`;(.*)`)
-// utils.CheckPanic(err)
-// // [BaseGood]
-// base_group_ext, err := regexp.Compile(`^\[.*\]`)
-// utils.CheckPanic(err)
-// // `base = br01_01_base` or `MarketGood = dsy_arrow_package, 1, -1, 1, 1, 0, 1, 1`
-// param_exp, err := regexp.Compile(`^([a-zA-Z_]+)\s=\s([a-zA-Z_, 0-9-]+)`)
-// utils.CheckPanic(err)

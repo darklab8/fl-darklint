@@ -11,20 +11,16 @@ import (
 	"strings"
 )
 
-type FileInfo struct {
-	AbsPath string
-}
-
 type Filesystem struct {
-	Files   []FileInfo
-	Hashmap map[string]FileInfo
+	Files   []utils.File
+	Hashmap map[string]utils.File
 }
 
 var FreelancerFolder Filesystem
 
 func FindConfigs(folderpath string) Filesystem {
 	var filesystem Filesystem
-	filesystem.Hashmap = make(map[string]FileInfo)
+	filesystem.Hashmap = make(map[string]utils.File)
 
 	err := filepath.WalkDir(folderpath, func(path string, d fs.DirEntry, err error) error {
 
@@ -34,7 +30,7 @@ func FindConfigs(folderpath string) Filesystem {
 
 		utils.CheckFatal(err, "unable to read file")
 
-		file := FileInfo{AbsPath: path}
+		file := utils.File{Filepath: path}
 		filesystem.Files = append(filesystem.Files, file)
 
 		key := filepath.Base(path)
