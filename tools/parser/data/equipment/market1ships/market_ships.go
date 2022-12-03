@@ -1,7 +1,7 @@
 package market1ships
 
 import (
-	"darktool/tools/parser/parserutils"
+	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/utils"
 	"regexp"
 	"strconv"
@@ -25,7 +25,7 @@ var MarketShips struct {
 }
 
 func Parse() {
-	file := utils.File.OpenToReadF(utils.File{Filepath: parserutils.Filesystem.Hashmap["market_ships.ini"].AbsPath})
+	file := utils.File.OpenToReadF(utils.File{Filepath: filefind.Filesystem.Hashmap["market_ships.ini"].AbsPath})
 	defer file.Close()
 
 	lines := file.ReadLines()

@@ -1,7 +1,7 @@
 /*
 Package with reusable code for discovery of files and other reusable stuff like universal ini reader
 */
-package parserutils
+package filefind
 
 import (
 	"darktool/settings"
@@ -20,7 +20,7 @@ var Filesystem struct {
 	Hashmap map[string]FileInfo
 }
 
-func DiscoverFiles() {
+func DiscoverConfigs() {
 	Filesystem.Hashmap = make(map[string]FileInfo)
 
 	err := filepath.WalkDir(settings.FreelancerFolderLocation, func(path string, d fs.DirEntry, err error) error {
