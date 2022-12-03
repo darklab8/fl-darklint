@@ -6,13 +6,18 @@ package inireader
 import (
 	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/utils"
-	"regexp"
 	"strconv"
 )
 
 type INIFile struct {
 	File     filefind.FileInfo
 	Sections []Section
+}
+
+func INIFileRead(file1path string) INIFile {
+	inifile := INIFile{}
+
+	return inifile
 }
 
 /*
@@ -65,17 +70,4 @@ func UniParse(input string) UniValue {
 	}
 
 	return ValueString(input)
-}
-
-var numberParser *regexp.Regexp
-
-func initNumberParser() {
-	regex_exp := `[0-9\-]+(?:\.)?([0-9\-]*)`
-	var err error
-	numberParser, err = regexp.Compile(regex_exp)
-	utils.CheckFatal(err, "failed to parse regex_exp=", regex_exp)
-}
-
-func init() {
-	initNumberParser()
 }

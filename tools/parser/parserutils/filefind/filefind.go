@@ -15,15 +15,18 @@ type FileInfo struct {
 	AbsPath string
 }
 
-var Filesystem struct {
+type Filesystem struct {
 	Files   []FileInfo
 	Hashmap map[string]FileInfo
 }
 
-func DiscoverConfigs() {
-	Filesystem.Hashmap = make(map[string]FileInfo)
+var FreelancerFolder Filesystem
 
-	err := filepath.WalkDir(settings.FreelancerFolderLocation, func(path string, d fs.DirEntry, err error) error {
+func FindConfigs(folderpath string) Filesystem {
+	var filesystem Filesystem
+	filesystem.Hashmap = make(map[string]FileInfo)
+
+	err := filepath.WalkDir(folderpath, func(path string, d fs.DirEntry, err error) error {
 
 		if !strings.Contains(path, ".ini") {
 			return nil
@@ -32,13 +35,18 @@ func DiscoverConfigs() {
 		utils.CheckFatal(err, "unable to read file")
 
 		file := FileInfo{AbsPath: path}
-		Filesystem.Files = append(Filesystem.Files, file)
+		filesystem.Files = append(filesystem.Files, file)
 
 		key := filepath.Base(path)
-		Filesystem.Hashmap[key] = file
+		filesystem.Hashmap[key] = file
 
 		return nil
 	})
 
 	utils.CheckFatal(err, "unable to read files")
+	return filesystem
+}
+
+func LoadFreelancerConfigs() {
+	FreelancerFolder = FindConfigs(settings.FreelancerFolderLocation)
 }

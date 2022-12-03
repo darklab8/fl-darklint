@@ -25,7 +25,7 @@ var MarketShips struct {
 }
 
 func Parse() {
-	file := utils.File.OpenToReadF(utils.File{Filepath: filefind.Filesystem.Hashmap["market_ships.ini"].AbsPath})
+	file := utils.File.OpenToReadF(utils.File{Filepath: filefind.FreelancerFolder.Hashmap["market_ships.ini"].AbsPath})
 	defer file.Close()
 
 	lines := file.ReadLines()

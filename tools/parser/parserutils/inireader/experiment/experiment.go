@@ -1,6 +1,8 @@
-package main /*
-Okay we need to create syntax. To augment currently possible stuff
+/*
+Prototype code, delete once inireader package established itself
 */
+
+package main
 
 import (
 	"darktool/tools/parser/parserutils/filefind"
