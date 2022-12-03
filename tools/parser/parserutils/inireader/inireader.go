@@ -26,9 +26,9 @@ abc = 123 // this is Param going into list and hashmap
 */
 type Section struct {
 	Type   string
-	Params []Param
+	Params []*Param
 	// denormialization of Param list due to being more comfortable
-	ParamMap map[string][]Param
+	ParamMap map[string][]*Param
 }
 
 // abc = qwe, 1, 2, 3, 4
@@ -131,16 +131,16 @@ func INIFileRead(file1path string) INIFile {
 
 			// TODO add reading commented param
 			param := Param{Key: key, First: first_value, Values: values, IsComment: false}
-			cur_section.Params = append(cur_section.Params, param)
+			cur_section.Params = append(cur_section.Params, &param)
 
 			// Denormalization
 			if cur_section.ParamMap == nil {
-				cur_section.ParamMap = make(map[string][]Param)
+				cur_section.ParamMap = make(map[string][]*Param)
 			}
 			if _, ok := cur_section.ParamMap[key]; !ok {
-				cur_section.ParamMap[key] = make([]Param, 0)
+				cur_section.ParamMap[key] = make([]*Param, 0)
 			}
-			cur_section.ParamMap[key] = append(cur_section.ParamMap[key], param)
+			cur_section.ParamMap[key] = append(cur_section.ParamMap[key], &param)
 		}
 
 	}
