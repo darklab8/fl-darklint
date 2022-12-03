@@ -111,7 +111,6 @@ func INIFileRead(fileref utils.File) INIFile {
 	cur_section = &Section{}
 	for _, line := range lines {
 
-		log.Debug("reading regex")
 		comment_match := regexComment.FindStringSubmatch(line)
 		section_match := regexSection.FindStringSubmatch(line)
 		param_match := regexParam.FindStringSubmatch(line)

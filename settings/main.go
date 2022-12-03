@@ -3,12 +3,17 @@ package settings
 import (
 	"os"
 	"strings"
+
+	"darktool/settings/loglevel"
+
+	log "github.com/sirupsen/logrus"
 )
 
 var FreelancerFolderLocation string
 var TestingIntegration bool = false
 var Debug bool = false
-var LogEnabled = false
+
+var LogLevel = loglevel.Warning
 
 func init() {
 	FreelancerFolderLocation = os.Getenv("DARKTOOL_FREELANCER_FOLDER")
@@ -20,7 +25,25 @@ func init() {
 		TestingIntegration = true
 	}
 
-	Debug = strings.Compare(os.Getenv("DARKTOOL_DEBUG"), "") != 0
+	// Enabling log
+	log.SetFormatter(&log.TextFormatter{
+		FullTimestamp: true,
+	})
+	switch LogLevel {
+	case loglevel.Panic:
+		log.SetLevel(log.PanicLevel)
+	case loglevel.Fatal:
+		log.SetLevel(log.ErrorLevel)
+	case loglevel.Warning:
+		log.SetLevel(log.WarnLevel)
+	case loglevel.Info:
+		log.SetLevel(log.InfoLevel)
+	case loglevel.Debug:
+		log.SetLevel(log.DebugLevel)
+	}
 
-	LogEnabled = Debug
+	// Debug override
+	Debug = strings.Compare(os.Getenv("DARKTOOL_DEBUG"), "") != 0
+	// Debug logging
+	log.SetLevel(log.DebugLevel)
 }

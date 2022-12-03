@@ -8,7 +8,7 @@ package main
 
 import (
 	"darktool/cmd"
-	_ "darktool/tools/logger" // bootstrapped logger
+	_ "darktool/settings" // bootstrapp settings for initialization
 )
 
 func main() {
