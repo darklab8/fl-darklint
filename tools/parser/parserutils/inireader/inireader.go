@@ -5,7 +5,6 @@ package inireader
 
 import (
 	"darktool/tools/utils"
-	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -18,6 +17,9 @@ type INIFile struct {
 	Comments []string
 
 	Sections []*Section
+
+	// denormalization
+	SectionMap map[string][]*Section
 }
 
 /*
@@ -119,8 +121,17 @@ func INIFileRead(file1path string) INIFile {
 			cur_section := Section{}
 			config.Sections = append(config.Sections, &cur_section)
 			cur_section.Type = section_match[0]
+
+			// Denormalization adding to hashmap
+			key := section_match[0]
+			if config.SectionMap == nil {
+				config.SectionMap = make(map[string][]*Section)
+			}
+			if _, ok := config.SectionMap[key]; !ok {
+				config.SectionMap[key] = make([]*Section, 0)
+			}
+			config.SectionMap[key] = append(config.SectionMap[key], &cur_section)
 		} else if len(param_match) > 0 {
-			fmt.Println("123")
 			key := param_match[1]
 			splitted_values := strings.Split(param_match[2], ", ")
 			first_value := UniParse(splitted_values[0])
@@ -133,7 +144,7 @@ func INIFileRead(file1path string) INIFile {
 			param := Param{Key: key, First: first_value, Values: values, IsComment: false}
 			cur_section.Params = append(cur_section.Params, &param)
 
-			// Denormalization
+			// Denormalization, adding to hashmap
 			if cur_section.ParamMap == nil {
 				cur_section.ParamMap = make(map[string][]*Param)
 			}
