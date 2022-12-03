@@ -9,6 +9,6 @@ import (
 )
 
 func Run() {
-	filefind.LoadFreelancerConfigs()
+	filefind.Load()
 	market1ships.Load()
 }

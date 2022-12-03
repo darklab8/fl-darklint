@@ -107,7 +107,8 @@ func INIFileRead(fileref utils.File) INIFile {
 	lines := file.ReadLines()
 
 	log.Debug("setting current section")
-	var cur_section *Section = &Section{}
+	var cur_section *Section
+	cur_section = &Section{}
 	for _, line := range lines {
 
 		log.Debug("reading regex")
@@ -118,8 +119,8 @@ func INIFileRead(fileref utils.File) INIFile {
 		if len(comment_match) > 0 {
 			config.Comments = append(config.Comments, comment_match[1])
 		} else if len(section_match) > 0 {
-			cur_section := Section{}
-			config.Sections = append(config.Sections, &cur_section)
+
+			config.Sections = append(config.Sections, cur_section)
 			cur_section.Type = section_match[0]
 
 			// Denormalization adding to hashmap
@@ -130,7 +131,9 @@ func INIFileRead(fileref utils.File) INIFile {
 			if _, ok := config.SectionMap[key]; !ok {
 				config.SectionMap[key] = make([]*Section, 0)
 			}
-			config.SectionMap[key] = append(config.SectionMap[key], &cur_section)
+			config.SectionMap[key] = append(config.SectionMap[key], cur_section)
+
+			cur_section = &Section{} // create new
 		} else if len(param_match) > 0 {
 			key := param_match[1]
 			splitted_values := strings.Split(param_match[2], ", ")
