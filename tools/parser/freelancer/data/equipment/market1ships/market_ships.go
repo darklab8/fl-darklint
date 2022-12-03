@@ -19,17 +19,17 @@ type BaseGood struct {
 	Goods []*MarketGood
 }
 
-type MarketShips struct {
+type Config struct {
 	Intro      []string
 	Base_goods []*BaseGood
 }
 
-var LoadedMarketShips MarketShips
+var LoadedConfig Config
 
 const BaseGoodType = "[BaseGood]"
 
-func Read(input_file utils.File) MarketShips {
-	var frelconfig MarketShips
+func Read(input_file utils.File) Config {
+	var frelconfig Config
 
 	iniconfig := inireader.INIFileRead(input_file)
 
@@ -66,6 +66,6 @@ func Read(input_file utils.File) MarketShips {
 
 func Load() {
 	file := utils.File{Filepath: filefind.FreelancerFolder.Hashmap["market_ships.ini"].Filepath}
-	LoadedMarketShips = Read(file)
+	LoadedConfig = Read(file)
 	log.Info("OK market_ships.ini is parsed to specialized data structs")
 }
