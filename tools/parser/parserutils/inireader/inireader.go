@@ -184,6 +184,17 @@ func init() {
 	initRegexExpression(&regexParam, `(;%|^)([a-zA-Z_][a-zA-Z_0-9]+)\s=\s([a-zA-Z_, 0-9-.\\]+)`)
 }
 
+var CASE_SENSETIVE_KEYS = [...]string{"BGCS_base_run_by", "NavMapScale"}
+
+func isKeyCaseSensetive(key string) bool {
+	for _, sensetive_key := range CASE_SENSETIVE_KEYS {
+		if key == sensetive_key {
+			return true
+		}
+	}
+	return false
+}
+
 func (config INIFile) Read(fileref *utils.File) INIFile {
 	log.Debug("started reading INIFileRead for", fileref.Filepath)
 	config.File = fileref
@@ -207,7 +218,11 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 
 		if len(param_match) > 0 {
 			isComment := len(param_match[1]) > 0
-			key := strings.ToLower(param_match[2])
+			key := param_match[2]
+			if !isKeyCaseSensetive(key) {
+				key = strings.ToLower(key)
+			}
+
 			splitted_values := strings.Split(param_match[3], ", ")
 			first_value, err := UniParse(splitted_values[0])
 			if err != nil {
