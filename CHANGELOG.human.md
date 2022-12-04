@@ -12,3 +12,7 @@
 ## v0.1.1
 
 - Fix bug with float parsing in inireader
+
+## v0.2.0
+
+- Reformating style of universe.ini too
