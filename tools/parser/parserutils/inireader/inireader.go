@@ -159,7 +159,7 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 
 		if len(param_match) > 0 {
 			isComment := len(param_match[1]) > 0
-			key := param_match[2]
+			key := strings.ToLower(param_match[2])
 			splitted_values := strings.Split(param_match[3], ", ")
 			first_value := UniParse(splitted_values[0])
 			var values []UniValue
@@ -167,7 +167,6 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 				values = append(values, UniParse(value))
 			}
 
-			// TODO add reading commented param
 			param := Param{Key: key, First: first_value, Values: values, IsComment: isComment}
 			cur_section.Params = append(cur_section.Params, &param)
 

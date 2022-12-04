@@ -30,8 +30,12 @@ type Config struct {
 var LoadedConfig *Config
 
 const (
-	Filename     = "market_ships.ini"
-	BaseGoodType = "[BaseGood]"
+	Filename        = "market_ships.ini"
+	BaseGoodType    = "[BaseGood]"
+	KEY_RECYCLE     = "is_recycle_candidate"
+	KEY_MARKET_GOOD = "marketgood"
+	KEY_BASE        = "base"
+	KEY_NAME        = "name"
 )
 
 func (frelconfig *Config) Read(input_file *utils.File) *Config {
@@ -54,8 +58,8 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 		}
 		frelconfig.BaseGoods = append(frelconfig.BaseGoods, &current_base_good)
 
-		// Add Name and Recycle Candidate
-		name, ok := section.ParamMap["name"]
+		// Add Name
+		name, ok := section.ParamMap[KEY_NAME]
 		if ok {
 			if len(name) > 0 {
 				current_base_good.Name = name[0].First.AsString()
@@ -63,19 +67,19 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 		}
 
 		// Add isRecycleCandidate
-		isRecycleCandidate, ok := section.ParamMap["isRecycleCandidate"]
+		isRecycleCandidate, ok := section.ParamMap[KEY_RECYCLE]
 		if ok {
 			value := isRecycleCandidate[0].First.AsString()
 			bool_value, _ := strconv.ParseBool(value)
 			current_base_good.isRecycleCandidate = bool_value
 		}
 
-		if !utils.IsLower(section.ParamMap["base"][0].First.AsString()) {
-			log.Warn("market_ships, base: ", section.ParamMap["base"][0].First, " not in a lower case, autofixing")
+		if !utils.IsLower(section.ParamMap[KEY_BASE][0].First.AsString()) {
+			log.Warn("market_ships, base: ", section.ParamMap[KEY_BASE][0].First, " not in a lower case, autofixing")
 		}
-		current_base_good.Base = string(section.ParamMap["base"][0].First.(inireader.ValueString).ToLowerValue())
+		current_base_good.Base = string(section.ParamMap[KEY_BASE][0].First.(inireader.ValueString).ToLowerValue())
 
-		good_params, ok := section.ParamMap["MarketGood"]
+		good_params, ok := section.ParamMap[KEY_MARKET_GOOD]
 		if ok {
 			for _, good_param := range good_params {
 
@@ -118,24 +122,24 @@ func (frelconfig Config) Write(output_file *utils.File) *utils.File {
 		section := inireader.Section{}
 		section.Type = BaseGoodType
 
-		base_param := inireader.Param{Key: "base", IsComment: false}
+		base_param := inireader.Param{Key: KEY_BASE, IsComment: false}
 		base_param.AddValue(inireader.ValueString(baseGood.Base))
 		section.Params = append(section.Params, &base_param)
 
 		if baseGood.Name != "" {
-			name := inireader.Param{Key: "name", IsComment: true}
+			name := inireader.Param{Key: KEY_NAME, IsComment: true}
 			name.AddValue(inireader.ValueString(baseGood.Name))
 			section.Params = append(section.Params, &name)
 		}
 
 		if baseGood.isRecycleCandidate {
-			recycle := inireader.Param{Key: "isRecycleCandidate", IsComment: true}
+			recycle := inireader.Param{Key: KEY_RECYCLE, IsComment: true}
 			recycle.AddValue(inireader.ValueBool(baseGood.isRecycleCandidate))
 			section.Params = append(section.Params, &recycle)
 		}
 
 		for _, param := range baseGood.Goods {
-			market_good := inireader.Param{Key: "MarketGood", IsComment: false}
+			market_good := inireader.Param{Key: KEY_MARKET_GOOD, IsComment: false}
 
 			market_good.AddValue(inireader.ValueString(param.Name))
 			for _, value := range param.Values {

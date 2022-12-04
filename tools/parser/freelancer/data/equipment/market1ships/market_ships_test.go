@@ -51,10 +51,10 @@ func TestSaveRecycleParams(t *testing.T) {
 	market_config.Read(&utils.File{Filepath: filesystem.Hashmap[Filename].Filepath})
 
 	universe_config := universe.Config{}
-	universe_config.Read(&utils.File{Filepath: filesystem.Hashmap[universe.Filename].Filepath})
+	universe_config.Read(&utils.File{Filepath: filesystem.Hashmap[universe.FILENAME].Filepath})
 
 	info_config := service.Config{}
-	info_config.Read(&utils.File{Filepath: filesystem.Hashmap[service.Filename].Filepath})
+	info_config.Read(&utils.File{Filepath: filesystem.Hashmap[service.FILENAME].Filepath})
 
 	market_config.UpdateWithBasenames(&universe_config, &info_config)
 	market_config.Write(output_config)
@@ -63,7 +63,7 @@ func TestSaveRecycleParams(t *testing.T) {
 	isRecyclePresent := false
 	lines := output_config.GetLines()
 	for _, line := range lines {
-		if strings.Contains(line, "isRecycleCandidate") {
+		if strings.Contains(line, KEY_RECYCLE) {
 			isRecyclePresent = true
 		}
 	}

@@ -13,7 +13,7 @@ import (
 
 func TestReader(t *testing.T) {
 	test_directory := utils.GetCurrrentTestFolder()
-	fileref := &utils.File{Filepath: filepath.Join(test_directory, Filename)}
+	fileref := &utils.File{Filepath: filepath.Join(test_directory, FILENAME)}
 	config := Config{}
 	config.Read(fileref)
 

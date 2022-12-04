@@ -13,8 +13,10 @@ import (
 )
 
 const (
-	Filename = "universe.ini"
-	BaseTag  = "[Base]"
+	FILENAME      = "universe.ini"
+	KEY_BASETAG   = "[Base]"
+	KEY_NICKNAME  = "nickname"
+	KEY_STRIDNAME = "strid_name"
 )
 
 type Base struct {
@@ -43,19 +45,19 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 
 	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
 
-	bases, ok := iniconfig.SectionMap[BaseTag]
+	bases, ok := iniconfig.SectionMap[KEY_BASETAG]
 	if !ok {
-		log.Trace("failed to access iniconfig.SectionMap[BaseTag]")
+		log.Trace("failed to access iniconfig.SectionMap", KEY_BASETAG)
 	}
 	for _, base := range bases {
 		base_to_add := Base{}
 
-		check_nickname := base.ParamMap["nickname"][0].First.(inireader.ValueString).AsString()
+		check_nickname := base.ParamMap[KEY_NICKNAME][0].First.(inireader.ValueString).AsString()
 		if !utils.IsLower(check_nickname) {
 			log.Warn("nickname: ", check_nickname, "in file universe.txt is not in lower case. Autofixing")
 		}
-		base_to_add.Nickname = base.ParamMap["nickname"][0].First.(inireader.ValueString).ToLowerValue()
-		base_to_add.StridName = base.ParamMap["strid_name"][0].First
+		base_to_add.Nickname = base.ParamMap[KEY_NICKNAME][0].First.(inireader.ValueString).ToLowerValue()
+		base_to_add.StridName = base.ParamMap[KEY_STRIDNAME][0].First
 
 		frelconfig.Bases = append(frelconfig.Bases, &base_to_add)
 		frelconfig.BasesMap[BaseNickname(base_to_add.Nickname)] = &base_to_add
@@ -65,7 +67,7 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 }
 
 func Load() {
-	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[Filename].Filepath}
+	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[FILENAME].Filepath}
 	config := Config{}
 	Loaded = config.Read(file)
 	log.Info(fmt.Sprintf("OK file.Filepath=%v, universe.ini is parsed to specialized data structs", file.Filepath))

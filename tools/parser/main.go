@@ -23,10 +23,10 @@ func Parse(file1path string) {
 	market_config.Read(filesystem.GetFile(market1ships.Filename))
 
 	universe_config := universe.Config{}
-	universe_config.Read(filesystem.GetFile(universe.Filename))
+	universe_config.Read(filesystem.GetFile(universe.FILENAME))
 
 	info_config := service.Config{}
-	info_config.Read(filesystem.GetFile(service.Filename, "infocards.xml"))
+	info_config.Read(filesystem.GetFile(service.FILENAME, service.FILENAME_FALLBACK))
 
 	market_config.UpdateWithBasenames(&universe_config, &info_config)
 	market_config.Write(output_config)

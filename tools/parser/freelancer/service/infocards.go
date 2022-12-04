@@ -36,10 +36,10 @@ func (v Infocard) Content() string {
 }
 
 func (v Name) Type() string {
-	return "NAME"
+	return TYPE_NAME
 }
 func (v Infocard) Type() string {
-	return "INFOCARD"
+	return TYPE_INFOCAD
 }
 
 type Config struct {
@@ -51,7 +51,10 @@ type Config struct {
 var LoadedInfocards *Config
 
 const (
-	Filename = "infocards.txt"
+	FILENAME          = "infocards.txt"
+	FILENAME_FALLBACK = "infocards.xml"
+	TYPE_NAME         = "NAME"
+	TYPE_INFOCAD      = "INFOCARD"
 )
 
 func (frelconfig *Config) Read(input_file *utils.File) *Config {
@@ -74,9 +77,9 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 
 		var record_to_add Record
 		switch name {
-		case "NAME":
+		case TYPE_NAME:
 			record_to_add = Name{id: id, content: content}
-		case "INFOCARD":
+		case TYPE_INFOCAD:
 			record_to_add = Infocard{id: id, content: content}
 		default:
 			log.Fatal("unrecognized object name in infocards.txt, id=", id, "name=", name, "content=", content)
@@ -90,8 +93,8 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 }
 
 func Load() {
-	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[Filename].Filepath}
+	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[FILENAME].Filepath}
 	config := Config{}
 	LoadedInfocards = config.Read(file)
-	log.Info("OK ", Filename, " is parsed to specialized data structs, file.Filepath", file.Filepath)
+	log.Info("OK ", FILENAME, " is parsed to specialized data structs, file.Filepath", file.Filepath)
 }
