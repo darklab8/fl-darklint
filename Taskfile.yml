@@ -1,6 +1,20 @@
 version: '3'
 
 tasks:
+  tag:
+    cmds:
+      - git tag v{{.TAG}}
+    vars:
+      TAG:
+        sh: git-conventional-commits version
+
+  tag-push:
+    cmds:
+      - git push origin v{{.TAG}}
+    vars:
+      TAG:
+        sh: git-conventional-commits version
+
   version:
     cmds:
       - git-conventional-commits version
