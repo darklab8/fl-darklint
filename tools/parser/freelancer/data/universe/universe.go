@@ -34,7 +34,7 @@ type Config struct {
 
 var Loaded *Config
 
-func (frelconfig *Config) Read(input_file *utils.File) *Config {
+func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFile) {
 	if frelconfig.BasesMap == nil {
 		frelconfig.BasesMap = make(map[BaseNickname]*Base)
 	}
@@ -63,12 +63,12 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 		frelconfig.BasesMap[BaseNickname(base_to_add.Nickname)] = &base_to_add
 	}
 
-	return frelconfig
+	return frelconfig, iniconfig
 }
 
 func Load() {
 	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[FILENAME].Filepath}
 	config := Config{}
-	Loaded = config.Read(file)
+	Loaded, _ = config.Read(file)
 	log.Info(fmt.Sprintf("OK file.Filepath=%v, universe.ini is parsed to specialized data structs", file.Filepath))
 }

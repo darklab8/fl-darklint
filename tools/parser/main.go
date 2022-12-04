@@ -17,21 +17,29 @@ func Parse(file1path string) {
 	log.Info("Parse START for FreelancerFolderLocation=", file1path)
 	filesystem := filefind.FindConfigs(file1path)
 
-	output_config := filesystem.GetFile(market1ships.Filename)
-
-	market_config := market1ships.Config{}
-	market_config.Read(filesystem.GetFile(market1ships.Filename))
-
 	universe_config := universe.Config{}
-	universe_config.Read(filesystem.GetFile(universe.FILENAME))
+	_, iniconfig := universe_config.Read(filesystem.GetFile(universe.FILENAME))
+	iniconfig.Write(filesystem.GetFile(universe.FILENAME)).WriteLines()
 
 	info_config := service.Config{}
 	info_config.Read(filesystem.GetFile(service.FILENAME, service.FILENAME_FALLBACK))
 
-	market_config.UpdateWithBasenames(&universe_config, &info_config)
-	market_config.Write(output_config)
+	market_ships_config := market1ships.Config{}
+	market_ships_config.Read(filesystem.GetFile(market1ships.FILENAME_SHIPS))
+	market_ships_config.UpdateWithBasenames(&universe_config, &info_config)
+	market_ships_config.Write(filesystem.GetFile(market1ships.FILENAME_SHIPS)).WriteLines()
 
-	output_config.WriteLines()
+	market_commodities := market1ships.Config{}
+	market_commodities.Read(filesystem.GetFile(market1ships.FILENAME_COMMODITIES))
+	market_commodities.UpdateWithBasenames(&universe_config, &info_config)
+	market_commodities.Write(filesystem.GetFile(market1ships.FILENAME_COMMODITIES)).WriteLines()
+
+	// TODO implement preserving comments :|
+	// market_misc := market1ships.Config{}
+	// market_misc.Read(filesystem.GetFile(market1ships.FILENAME_MISC))
+	// market_misc.UpdateWithBasenames(&universe_config, &info_config)
+	// market_misc.Write(filesystem.GetFile(market1ships.FILENAME_MISC)).WriteLines()
+
 	log.Info("Parse OK for FreelancerFolderLocation=", file1path)
 }
 

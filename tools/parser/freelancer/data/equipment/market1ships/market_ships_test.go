@@ -16,7 +16,7 @@ import (
 
 func TestReader(t *testing.T) {
 	test_directory := utils.GetCurrrentTestFolder()
-	fileref := &utils.File{Filepath: filepath.Join(test_directory, Filename)}
+	fileref := &utils.File{Filepath: filepath.Join(test_directory, FILENAME_SHIPS)}
 	config := Config{}
 	loaded_market_ships := config.Read(fileref)
 
@@ -26,10 +26,10 @@ func TestReader(t *testing.T) {
 
 func TestWriter(t *testing.T) {
 	test_directory := utils.GetCurrrentTestFolder()
-	input_file := &utils.File{Filepath: filepath.Join(test_directory, Filename)}
+	input_file := &utils.File{Filepath: filepath.Join(test_directory, FILENAME_SHIPS)}
 
 	temp_directory := utils.GetCurrrentTempFolder()
-	output_file := &utils.File{Filepath: filepath.Join(temp_directory, Filename)}
+	output_file := &utils.File{Filepath: filepath.Join(temp_directory, FILENAME_SHIPS)}
 
 	config := Config{}
 	config.Read(input_file)
@@ -45,10 +45,10 @@ func TestSaveRecycleParams(t *testing.T) {
 	filesystem := filefind.FindConfigs(freelancer_folder)
 
 	temp_directory := utils.GetCurrrentTempFolder()
-	output_config := &utils.File{Filepath: filepath.Join(temp_directory, Filename)}
+	output_config := &utils.File{Filepath: filepath.Join(temp_directory, FILENAME_SHIPS)}
 
 	market_config := Config{}
-	market_config.Read(&utils.File{Filepath: filesystem.Hashmap[Filename].Filepath})
+	market_config.Read(&utils.File{Filepath: filesystem.Hashmap[FILENAME_SHIPS].Filepath})
 
 	universe_config := universe.Config{}
 	universe_config.Read(&utils.File{Filepath: filesystem.Hashmap[universe.FILENAME].Filepath})
