@@ -1,6 +1,10 @@
 version: '3'
 
 tasks:
+  version:
+    cmds:
+      - git-conventional-commits version
+
   build-version:
     cmds:
       - git-conventional-commits version > settings/version.txt || echo 'not installed git-conventional-commits' > settings/version.txt
