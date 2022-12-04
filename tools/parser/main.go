@@ -75,5 +75,14 @@ func Parse(file1path string, dry_run bool) {
 }
 
 func Run(dry_run bool) {
+	_, err := os.Stat(filepath.Join(settings.FreelancerFreelancerLocation, "DATA"))
+	_, err2 := os.Stat(filepath.Join(settings.FreelancerFreelancerLocation, "SERVICE"))
+
+	fmt.Println(err)
+	fmt.Println(err2)
+	if os.IsNotExist(err) || os.IsNotExist(err2) {
+		log.Fatal("freelancer folder is not detected at path=", settings.FreelancerFreelancerLocation, " because not found DATA and SERVICE folders")
+	}
+
 	Parse(settings.FreelancerFreelancerLocation, dry_run)
 }

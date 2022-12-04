@@ -11,7 +11,6 @@ import (
 )
 
 var FreelancerFreelancerLocation string
-var FreelancerCMDOverrideLocation string
 var TestingIntegration bool = false
 var Debug bool = false
 var DryRun = false
@@ -29,9 +28,7 @@ func init() {
 		panic(err)
 	}
 
-	if FreelancerFreelancerLocation == "" {
-		FreelancerFreelancerLocation = exe_path
-	}
+	FreelancerFreelancerLocation = exe_path
 
 	// Enabling log
 	log.SetFormatter(&log.TextFormatter{

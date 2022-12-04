@@ -4,7 +4,6 @@ Package with reusable code for discovery of files and other reusable stuff like 
 package filefind
 
 import (
-	"darktool/settings"
 	"darktool/tools/utils"
 	"io/fs"
 	"path/filepath"
@@ -43,12 +42,6 @@ func FindConfigs(folderpath string) Filesystem {
 
 	utils.CheckFatal(err, "unable to read files")
 	return filesystem
-}
-
-func Load() {
-	if len(FreelancerFolder.Files) == 0 {
-		FreelancerFolder = FindConfigs(settings.FreelancerFreelancerLocation)
-	}
 }
 
 func (file1system Filesystem) GetFile(file1names ...string) *utils.File {
