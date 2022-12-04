@@ -17,18 +17,23 @@ const (
 )
 
 type Base struct {
-	nickname   inireader.ValueString
-	strid_name inireader.UniValue
+	Nickname  inireader.ValueString
+	StridName inireader.UniValue
 }
 
+type BaseNickname string
+
 type Config struct {
-	Bases []Base
+	Bases []*Base
+
+	BasesMap map[BaseNickname]*Base //key is
 }
 
 var Loaded Config
 
 func Read(input_file utils.File) Config {
 	var frelconfig Config
+	Loaded.BasesMap = make(map[BaseNickname]*Base)
 
 	iniconfig := inireader.INIFileRead(input_file)
 
@@ -38,10 +43,16 @@ func Read(input_file utils.File) Config {
 	}
 	for _, base := range bases {
 		base_to_add := Base{}
-		base_to_add.nickname = base.ParamMap["nickname"][0].First.(inireader.ValueString)
-		base_to_add.strid_name = base.ParamMap["strid_name"][0].First
 
-		Loaded.Bases = append(Loaded.Bases, base_to_add)
+		check_nickname := base.ParamMap["nickname"][0].First.(inireader.ValueString).AsString()
+		if !utils.IsLower(check_nickname) {
+			log.Warn("nickname: ", check_nickname, "in file universe.txt is not in lower case. Autofixing")
+		}
+		base_to_add.Nickname = base.ParamMap["nickname"][0].First.(inireader.ValueString).ToLowerValue()
+		base_to_add.StridName = base.ParamMap["strid_name"][0].First
+
+		Loaded.Bases = append(Loaded.Bases, &base_to_add)
+		Loaded.BasesMap[BaseNickname(base_to_add.Nickname)] = &base_to_add
 	}
 
 	return frelconfig

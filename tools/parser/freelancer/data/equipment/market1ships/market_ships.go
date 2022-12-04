@@ -16,12 +16,13 @@ type MarketGood struct {
 type BaseGood struct {
 	// Name  string // implement commented out variables
 	Base  string
+	Name  string
 	Goods []*MarketGood
 }
 
 type Config struct {
-	Intro      []string
-	Base_goods []*BaseGood
+	Intro     []string
+	BaseGoods []*BaseGood
 }
 
 var LoadedConfig Config
@@ -41,9 +42,12 @@ func Read(input_file utils.File) Config {
 			continue
 		}
 		current_base_good := BaseGood{}
-		frelconfig.Base_goods = append(frelconfig.Base_goods, &current_base_good)
+		frelconfig.BaseGoods = append(frelconfig.BaseGoods, &current_base_good)
 
-		current_base_good.Base = string(section.ParamMap["base"][0].First.(inireader.ValueString))
+		if !utils.IsLower(section.ParamMap["base"][0].First.AsString()) {
+			log.Warn("market_ships, base: ", section.ParamMap["base"][0].First, " not in a lower case, autofixing")
+		}
+		current_base_good.Base = string(section.ParamMap["base"][0].First.(inireader.ValueString).ToLowerValue())
 
 		good_params, ok := section.ParamMap["MarketGood"]
 		if ok {

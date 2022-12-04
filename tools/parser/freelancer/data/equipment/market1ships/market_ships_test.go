@@ -13,6 +13,6 @@ func TestReader(t *testing.T) {
 	fileref := utils.File{Filepath: filepath.Join(test_directory, "market_ships.ini")}
 	loaded_market_ships := Read(fileref)
 
-	assert.Greater(t, len(loaded_market_ships.Base_goods), 0, "market ships sections were not scanned")
-	assert.Greater(t, len(loaded_market_ships.Base_goods[0].Goods), 0, "market ships sections were not scanned")
+	assert.Greater(t, len(loaded_market_ships.BaseGoods), 0, "market ships sections were not scanned")
+	assert.Greater(t, len(loaded_market_ships.BaseGoods[0].Goods), 0, "market ships sections were not scanned")
 }

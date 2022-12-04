@@ -50,15 +50,20 @@ type UniValue interface {
 }
 type ValueString string
 type ValueNumber struct {
-	value     float64
-	precision int
+	Value     float64
+	Precision int
 }
 
 func (v ValueString) AsString() string {
 	return string(v)
 }
+
+func (v ValueString) ToLowerValue() ValueString {
+	return ValueString(strings.ToLower(string(v)))
+}
+
 func (v ValueNumber) AsString() string {
-	return strconv.FormatFloat(float64(v.value), 'f', v.precision, 64)
+	return strconv.FormatFloat(float64(v.Value), 'f', v.Precision, 64)
 }
 
 func UniParse(input string) UniValue {
@@ -75,7 +80,7 @@ func UniParse(input string) UniValue {
 			precision = len(numberMatch[1])
 		}
 
-		return ValueNumber{value: parsed_number, precision: precision}
+		return ValueNumber{Value: parsed_number, Precision: precision}
 	}
 
 	v := ValueString(input)

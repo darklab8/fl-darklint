@@ -9,22 +9,46 @@ import (
 )
 
 type Record interface {
+	Id() int
+	Type() string
+	Content() string
 }
 type Infocard struct {
 	id      int
 	content string
 }
-
 type Name struct {
 	id      int
 	content string
 }
 
-type Config struct {
-	Records []Record
+func (v Name) Id() int {
+	return v.id
+}
+func (v Infocard) Id() int {
+	return v.id
+}
+func (v Name) Content() string {
+	return v.content
+}
+func (v Infocard) Content() string {
+	return v.content
 }
 
-var Loaded Config
+func (v Name) Type() string {
+	return "NAME"
+}
+func (v Infocard) Type() string {
+	return "INFOCARD"
+}
+
+type Config struct {
+	Records []*Record
+
+	RecordsMap map[int]*Record
+}
+
+var LoadedInfocards Config
 
 const (
 	filename = "infocards.txt"
@@ -32,12 +56,14 @@ const (
 
 func Read(input_file utils.File) Config {
 	var frelconfig Config
+	frelconfig.RecordsMap = make(map[int]*Record)
 
 	input_file = input_file.OpenToReadF()
 	defer input_file.Close()
 	lines := input_file.ReadLines()
 
 	for index := 0; index < len(lines); index++ {
+
 		id, err := strconv.Atoi(lines[index])
 		if err != nil {
 			continue
@@ -46,15 +72,18 @@ func Read(input_file utils.File) Config {
 		content := lines[index+2]
 		index += 3
 
+		var record_to_add Record
 		switch name {
 		case "NAME":
-			frelconfig.Records = append(frelconfig.Records, Name{id: id, content: content})
+			record_to_add = Name{id: id, content: content}
 		case "INFOCARD":
-			frelconfig.Records = append(frelconfig.Records, Name{id: id, content: content})
+			record_to_add = Infocard{id: id, content: content}
 		default:
 			log.Fatal("unrecognized object name in infocards.txt, id=", id, "name=", name, "content=", content)
 		}
 
+		frelconfig.Records = append(frelconfig.Records, &record_to_add)
+		frelconfig.RecordsMap[record_to_add.Id()] = &record_to_add
 	}
 
 	return frelconfig
@@ -62,6 +91,6 @@ func Read(input_file utils.File) Config {
 
 func Load() {
 	file := utils.File{Filepath: filefind.FreelancerFolder.Hashmap[filename].Filepath}
-	Read(file)
+	LoadedInfocards = Read(file)
 	log.Info("OK ", filename, " is parsed to specialized data structs")
 }
