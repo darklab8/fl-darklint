@@ -153,10 +153,6 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 	cur_section = &Section{}
 	for _, line := range lines {
 
-		if strings.Contains(line, "Carthage Capital Yards") {
-			fmt.Printf("DEBUG! xD")
-		}
-
 		comment_match := regexComment.FindStringSubmatch(line)
 		section_match := regexSection.FindStringSubmatch(line)
 		param_match := regexParam.FindStringSubmatch(line)

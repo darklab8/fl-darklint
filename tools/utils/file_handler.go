@@ -17,6 +17,10 @@ type File struct {
 	lines    []string
 }
 
+func (f *File) GetLines() []string {
+	return f.lines
+}
+
 func (f *File) OpenToReadF() *File {
 	file, err := os.Open(f.Filepath)
 	f.file = file

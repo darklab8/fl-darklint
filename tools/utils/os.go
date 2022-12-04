@@ -20,6 +20,12 @@ func GetCurrrentTempFolder() string {
 	return GetCurrrentChildFolder("tempdata")
 }
 
+func GetCurrentFolder() string {
+	_, filename, _, _ := runtime.Caller(1)
+	directory := filepath.Dir(filename)
+	return directory
+}
+
 func GetCurrentFile() string {
 	_, filename, _, _ := runtime.Caller(1)
 	directory := filepath.Dir(filename)

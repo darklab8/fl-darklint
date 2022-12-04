@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	filename = "universe.ini"
+	Filename = "universe.ini"
 	BaseTag  = "[Base]"
 )
 
@@ -29,11 +29,16 @@ type Config struct {
 	BasesMap map[BaseNickname]*Base //key is
 }
 
-var Loaded Config
+var Loaded *Config
 
-func Read(input_file *utils.File) Config {
-	var frelconfig Config
-	Loaded.BasesMap = make(map[BaseNickname]*Base)
+func (frelconfig *Config) Read(input_file *utils.File) *Config {
+	if frelconfig.BasesMap == nil {
+		frelconfig.BasesMap = make(map[BaseNickname]*Base)
+	}
+
+	if frelconfig.Bases == nil {
+		frelconfig.Bases = make([]*Base, 0)
+	}
 
 	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
 
@@ -51,15 +56,17 @@ func Read(input_file *utils.File) Config {
 		base_to_add.Nickname = base.ParamMap["nickname"][0].First.(inireader.ValueString).ToLowerValue()
 		base_to_add.StridName = base.ParamMap["strid_name"][0].First
 
-		Loaded.Bases = append(Loaded.Bases, &base_to_add)
-		Loaded.BasesMap[BaseNickname(base_to_add.Nickname)] = &base_to_add
+		frelconfig.Bases = append(frelconfig.Bases, &base_to_add)
+		frelconfig.BasesMap[BaseNickname(base_to_add.Nickname)] = &base_to_add
 	}
 
 	return frelconfig
 }
 
 func Load() {
-	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[filename].Filepath}
-	Read(file)
+	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[Filename].Filepath}
+	config := Config{}
+	config.Read(file)
+	Loaded = &config
 	log.Info("OK universe.ini is parsed to specialized data structs")
 }

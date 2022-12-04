@@ -4,6 +4,7 @@ import (
 	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/parser/parserutils/inireader"
 	"darktool/tools/utils"
+	"strconv"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -28,12 +29,16 @@ type Config struct {
 var LoadedConfig *Config
 
 const (
-	filename     = "market_ships.ini"
+	Filename     = "market_ships.ini"
 	BaseGoodType = "[BaseGood]"
 )
 
 func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
+
+	if frelconfig.BaseGoods == nil {
+		frelconfig.BaseGoods = make([]*BaseGood, 0)
+	}
 
 	for _, section := range iniconfig.Sections {
 		if section.Type != BaseGoodType {
@@ -43,6 +48,9 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 			continue
 		}
 		current_base_good := BaseGood{}
+		if current_base_good.Goods == nil {
+			current_base_good.Goods = make([]*MarketGood, 0)
+		}
 		frelconfig.BaseGoods = append(frelconfig.BaseGoods, &current_base_good)
 
 		// Add Name and Recycle Candidate
@@ -55,11 +63,10 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 
 		// Add isRecycleCandidate
 		isRecycleCandidate, ok := section.ParamMap["isRecycleCandidate"]
-		_ = isRecycleCandidate
 		if ok {
-			if len(name) > 0 {
-				current_base_good.isRecycleCandidate = true
-			}
+			value := isRecycleCandidate[0].First.AsString()
+			bool_value, _ := strconv.ParseBool(value)
+			current_base_good.isRecycleCandidate = bool_value
 		}
 
 		if !utils.IsLower(section.ParamMap["base"][0].First.AsString()) {
@@ -87,14 +94,14 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 }
 
 func Load() {
-	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[filename].Filepath}
+	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[Filename].Filepath}
 	config := Config{}
 	LoadedConfig = config.Read(file)
 	log.Info("OK market_ships.ini is parsed to specialized data structs")
 }
 
 func Unload() *utils.File {
-	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[filename].Filepath}
+	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[Filename].Filepath}
 	LoadedConfig.Write(file)
 	log.Info("OK market_ships.ini is written back")
 	return file

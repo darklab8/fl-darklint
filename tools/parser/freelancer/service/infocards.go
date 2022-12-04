@@ -48,15 +48,15 @@ type Config struct {
 	RecordsMap map[int]*Record
 }
 
-var LoadedInfocards Config
+var LoadedInfocards *Config
 
 const (
-	filename = "infocards.txt"
+	Filename = "infocards.txt"
 )
 
-func Read(input_file *utils.File) Config {
-	var frelconfig Config
+func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	frelconfig.RecordsMap = make(map[int]*Record)
+	frelconfig.Records = make([]*Record, 0)
 
 	input_file = input_file.OpenToReadF()
 	defer input_file.Close()
@@ -90,7 +90,8 @@ func Read(input_file *utils.File) Config {
 }
 
 func Load() {
-	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[filename].Filepath}
-	LoadedInfocards = Read(file)
-	log.Info("OK ", filename, " is parsed to specialized data structs")
+	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[Filename].Filepath}
+	config := Config{}
+	LoadedInfocards = config.Read(file)
+	log.Info("OK ", Filename, " is parsed to specialized data structs")
 }
