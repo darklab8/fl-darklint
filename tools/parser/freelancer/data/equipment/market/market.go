@@ -1,10 +1,8 @@
-package market1ships
+package market
 
 import (
-	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/parser/parserutils/inireader"
 	"darktool/tools/utils"
-	"fmt"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
@@ -26,8 +24,6 @@ type Config struct {
 	BaseGoods []*BaseGood
 	Comments  []string
 }
-
-var LoadedConfig *Config
 
 const (
 	FILENAME_SHIPS       = "market_ships.ini"
@@ -98,20 +94,6 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	}
 	frelconfig.Comments = iniconfig.Comments
 	return frelconfig
-}
-
-func Load() {
-	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[FILENAME_SHIPS].Filepath}
-	config := Config{}
-	LoadedConfig = config.Read(file)
-	log.Info(fmt.Sprintf("OK file.Filepath=%v market_ships.ini is parsed to specialized data structs", file.Filepath))
-}
-
-func Unload() *utils.File {
-	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[FILENAME_SHIPS].Filepath}
-	LoadedConfig.Write(file)
-	log.Info(fmt.Sprintf("OK file.Filepath=%v market_ships.ini is written back", file.Filepath))
-	return file
 }
 
 func (frelconfig Config) Write(output_file *utils.File) *utils.File {

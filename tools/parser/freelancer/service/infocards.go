@@ -1,7 +1,6 @@
 package service
 
 import (
-	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/utils"
 	"strconv"
 
@@ -48,8 +47,6 @@ type Config struct {
 	RecordsMap map[int]*Record
 }
 
-var LoadedInfocards *Config
-
 const (
 	FILENAME          = "infocards.txt"
 	FILENAME_FALLBACK = "infocards.xml"
@@ -90,11 +87,4 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	}
 
 	return frelconfig
-}
-
-func Load() {
-	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[FILENAME].Filepath}
-	config := Config{}
-	LoadedInfocards = config.Read(file)
-	log.Info("OK ", FILENAME, " is parsed to specialized data structs, file.Filepath", file.Filepath)
 }

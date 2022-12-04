@@ -4,10 +4,8 @@ parse universe.ini
 package universe
 
 import (
-	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/parser/parserutils/inireader"
 	"darktool/tools/utils"
-	"fmt"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -31,8 +29,6 @@ type Config struct {
 
 	BasesMap map[BaseNickname]*Base //key is
 }
-
-var Loaded *Config
 
 func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFile) {
 	if frelconfig.BasesMap == nil {
@@ -64,11 +60,4 @@ func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFi
 	}
 
 	return frelconfig, iniconfig
-}
-
-func Load() {
-	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[FILENAME].Filepath}
-	config := Config{}
-	Loaded, _ = config.Read(file)
-	log.Info(fmt.Sprintf("OK file.Filepath=%v, universe.ini is parsed to specialized data structs", file.Filepath))
 }

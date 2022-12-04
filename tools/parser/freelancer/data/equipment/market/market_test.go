@@ -1,4 +1,4 @@
-package market1ships
+package market
 
 import (
 	"darktool/tools/parser/freelancer/data/universe"
