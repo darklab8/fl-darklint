@@ -8,3 +8,7 @@
 - Rewrites market_ships.ini as a completely enforced in style file
 - Supports having comments at the file beginning and as commented out parameters on top of ini syntax
 - Implements unique INI reader capable to parse Freelancer INI configs and write them back
+
+## v0.1.1
+
+- Fix bug with float parsing in inireader

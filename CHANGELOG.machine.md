@@ -67,3 +67,9 @@
 
 ##### `universe`
 *  test \+ added base to parsed config ([6f39c21](https://github.com/darklab8/darklab_freelancer_darktool/commit/6f39c21))
+
+## **0.1.1** <sub><sup>2022-12-04 ([2c72665...c453515](https://github.com/darklab8/darklab_freelancer_darktool/compare/2c72665...c453515?diff=split))</sup></sub>
+
+### Bug Fixes
+*  universe test ([2c72665](https://github.com/darklab8/darklab_freelancer_darktool/commit/2c72665))
+*  bug with float ([c453515](https://github.com/darklab8/darklab_freelancer_darktool/commit/c453515), [#8](https://github.com/darklab8/darklab_freelancer_darktool/issues/#8))
