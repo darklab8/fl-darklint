@@ -12,7 +12,7 @@ import (
 var FreelancerFolderLocation string
 var TestingIntegration bool = false
 var Debug bool = false
-
+var DryRun = false
 var LogLevel = loglevel.Warning
 
 func init() {

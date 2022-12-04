@@ -47,7 +47,11 @@ func (f *File) ScheduleToWrite(value string) {
 	f.lines = append(f.lines, value)
 }
 
-func (f *File) WriteLines() {
+func (f *File) WriteLines(dry_run bool) {
+	if dry_run {
+		return
+	}
+
 	f.CreateToWriteF()
 	defer f.Close()
 

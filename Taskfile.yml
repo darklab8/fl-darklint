@@ -19,7 +19,7 @@ tasks:
   test:
     cmds:
       - mkdir -p tools/randline/tests/temp
-      - go test ./... -v
+      - go test ./... {{.CLI_ARGS}}
 
   doc-web:
     cmds:
@@ -27,8 +27,9 @@ tasks:
 
   setup-ln:
     cmds:
-      - ln -s {{.PWD}}/dist/darktool-linux-amd64 {{.PWD}}/../Discovery-DEV-Groshyr/darktool
-      - ln -s {{.PWD}}/dist/darktool-linux-amd64 {{.PWD}}/../Discovery-Freelancer-Reimagined/darktool
+      - ln -s {{.PWD}}/dist/darktool-linux-amd64 {{.PWD}}/../Discovery-DEV-Groshyr/darktool || true
+      - ln -s {{.PWD}}/dist/darktool-linux-amd64 {{.PWD}}/../Discovery-Freelancer-Reimagined/darktool || true
+      - ln -s {{.PWD}}/../Discovery-DEV-Groshyr {{.PWD}}/Discovery-DEV-Groshyr || true
     vars:
       PWD:
         sh: echo '$(pwd)'

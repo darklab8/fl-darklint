@@ -35,7 +35,8 @@ func TestWriter(t *testing.T) {
 	config.Read(input_file)
 	config.Write(output_file)
 
-	output_file.WriteLines()
+	dry_run := true
+	output_file.WriteLines(dry_run)
 }
 
 func TestSaveRecycleParams(t *testing.T) {
@@ -68,7 +69,8 @@ func TestSaveRecycleParams(t *testing.T) {
 		}
 	}
 
-	output_config.WriteLines()
+	dry_run := true
+	output_config.WriteLines(dry_run)
 
 	assert.True(t, isRecyclePresent)
 }

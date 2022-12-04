@@ -4,8 +4,12 @@ And even suggesting autofixes to Freelancer config files
 */
 package validator
 
-import "darktool/tools/parser"
+import (
+	"darktool/settings"
+	"darktool/tools/parser"
+)
 
 func Run() {
-	parser.Run()
+
+	parser.Run(settings.DryRun)
 }
