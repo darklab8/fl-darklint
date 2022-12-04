@@ -46,12 +46,33 @@ type Param struct {
 	First     UniValue // denormalization due to very often being needed
 }
 
-func (p Param) AddValue(value UniValue) Param {
+func (p *Param) AddValue(value UniValue) *Param {
 	if len(p.Values) == 0 {
 		p.First = value
 	}
 	p.Values = append(p.Values, value)
 	return p
+}
+
+func (p Param) ToString() string {
+	var sb strings.Builder
+
+	if p.IsComment {
+		sb.WriteString(";%")
+	}
+
+	sb.WriteString(fmt.Sprintf("%v = ", p.Key))
+
+	for index, value := range p.Values {
+		str_to_write := value.AsString()
+		if index == len(p.Values)-1 {
+			sb.WriteString(str_to_write)
+		} else {
+			sb.WriteString(fmt.Sprintf("%v, ", str_to_write))
+		}
+	}
+
+	return sb.String()
 }
 
 type UniValue interface {
@@ -139,6 +160,7 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 		if len(comment_match) > 0 {
 			config.Comments = append(config.Comments, comment_match[1])
 		} else if len(section_match) > 0 {
+			cur_section = &Section{} // create new
 
 			config.Sections = append(config.Sections, cur_section)
 			cur_section.Type = section_match[0]
@@ -152,8 +174,6 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 				config.SectionMap[key] = make([]*Section, 0)
 			}
 			config.SectionMap[key] = append(config.SectionMap[key], cur_section)
-
-			cur_section = &Section{} // create new
 		} else if len(param_match) > 0 {
 			isComment := len(param_match[1]) > 0
 			key := param_match[2]
@@ -187,6 +207,15 @@ func (config INIFile) Write(fileref *utils.File) *utils.File {
 
 	for _, comment := range config.Comments {
 		fileref.ScheduleToWrite(fmt.Sprintf(";%s", comment))
+	}
+
+	for _, section := range config.Sections {
+		fileref.ScheduleToWrite("")
+		fileref.ScheduleToWrite(section.Type)
+
+		for _, param := range section.Params {
+			fileref.ScheduleToWrite(param.ToString())
+		}
 	}
 
 	return fileref

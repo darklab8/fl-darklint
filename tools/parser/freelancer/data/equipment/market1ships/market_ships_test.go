@@ -1,7 +1,6 @@
 package market1ships
 
 import (
-	"darktool/tools/parser/parserutils/inireader"
 	"darktool/tools/utils"
 	"path/filepath"
 	"testing"
@@ -25,9 +24,6 @@ func TestWriter(t *testing.T) {
 
 	temp_directory := utils.GetCurrrentTempFolder()
 	output_file := &utils.File{Filepath: filepath.Join(temp_directory, filename)}
-
-	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
-	_ = iniconfig
 
 	config := Config{}
 	config.Read(input_file)

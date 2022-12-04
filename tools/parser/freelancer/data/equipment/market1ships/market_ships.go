@@ -103,14 +103,21 @@ func (frelconfig Config) Write(output_file *utils.File) *utils.File {
 		section := inireader.Section{}
 		section.Type = BaseGoodType
 
-		base_param := inireader.Param{Key: "base", IsComment: false}.AddValue(inireader.ValueString(baseGood.Base))
+		base_param := inireader.Param{Key: "base", IsComment: false}
+		base_param.AddValue(inireader.ValueString(baseGood.Base))
 		section.Params = append(section.Params, &base_param)
 
-		name := inireader.Param{Key: "name", IsComment: true}.AddValue(inireader.ValueString(baseGood.Name))
-		section.Params = append(section.Params, &name)
+		if baseGood.Name != "" {
+			name := inireader.Param{Key: "name", IsComment: true}
+			name.AddValue(inireader.ValueString(baseGood.Name))
+			section.Params = append(section.Params, &name)
+		}
 
-		recycle := inireader.Param{Key: "isRecycleCandidate", IsComment: true}.AddValue(inireader.ValueBool(baseGood.isRecycleCandidate))
-		section.Params = append(section.Params, &recycle)
+		if baseGood.isRecycleCandidate {
+			recycle := inireader.Param{Key: "isRecycleCandidate", IsComment: true}
+			recycle.AddValue(inireader.ValueBool(baseGood.isRecycleCandidate))
+			section.Params = append(section.Params, &recycle)
+		}
 
 		for _, param := range baseGood.Goods {
 			market_good := inireader.Param{Key: "MarketGood", IsComment: false}
@@ -119,7 +126,9 @@ func (frelconfig Config) Write(output_file *utils.File) *utils.File {
 			for _, value := range param.Values {
 				market_good.AddValue(value)
 			}
+			section.Params = append(section.Params, &market_good)
 		}
+		inifile.Sections = append(inifile.Sections, &section)
 	}
 
 	inifile.Write(output_file)
