@@ -22,7 +22,10 @@ tasks:
   test:
     cmds:
       - mkdir -p tools/randline/tests/temp
-      - go test ./... {{.CLI_ARGS}}
+      - DARKTOOL_FREELANCER_FOLDER={{.PWD}} go test ./... {{.CLI_ARGS}}
+    vars:
+      PWD:
+        sh: echo '$(pwd)'
 
   doc-web:
     cmds:

@@ -36,10 +36,6 @@ func Parse(file1path string, dry_run bool) {
 	filesystem := filefind.FindConfigs(file1path)
 	log.Info("")
 	for _, file := range filesystem.Files {
-		if strings.Contains(strings.ToLower(file.Filepath), "universe") {
-			fmt.Println("debug")
-		}
-
 		if strings.Contains(strings.ToLower(file.Filepath), "universe") && !utils.IsLower(filepath.Base(file.Filepath)) {
 			os.Rename(file.Filepath, strings.ToLower(file.Filepath))
 		}

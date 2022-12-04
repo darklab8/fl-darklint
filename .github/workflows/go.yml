@@ -28,4 +28,4 @@ jobs:
       run: task build
 
     - name: Test
-      run: task test
+      run: task test -- -v
