@@ -75,5 +75,5 @@ func Parse(file1path string, dry_run bool) {
 }
 
 func Run(dry_run bool) {
-	Parse(settings.FreelancerFolderLocation, dry_run)
+	Parse(settings.FreelancerFreelancerLocation, dry_run)
 }

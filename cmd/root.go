@@ -11,10 +11,22 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const description = "set of tools for config development of Freelancer game"
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "darktool",
-	Short: "set of tools for config development of Freelancer game",
+	Short: description,
+	Long: description + `
+
+download latest release at
+https://github.com/darklab8/darklab_freelancer_darktool/releases
+check 'darktool version' for which one u have at the moment
+
+'darktool validate' should be executed from root of your Freelancer folder
+it will parse and validate different files, and automatically autofix them.
+run with 'darktool validate --dry' in order to be not overwriting files
+P.S. Freelancer folder location can be overwritten with env flag DARKTOOL_FREELANCER_FOLDER`,
 
 	// Uncomment the following line if your bare application
 	// has an action associated with it:

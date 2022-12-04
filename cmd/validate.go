@@ -27,4 +27,5 @@ or you can set its location with ENV variable DARKTOOL_FREELANCER_FOLDER`,
 func init() {
 	rootCmd.AddCommand(validateCmd)
 	validateCmd.PersistentFlags().BoolVarP(&settings.DryRun, "dry", "d", false, "enable dry for checks without writing to file / good for CI")
+	validateCmd.PersistentFlags().StringVarP(&settings.FreelancerFreelancerLocation, "search", "s", "", "Freelancer location to search for validate running")
 }

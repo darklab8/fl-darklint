@@ -47,7 +47,7 @@ func FindConfigs(folderpath string) Filesystem {
 
 func Load() {
 	if len(FreelancerFolder.Files) == 0 {
-		FreelancerFolder = FindConfigs(settings.FreelancerFolderLocation)
+		FreelancerFolder = FindConfigs(settings.FreelancerFreelancerLocation)
 	}
 }
 

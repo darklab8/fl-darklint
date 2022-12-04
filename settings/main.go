@@ -5,13 +5,13 @@ import (
 	"strings"
 
 	"darktool/settings/loglevel"
-
 	_ "embed"
 
 	log "github.com/sirupsen/logrus"
 )
 
-var FreelancerFolderLocation string
+var FreelancerFreelancerLocation string
+var FreelancerCMDOverrideLocation string
 var TestingIntegration bool = false
 var Debug bool = false
 var DryRun = false
@@ -28,7 +28,10 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	FreelancerFolderLocation = exe_path
+
+	if FreelancerFreelancerLocation == "" {
+		FreelancerFreelancerLocation = exe_path
+	}
 
 	// Enabling log
 	log.SetFormatter(&log.TextFormatter{
@@ -49,7 +52,7 @@ func init() {
 
 	// =========== ENVIRONMENT OVERRIDES ============
 	if len(os.Getenv("DARKTOOL_FREELANCER_FOLDER")) > 0 {
-		FreelancerFolderLocation = os.Getenv("DARKTOOL_FREELANCER_FOLDER")
+		FreelancerFreelancerLocation = os.Getenv("DARKTOOL_FREELANCER_FOLDER")
 	}
 
 	if len(os.Getenv("TEST_INTEGRATION")) != 0 {
