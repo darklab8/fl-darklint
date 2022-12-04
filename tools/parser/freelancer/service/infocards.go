@@ -93,5 +93,5 @@ func Load() {
 	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[Filename].Filepath}
 	config := Config{}
 	LoadedInfocards = config.Read(file)
-	log.Info("OK ", Filename, " is parsed to specialized data structs")
+	log.Info("OK ", Filename, " is parsed to specialized data structs, file.Filepath", file.Filepath)
 }

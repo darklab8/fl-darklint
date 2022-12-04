@@ -9,6 +9,8 @@ import (
 	"io/fs"
 	"path/filepath"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type Filesystem struct {
@@ -24,7 +26,7 @@ func FindConfigs(folderpath string) Filesystem {
 
 	err := filepath.WalkDir(folderpath, func(path string, d fs.DirEntry, err error) error {
 
-		if !strings.Contains(path, ".ini") && !strings.Contains(path, ".txt") {
+		if !strings.Contains(path, ".ini") && !strings.Contains(path, ".txt") && !strings.Contains(path, ".xml") {
 			return nil
 		}
 
@@ -47,4 +49,19 @@ func Load() {
 	if len(FreelancerFolder.Files) == 0 {
 		FreelancerFolder = FindConfigs(settings.FreelancerFolderLocation)
 	}
+}
+
+func (file1system Filesystem) GetFile(file1names ...string) *utils.File {
+	for _, file1name := range file1names {
+		file, ok := file1system.Hashmap[file1name]
+		if !ok {
+			log.Warn("Filesystem.GetFile, failed to find find in filesystesm filename=", file1name, ", trying to recover")
+			continue
+		}
+		log.Info("Filesystem.GetFile, found filepath=", file.Filepath)
+		result_file := utils.File{Filepath: file.Filepath}
+		return &result_file
+	}
+	log.Fatal("unable to find filenames=", file1names)
+	return nil
 }

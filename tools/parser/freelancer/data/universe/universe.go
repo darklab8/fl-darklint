@@ -7,6 +7,7 @@ import (
 	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/parser/parserutils/inireader"
 	"darktool/tools/utils"
+	"fmt"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -67,5 +68,5 @@ func Load() {
 	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[Filename].Filepath}
 	config := Config{}
 	Loaded = config.Read(file)
-	log.Info("OK universe.ini is parsed to specialized data structs")
+	log.Info(fmt.Sprintf("OK file.Filepath=%v, universe.ini is parsed to specialized data structs", file.Filepath))
 }

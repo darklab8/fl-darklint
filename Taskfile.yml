@@ -24,3 +24,12 @@ tasks:
   doc-web:
     cmds:
       - godoc -http=:6060
+
+  setup-ln:
+    cmds:
+      - ln -s {{.PWD}}/dist/darktool-linux-amd64 {{.PWD}}/../Discovery-DEV-Groshyr/darktool
+      - ln -s {{.PWD}}/dist/darktool-linux-amd64 {{.PWD}}/../Discovery-Freelancer-Reimagined/darktool
+    vars:
+      PWD:
+        sh: echo '$(pwd)'
+

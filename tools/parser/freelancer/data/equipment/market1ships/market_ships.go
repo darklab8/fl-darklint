@@ -4,6 +4,7 @@ import (
 	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/parser/parserutils/inireader"
 	"darktool/tools/utils"
+	"fmt"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
@@ -97,13 +98,13 @@ func Load() {
 	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[Filename].Filepath}
 	config := Config{}
 	LoadedConfig = config.Read(file)
-	log.Info("OK market_ships.ini is parsed to specialized data structs")
+	log.Info(fmt.Sprintf("OK file.Filepath=%v market_ships.ini is parsed to specialized data structs", file.Filepath))
 }
 
 func Unload() *utils.File {
 	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[Filename].Filepath}
 	LoadedConfig.Write(file)
-	log.Info("OK market_ships.ini is written back")
+	log.Info(fmt.Sprintf("OK file.Filepath=%v market_ships.ini is written back", file.Filepath))
 	return file
 }
 

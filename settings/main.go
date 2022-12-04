@@ -16,14 +16,14 @@ var Debug bool = false
 var LogLevel = loglevel.Warning
 
 func init() {
-	FreelancerFolderLocation = os.Getenv("DARKTOOL_FREELANCER_FOLDER")
-	if len(FreelancerFolderLocation) == 0 {
-		FreelancerFolderLocation = "/home/naa/repos/pet_projects/darklab_freelancer_darktool/Discovery-DEV-Groshyr"
-	}
+	log.Info("init settings")
 
-	if len(os.Getenv("TEST_INTEGRATION")) != 0 {
-		TestingIntegration = true
+	// =========== NORMAL SETTINGS ==================
+	exe_path, err := os.Getwd()
+	if err != nil {
+		panic(err)
 	}
+	FreelancerFolderLocation = exe_path
 
 	// Enabling log
 	log.SetFormatter(&log.TextFormatter{
@@ -40,6 +40,15 @@ func init() {
 		log.SetLevel(log.InfoLevel)
 	case loglevel.Debug:
 		log.SetLevel(log.DebugLevel)
+	}
+
+	// =========== ENVIRONMENT OVERRIDES ============
+	if len(os.Getenv("DARKTOOL_FREELANCER_FOLDER")) > 0 {
+		FreelancerFolderLocation = os.Getenv("DARKTOOL_FREELANCER_FOLDER")
+	}
+
+	if len(os.Getenv("TEST_INTEGRATION")) != 0 {
+		TestingIntegration = true
 	}
 
 	// Debug override
