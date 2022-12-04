@@ -21,6 +21,22 @@ type INIFile struct {
 
 	// denormalization
 	SectionMap map[string][]*Section
+
+	// Enforce unique keys
+	ConstraintUniqueKey utils.Set
+}
+
+func (config *INIFile) AddSection(key string, section *Section) {
+	config.Sections = append(config.Sections, section)
+
+	// Denormalization adding to hashmap
+	if config.SectionMap == nil {
+		config.SectionMap = make(map[string][]*Section)
+	}
+	if _, ok := config.SectionMap[key]; !ok {
+		config.SectionMap[key] = make([]*Section, 0)
+	}
+	config.SectionMap[key] = append(config.SectionMap[key], section)
 }
 
 /*
@@ -32,6 +48,19 @@ type Section struct {
 	Params []*Param
 	// denormialization of Param list due to being more comfortable
 	ParamMap map[string][]*Param
+}
+
+func (section *Section) AddParam(key string, param *Param) {
+	section.Params = append(section.Params, param)
+
+	// Denormalization, adding to hashmap
+	if section.ParamMap == nil {
+		section.ParamMap = make(map[string][]*Param)
+	}
+	if _, ok := section.ParamMap[key]; !ok {
+		section.ParamMap[key] = make([]*Param, 0)
+	}
+	section.ParamMap[key] = append(section.ParamMap[key], param)
 }
 
 // abc = qwe, 1, 2, 3, 4
@@ -168,33 +197,13 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 			}
 
 			param := Param{Key: key, First: first_value, Values: values, IsComment: isComment}
-			cur_section.Params = append(cur_section.Params, &param)
-
-			// Denormalization, adding to hashmap
-			if cur_section.ParamMap == nil {
-				cur_section.ParamMap = make(map[string][]*Param)
-			}
-			if _, ok := cur_section.ParamMap[key]; !ok {
-				cur_section.ParamMap[key] = make([]*Param, 0)
-			}
-			cur_section.ParamMap[key] = append(cur_section.ParamMap[key], &param)
+			cur_section.AddParam(key, &param)
 		} else if len(comment_match) > 0 {
 			config.Comments = append(config.Comments, comment_match[1])
 		} else if len(section_match) > 0 {
 			cur_section = &Section{} // create new
-
-			config.Sections = append(config.Sections, cur_section)
 			cur_section.Type = section_match[0]
-
-			// Denormalization adding to hashmap
-			key := section_match[0]
-			if config.SectionMap == nil {
-				config.SectionMap = make(map[string][]*Section)
-			}
-			if _, ok := config.SectionMap[key]; !ok {
-				config.SectionMap[key] = make([]*Section, 0)
-			}
-			config.SectionMap[key] = append(config.SectionMap[key], cur_section)
+			config.AddSection(section_match[0], cur_section)
 		}
 
 	}
