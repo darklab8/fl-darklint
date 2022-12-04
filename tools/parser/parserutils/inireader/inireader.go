@@ -23,7 +23,7 @@ type INIFile struct {
 	SectionMap map[string][]*Section
 
 	// Enforce unique keys
-	ConstraintUniqueKey utils.Set
+	ConstraintUniqueSectionType map[string]string
 }
 
 func (config *INIFile) AddSection(key string, section *Section) {
@@ -37,6 +37,19 @@ func (config *INIFile) AddSection(key string, section *Section) {
 		config.SectionMap[key] = make([]*Section, 0)
 	}
 	config.SectionMap[key] = append(config.SectionMap[key], section)
+
+	// Enforcing same case sensetivity for section type key
+	if config.ConstraintUniqueSectionType == nil {
+		config.ConstraintUniqueSectionType = make(map[string]string)
+	}
+
+	if val, ok := config.ConstraintUniqueSectionType[strings.ToLower(key)]; ok {
+		if val != key {
+			log.Fatal("not uniform case sensetivity for config.path", config.File.Filepath, " key=", key, " section=", section)
+		}
+	} else {
+		config.ConstraintUniqueSectionType[strings.ToLower(key)] = key
+	}
 }
 
 /*
