@@ -93,10 +93,11 @@ func Load() {
 	log.Info("OK market_ships.ini is parsed to specialized data structs")
 }
 
-func Unload() {
+func Unload() *utils.File {
 	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[filename].Filepath}
 	LoadedConfig.Write(file)
 	log.Info("OK market_ships.ini is written back")
+	return file
 }
 
 func (frelconfig Config) Write(output_file *utils.File) *utils.File {

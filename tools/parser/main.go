@@ -38,4 +38,7 @@ func Run() {
 
 		base_good.Name = (*record).Content()
 	}
+
+	file := market1ships.Unload()
+	file.WriteLines()
 }

@@ -133,7 +133,7 @@ func init() {
 	initRegexExpression(&regexComment, `;(.*)`)
 	initRegexExpression(&regexSection, `^\[.*\]`)
 	// param or commented out param
-	initRegexExpression(&regexParam, `(;?%?)([a-zA-Z_]+)\s=\s([a-zA-Z_, 0-9-]+)`)
+	initRegexExpression(&regexParam, `(;%|^)([a-zA-Z_]+)\s=\s([a-zA-Z_, 0-9-]+)`)
 }
 
 func (config INIFile) Read(fileref *utils.File) INIFile {
