@@ -22,3 +22,17 @@
 *  autofix unnecessary space in values ([385aaa1](https://github.com/darklab8/darklab_freelancer_darktool/commit/385aaa1))
 *  market\_commodities\.txt is reformated too ([5ca7608](https://github.com/darklab8/darklab_freelancer_darktool/commit/5ca7608))
 *  reformating style of universe\.ini ([33ad0b6](https://github.com/darklab8/darklab_freelancer_darktool/commit/33ad0b6))
+
+## **0.3.0** <sub><sup>2022-12-04 ([cefe3f0...48b57c0](https://github.com/darklab8/darklab_freelancer_darktool/compare/cefe3f0...48b57c0?diff=split))</sup></sub>
+
+### Features
+*  dry run option ([f9efb7b](https://github.com/darklab8/darklab_freelancer_darktool/commit/f9efb7b))
+*  allow --dry flag from CI ([40f9742](https://github.com/darklab8/darklab_freelancer_darktool/commit/40f9742))
+*  add  command version ([967bfce](https://github.com/darklab8/darklab_freelancer_darktool/commit/967bfce))
+*  validate \-\-search 'absolute\_path' flag\. So u could run at chosen freelancer folder location ([58b2944](https://github.com/darklab8/darklab_freelancer_darktool/commit/58b2944))
+*  safeguard against deleting your OS\. check for DATA and SERVICE folders ([239ab19](https://github.com/darklab8/darklab_freelancer_darktool/commit/239ab19))
+
+
+### Bug Fixes
+*  ignore case sensetive values ([b555608](https://github.com/darklab8/darklab_freelancer_darktool/commit/b555608))
+*  test discovery ([48b57c0](https://github.com/darklab8/darklab_freelancer_darktool/commit/48b57c0))

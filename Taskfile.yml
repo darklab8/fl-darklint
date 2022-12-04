@@ -31,6 +31,10 @@ tasks:
     cmds:
       - godoc -http=:6060
 
+  changelog:
+    cmds:
+      - git-conventional-commits changelog
+
   setup-ln:
     cmds:
       - ln -s {{.PWD}}/dist/darktool-linux-amd64 {{.PWD}}/../Discovery-DEV-Groshyr/darktool || true
