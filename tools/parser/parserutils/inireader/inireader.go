@@ -113,8 +113,7 @@ func UniParse(input string) UniValue {
 		if !strings.Contains(input, ".") {
 			precision = 0
 		} else {
-			split := strings.Split(input, ".")
-			precision = len(split[1])
+			precision = 1
 		}
 
 		return ValueNumber{Value: parsed_number, Precision: precision}
