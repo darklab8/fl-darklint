@@ -66,7 +66,6 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 func Load() {
 	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[Filename].Filepath}
 	config := Config{}
-	config.Read(file)
-	Loaded = &config
+	Loaded = config.Read(file)
 	log.Info("OK universe.ini is parsed to specialized data structs")
 }
