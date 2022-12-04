@@ -144,12 +144,18 @@ func (v ValueNumber) AsString() string {
 	return strconv.FormatFloat(float64(v.Value), 'f', v.Precision, 64)
 }
 
-func UniParse(input string) UniValue {
+func UniParse(input string) (UniValue, error) {
+
+	input = strings.ReplaceAll(input, " ", "")
 
 	numberMatch := regexNumber.FindAllString(input, -1)
 	if len(numberMatch) > 0 {
 		parsed_number, err := strconv.ParseFloat(input, 64)
-		utils.CheckFatal(err, "failed to read number, input=", input)
+
+		if err != nil {
+			log.Warn("failed to read number, input=", input)
+			return nil, err
+		}
 
 		var precision int
 		if !strings.Contains(input, ".") {
@@ -158,11 +164,11 @@ func UniParse(input string) UniValue {
 			precision = 1
 		}
 
-		return ValueNumber{Value: parsed_number, Precision: precision}
+		return ValueNumber{Value: parsed_number, Precision: precision}, nil
 	}
 
 	v := ValueString(input)
-	return v
+	return v, nil
 }
 
 var regexNumber *regexp.Regexp
@@ -175,7 +181,7 @@ func init() {
 	initRegexExpression(&regexComment, `;(.*)`)
 	initRegexExpression(&regexSection, `^\[.*\]`)
 	// param or commented out param
-	initRegexExpression(&regexParam, `(;%|^)([a-zA-Z_]+)\s=\s([a-zA-Z_, 0-9-.]+)`)
+	initRegexExpression(&regexParam, `(;%|^)([a-zA-Z_][a-zA-Z_0-9]+)\s=\s([a-zA-Z_, 0-9-.\\]+)`)
 }
 
 func (config INIFile) Read(fileref *utils.File) INIFile {
@@ -203,10 +209,18 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 			isComment := len(param_match[1]) > 0
 			key := strings.ToLower(param_match[2])
 			splitted_values := strings.Split(param_match[3], ", ")
-			first_value := UniParse(splitted_values[0])
+			first_value, err := UniParse(splitted_values[0])
+			if err != nil {
+				log.Fatal("ini reader, failing to parse line because of UniParse, line=", line)
+			}
+
 			var values []UniValue
 			for _, value := range splitted_values {
-				values = append(values, UniParse(value))
+				univalue, err := UniParse(value)
+				if err != nil {
+					log.Fatal("ini reader, failing to parse line because of UniParse, line=", line)
+				}
+				values = append(values, univalue)
 			}
 
 			param := Param{Key: key, First: first_value, Values: values, IsComment: isComment}
