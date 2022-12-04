@@ -4,6 +4,7 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"darktool/settings"
 	"darktool/tools/validator"
 	"fmt"
 
@@ -25,4 +26,5 @@ or you can set its location with ENV variable DARKTOOL_FREELANCER_FOLDER`,
 
 func init() {
 	rootCmd.AddCommand(validateCmd)
+	validateCmd.PersistentFlags().BoolVarP(&settings.DryRun, "dry", "d", false, "enable dry for checks without writing to file / good for CI")
 }
