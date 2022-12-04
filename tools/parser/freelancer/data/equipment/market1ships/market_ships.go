@@ -14,15 +14,16 @@ type MarketGood struct {
 }
 
 type BaseGood struct {
-	// Name  string // implement commented out variables
-	Base  string
-	Name  string
-	Goods []*MarketGood
+	Base               string
+	Name               string
+	Goods              []*MarketGood
+	isRecycleCandidate bool
 }
 
 type Config struct {
 	Intro     []string
 	BaseGoods []*BaseGood
+	Comments  []string
 }
 
 var LoadedConfig Config
@@ -44,6 +45,23 @@ func Read(input_file utils.File) Config {
 		current_base_good := BaseGood{}
 		frelconfig.BaseGoods = append(frelconfig.BaseGoods, &current_base_good)
 
+		// Add Name and Recycle Candidate
+		name, ok := section.ParamMap["name"]
+		if ok {
+			if len(name) > 0 {
+				current_base_good.Name = name[0].First.AsString()
+			}
+		}
+
+		// Add isRecycleCandidate
+		isRecycleCandidate, ok := section.ParamMap["isRecycleCandidate"]
+		_ = isRecycleCandidate
+		if ok {
+			if len(name) > 0 {
+				current_base_good.isRecycleCandidate = true
+			}
+		}
+
 		if !utils.IsLower(section.ParamMap["base"][0].First.AsString()) {
 			log.Warn("market_ships, base: ", section.ParamMap["base"][0].First, " not in a lower case, autofixing")
 		}
@@ -64,7 +82,7 @@ func Read(input_file utils.File) Config {
 			}
 		}
 	}
-
+	frelconfig.Comments = iniconfig.Comments
 	return frelconfig
 }
 
