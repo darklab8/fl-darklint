@@ -153,28 +153,15 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 	cur_section = &Section{}
 	for _, line := range lines {
 
+		if strings.Contains(line, "Carthage Capital Yards") {
+			fmt.Printf("DEBUG! xD")
+		}
+
 		comment_match := regexComment.FindStringSubmatch(line)
 		section_match := regexSection.FindStringSubmatch(line)
 		param_match := regexParam.FindStringSubmatch(line)
 
-		if len(comment_match) > 0 {
-			config.Comments = append(config.Comments, comment_match[1])
-		} else if len(section_match) > 0 {
-			cur_section = &Section{} // create new
-
-			config.Sections = append(config.Sections, cur_section)
-			cur_section.Type = section_match[0]
-
-			// Denormalization adding to hashmap
-			key := section_match[0]
-			if config.SectionMap == nil {
-				config.SectionMap = make(map[string][]*Section)
-			}
-			if _, ok := config.SectionMap[key]; !ok {
-				config.SectionMap[key] = make([]*Section, 0)
-			}
-			config.SectionMap[key] = append(config.SectionMap[key], cur_section)
-		} else if len(param_match) > 0 {
+		if len(param_match) > 0 {
 			isComment := len(param_match[1]) > 0
 			key := param_match[2]
 			splitted_values := strings.Split(param_match[3], ", ")
@@ -196,6 +183,23 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 				cur_section.ParamMap[key] = make([]*Param, 0)
 			}
 			cur_section.ParamMap[key] = append(cur_section.ParamMap[key], &param)
+		} else if len(comment_match) > 0 {
+			config.Comments = append(config.Comments, comment_match[1])
+		} else if len(section_match) > 0 {
+			cur_section = &Section{} // create new
+
+			config.Sections = append(config.Sections, cur_section)
+			cur_section.Type = section_match[0]
+
+			// Denormalization adding to hashmap
+			key := section_match[0]
+			if config.SectionMap == nil {
+				config.SectionMap = make(map[string][]*Section)
+			}
+			if _, ok := config.SectionMap[key]; !ok {
+				config.SectionMap[key] = make([]*Section, 0)
+			}
+			config.SectionMap[key] = append(config.SectionMap[key], cur_section)
 		}
 
 	}
