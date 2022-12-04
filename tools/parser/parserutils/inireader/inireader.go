@@ -96,7 +96,8 @@ func init() {
 	initRegexExpression(&regexNumber, `^[0-9\-]+(?:\.)?([0-9\-]*)`)
 	initRegexExpression(&regexComment, `;(.*)`)
 	initRegexExpression(&regexSection, `^\[.*\]`)
-	initRegexExpression(&regexParam, `^([a-zA-Z_]+)\s=\s([a-zA-Z_, 0-9-]+)`)
+	// param or commented out param
+	initRegexExpression(&regexParam, `(;?%?)([a-zA-Z_]+)\s=\s([a-zA-Z_, 0-9-]+)`)
 }
 
 func INIFileRead(fileref utils.File) INIFile {
@@ -139,8 +140,9 @@ func INIFileRead(fileref utils.File) INIFile {
 
 			cur_section = &Section{} // create new
 		} else if len(param_match) > 0 {
-			key := param_match[1]
-			splitted_values := strings.Split(param_match[2], ", ")
+			isComment := len(param_match[1]) > 0
+			key := param_match[2]
+			splitted_values := strings.Split(param_match[3], ", ")
 			first_value := UniParse(splitted_values[0])
 			var values []UniValue
 			for _, value := range splitted_values {
@@ -148,7 +150,7 @@ func INIFileRead(fileref utils.File) INIFile {
 			}
 
 			// TODO add reading commented param
-			param := Param{Key: key, First: first_value, Values: values, IsComment: false}
+			param := Param{Key: key, First: first_value, Values: values, IsComment: isComment}
 			cur_section.Params = append(cur_section.Params, &param)
 
 			// Denormalization, adding to hashmap
