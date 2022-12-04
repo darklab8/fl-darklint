@@ -10,7 +10,7 @@ import (
 
 func TestReader(t *testing.T) {
 	test_directory := utils.GetCurrrentTestFolder()
-	fileref := utils.File{Filepath: filepath.Join(test_directory, filename)}
+	fileref := &utils.File{Filepath: filepath.Join(test_directory, filename)}
 	config := Read(fileref)
 
 	assert.Greater(t, len(config.Records), 0)

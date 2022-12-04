@@ -54,7 +54,7 @@ const (
 	filename = "infocards.txt"
 )
 
-func Read(input_file utils.File) Config {
+func Read(input_file *utils.File) Config {
 	var frelconfig Config
 	frelconfig.RecordsMap = make(map[int]*Record)
 
@@ -90,7 +90,7 @@ func Read(input_file utils.File) Config {
 }
 
 func Load() {
-	file := utils.File{Filepath: filefind.FreelancerFolder.Hashmap[filename].Filepath}
+	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[filename].Filepath}
 	LoadedInfocards = Read(file)
 	log.Info("OK ", filename, " is parsed to specialized data structs")
 }

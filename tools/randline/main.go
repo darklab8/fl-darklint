@@ -21,13 +21,13 @@ func Run(input Input) {
 	log.Info("OutputFile=", input.OutputFilePath)
 	log.Info("Times=", input.Times)
 
-	input_file := utils.File{Filepath: input.InputFilePath}.OpenToReadF()
+	input_file := (&utils.File{Filepath: input.InputFilePath}).OpenToReadF()
 	defer input_file.Close()
 	input_lines := input_file.ReadLines()
 
 	// write result
 
-	output_file := utils.File{Filepath: input.OutputFilePath}.CreateToWriteF()
+	output_file := (&utils.File{Filepath: input.OutputFilePath}).CreateToWriteF()
 	defer output_file.Close()
 
 	rand.Seed(time.Now().UnixNano())

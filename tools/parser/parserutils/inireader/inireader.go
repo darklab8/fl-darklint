@@ -13,7 +13,7 @@ import (
 )
 
 type INIFile struct {
-	File     utils.File
+	File     *utils.File
 	Comments []string
 
 	Sections []*Section
@@ -100,9 +100,9 @@ func init() {
 	initRegexExpression(&regexParam, `(;?%?)([a-zA-Z_]+)\s=\s([a-zA-Z_, 0-9-]+)`)
 }
 
-func INIFileRead(fileref utils.File) INIFile {
+func (config INIFile) Read(fileref *utils.File) INIFile {
 	log.Debug("started reading INIFileRead for", fileref.Filepath)
-	config := INIFile{File: fileref}
+	config.File = fileref
 
 	log.Debug("opening file", fileref.Filepath)
 	file := fileref.OpenToReadF()
@@ -166,4 +166,10 @@ func INIFileRead(fileref utils.File) INIFile {
 	}
 
 	return config
+}
+
+func (config INIFile) Write(fileref *utils.File) *utils.File {
+	// Write to file
+
+	return fileref
 }

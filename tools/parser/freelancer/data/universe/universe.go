@@ -31,11 +31,11 @@ type Config struct {
 
 var Loaded Config
 
-func Read(input_file utils.File) Config {
+func Read(input_file *utils.File) Config {
 	var frelconfig Config
 	Loaded.BasesMap = make(map[BaseNickname]*Base)
 
-	iniconfig := inireader.INIFileRead(input_file)
+	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
 
 	bases, ok := iniconfig.SectionMap[BaseTag]
 	if !ok {
@@ -59,7 +59,7 @@ func Read(input_file utils.File) Config {
 }
 
 func Load() {
-	file := utils.File{Filepath: filefind.FreelancerFolder.Hashmap[filename].Filepath}
+	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[filename].Filepath}
 	Read(file)
 	log.Info("OK universe.ini is parsed to specialized data structs")
 }

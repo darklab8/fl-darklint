@@ -11,7 +11,7 @@ import (
 )
 
 type INIFile struct {
-	File     utils.File
+	File     *utils.File
 	Sections []Section
 }
 
