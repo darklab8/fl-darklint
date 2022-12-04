@@ -13,6 +13,12 @@
 
 - Fix bug with float parsing in inireader
 
-## v0.2.0
+## **0.2.0** <sub><sup>2022-12-04 ([8d52846...33ad0b6](https://github.com/darklab8/darklab_freelancer_darktool/compare/8d52846...33ad0b6?diff=split))</sup></sub>
 
-- Reformating style of universe.ini too
+### Features
+*  max precision of floats is 1 ([8d52846](https://github.com/darklab8/darklab_freelancer_darktool/commit/8d52846))
+*  all param keys to lowercase ([e658fa8](https://github.com/darklab8/darklab_freelancer_darktool/commit/e658fa8))
+*  enforce case sensetive section types ([fcddc5c](https://github.com/darklab8/darklab_freelancer_darktool/commit/fcddc5c))
+*  autofix unnecessary space in values ([385aaa1](https://github.com/darklab8/darklab_freelancer_darktool/commit/385aaa1))
+*  market\_commodities\.txt is reformated too ([5ca7608](https://github.com/darklab8/darklab_freelancer_darktool/commit/5ca7608))
+*  reformating style of universe\.ini ([33ad0b6](https://github.com/darklab8/darklab_freelancer_darktool/commit/33ad0b6))
