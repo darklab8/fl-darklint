@@ -21,7 +21,6 @@ type BaseGood struct {
 }
 
 type Config struct {
-	Intro     []string
 	BaseGoods []*BaseGood
 	Comments  []string
 }
@@ -97,8 +96,30 @@ func (frelconfig Config) Write(output_file *utils.File) *utils.File {
 
 	inifile := inireader.INIFile{}
 	inifile.File = output_file
-
 	inifile.Comments = frelconfig.Comments
+
+	for _, baseGood := range frelconfig.BaseGoods {
+		section := inireader.Section{}
+		section.Type = BaseGoodType
+
+		base_param := inireader.Param{Key: "base", IsComment: false}.AddValue(inireader.ValueString(baseGood.Base))
+		section.Params = append(section.Params, &base_param)
+
+		name := inireader.Param{Key: "name", IsComment: true}.AddValue(inireader.ValueString(baseGood.Name))
+		section.Params = append(section.Params, &name)
+
+		recycle := inireader.Param{Key: "isRecycleCandidate", IsComment: true}.AddValue(inireader.ValueBool(baseGood.isRecycleCandidate))
+		section.Params = append(section.Params, &recycle)
+
+		for _, param := range baseGood.Goods {
+			market_good := inireader.Param{Key: "MarketGood", IsComment: false}
+
+			market_good.AddValue(inireader.ValueString(param.Name))
+			for _, value := range param.Values {
+				market_good.AddValue(value)
+			}
+		}
+	}
 
 	inifile.Write(output_file)
 	return inifile.File

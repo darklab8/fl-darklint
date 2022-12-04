@@ -45,6 +45,14 @@ type Param struct {
 	First     UniValue // denormalization due to very often being needed
 }
 
+func (p Param) AddValue(value UniValue) Param {
+	if len(p.Values) == 0 {
+		p.First = value
+	}
+	p.Values = append(p.Values, value)
+	return p
+}
+
 type UniValue interface {
 	AsString() string
 }
@@ -52,6 +60,12 @@ type ValueString string
 type ValueNumber struct {
 	Value     float64
 	Precision int
+}
+
+type ValueBool bool
+
+func (v ValueBool) AsString() string {
+	return strconv.FormatBool(bool(v))
 }
 
 func (v ValueString) AsString() string {
