@@ -6,6 +6,8 @@ import (
 
 	"darktool/settings/loglevel"
 
+	_ "embed"
+
 	log "github.com/sirupsen/logrus"
 )
 
@@ -14,6 +16,9 @@ var TestingIntegration bool = false
 var Debug bool = false
 var DryRun = false
 var LogLevel = loglevel.Warning
+
+//go:embed version.txt
+var Version string
 
 func init() {
 	log.Info("init settings")

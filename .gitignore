@@ -5,3 +5,4 @@ Discovery-DEV-Groshyr
 __debug_bin
 **/tempdata/*
 !.gitkeep
+version.txt
