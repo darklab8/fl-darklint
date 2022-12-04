@@ -110,10 +110,11 @@ func UniParse(input string) UniValue {
 		utils.CheckFatal(err, "failed to read number, input=", input)
 
 		var precision int
-		if len(numberMatch) == 1 {
+		if !strings.Contains(input, ".") {
 			precision = 0
 		} else {
-			precision = len(numberMatch[1])
+			split := strings.Split(input, ".")
+			precision = len(split[1])
 		}
 
 		return ValueNumber{Value: parsed_number, Precision: precision}
@@ -133,7 +134,7 @@ func init() {
 	initRegexExpression(&regexComment, `;(.*)`)
 	initRegexExpression(&regexSection, `^\[.*\]`)
 	// param or commented out param
-	initRegexExpression(&regexParam, `(;%|^)([a-zA-Z_]+)\s=\s([a-zA-Z_, 0-9-]+)`)
+	initRegexExpression(&regexParam, `(;%|^)([a-zA-Z_]+)\s=\s([a-zA-Z_, 0-9-.]+)`)
 }
 
 func (config INIFile) Read(fileref *utils.File) INIFile {
