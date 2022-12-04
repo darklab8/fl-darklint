@@ -259,12 +259,20 @@ func (config INIFile) Write(fileref *utils.File) *utils.File {
 		fileref.ScheduleToWrite(fmt.Sprintf(";%s", comment))
 	}
 
-	for _, section := range config.Sections {
+	if len(config.Comments) > 0 {
 		fileref.ScheduleToWrite("")
+	}
+
+	section_length := config.Sections
+	for index, section := range config.Sections {
 		fileref.ScheduleToWrite(section.Type)
 
 		for _, param := range section.Params {
 			fileref.ScheduleToWrite(param.ToString())
+		}
+
+		if index < len(section_length)-1 {
+			fileref.ScheduleToWrite("")
 		}
 	}
 
