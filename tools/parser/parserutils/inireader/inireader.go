@@ -5,6 +5,7 @@ package inireader
 
 import (
 	"darktool/tools/utils"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -183,7 +184,10 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 }
 
 func (config INIFile) Write(fileref *utils.File) *utils.File {
-	// Write to file
+
+	for _, comment := range config.Comments {
+		fileref.ScheduleToWrite(fmt.Sprintf(";%s", comment))
+	}
 
 	return fileref
 }

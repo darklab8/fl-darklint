@@ -7,6 +7,7 @@ package utils
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 )
 
@@ -38,12 +39,16 @@ func (f *File) ReadLines() []string {
 	return f.lines
 }
 
+func (f *File) ScheduleToWrite(value string) {
+	f.lines = append(f.lines, value)
+}
+
 func (f *File) WriteLines() {
 	f.CreateToWriteF()
 	defer f.Close()
 
 	for _, line := range f.lines {
-		f.WriteF(line)
+		f.WritelnF(line)
 	}
 }
 
@@ -54,8 +59,8 @@ func (f *File) CreateToWriteF() *File {
 
 	return f
 }
-func (f *File) WriteF(msg string) {
-	_, err := f.file.WriteString(msg)
+func (f *File) WritelnF(msg string) {
+	_, err := f.file.WriteString(fmt.Sprintf("%v\n", msg))
 
 	CheckFatal(err, "failed to write string to file")
 }

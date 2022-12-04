@@ -25,14 +25,14 @@ type Config struct {
 	Comments  []string
 }
 
-var LoadedConfig Config
+var LoadedConfig *Config
 
 const (
 	filename     = "market_ships.ini"
 	BaseGoodType = "[BaseGood]"
 )
 
-func (frelconfig Config) Read(input_file *utils.File) Config {
+func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
 
 	for _, section := range iniconfig.Sections {
@@ -88,7 +88,8 @@ func (frelconfig Config) Read(input_file *utils.File) Config {
 
 func Load() {
 	file := &utils.File{Filepath: filefind.FreelancerFolder.Hashmap[filename].Filepath}
-	LoadedConfig = Config.Read(Config{}, file)
+	config := Config{}
+	LoadedConfig = config.Read(file)
 	log.Info("OK market_ships.ini is parsed to specialized data structs")
 }
 

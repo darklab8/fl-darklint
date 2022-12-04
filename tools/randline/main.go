@@ -33,7 +33,7 @@ func Run(input Input) {
 	rand.Seed(time.Now().UnixNano())
 	for i := 0; i < *input.Times; i++ {
 		randomIndex := rand.Intn(len(input_lines))
-		output_file.WriteF(fmt.Sprintf("%v\n", input_lines[randomIndex]))
+		output_file.WritelnF(input_lines[randomIndex])
 	}
 
 	fmt.Println("OK")
