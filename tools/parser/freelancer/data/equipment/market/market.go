@@ -3,7 +3,6 @@ package market
 import (
 	"darktool/tools/parser/parserutils/inireader"
 	"darktool/tools/utils"
-	"strconv"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -56,26 +55,9 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 		}
 		frelconfig.BaseGoods = append(frelconfig.BaseGoods, &current_base_good)
 
-		// Add Name
-		name, ok := section.ParamMap[KEY_NAME]
-		if ok {
-			if len(name) > 0 {
-				current_base_good.Name = name[0].First.AsString()
-			}
-		}
-
-		// Add isRecycleCandidate
-		isRecycleCandidate, ok := section.ParamMap[KEY_RECYCLE]
-		if ok {
-			value := isRecycleCandidate[0].First.AsString()
-			bool_value, _ := strconv.ParseBool(value)
-			current_base_good.isRecycleCandidate = bool_value
-		}
-
-		if !utils.IsLower(section.ParamMap[KEY_BASE][0].First.AsString()) {
-			log.Warn("market_ships, base: ", section.ParamMap[KEY_BASE][0].First, " not in a lower case, autofixing")
-		}
-		current_base_good.Base = string(section.ParamMap[KEY_BASE][0].First.(inireader.ValueString).ToLowerValue())
+		current_base_good.Name = section.GetParamStrToLower(KEY_NAME, inireader.OPTIONAL_p)
+		current_base_good.isRecycleCandidate = section.GetParamBool(KEY_RECYCLE, inireader.OPTIONAL_p, false)
+		current_base_good.Base = section.GetParamStrToLower(KEY_BASE, inireader.REQUIRED_p)
 
 		good_params, ok := section.ParamMap[KEY_MARKET_GOOD]
 		if ok {

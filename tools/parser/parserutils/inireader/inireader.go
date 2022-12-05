@@ -63,6 +63,11 @@ type Section struct {
 	ParamMap map[string][]*Param
 }
 
+const (
+	OPTIONAL_p = true
+	REQUIRED_p = false
+)
+
 func (section *Section) AddParam(key string, param *Param) {
 	param.Key = key
 
@@ -77,18 +82,45 @@ func (section *Section) AddParam(key string, param *Param) {
 	section.ParamMap[key] = append(section.ParamMap[key], param)
 }
 
-func (section *Section) GetParamStr(key string) string {
+func (section *Section) GetParamStr(key string, optional bool) string {
+	if optional && len(section.ParamMap[key]) == 0 {
+		return ""
+	}
 	return section.ParamMap[key][0].First.AsString()
 }
-func (section *Section) GetParamInt(key string) int {
-	integer, err := strconv.Atoi(section.GetParamStr(key))
+func (section *Section) GetParamStrToLower(key string, optional bool) string {
+	return strings.ToLower(section.GetParamStr(key, optional))
+}
+func (section *Section) GetParamInt(key string, optional bool) int {
+	if optional && len(section.ParamMap[key]) == 0 {
+		return 0
+	}
+
+	integer, err := strconv.Atoi(section.GetParamStr(key, false))
 	if err != nil {
 		log.Fatal("failed to parse strid in universe.ini for section=", section, "key=", key)
 	}
 	return integer
 }
-func (section *Section) GetParamNumber(key string) ValueNumber {
+func (section *Section) GetParamNumber(key string, optional bool) ValueNumber {
+	if optional && len(section.ParamMap[key]) == 0 {
+		return ValueNumber{}
+	}
+
 	return section.ParamMap[key][0].First.(ValueNumber)
+}
+func (section *Section) GetParamBool(key string, optional bool, default_value bool) bool {
+	if optional && len(section.ParamMap[key]) == 0 {
+		return default_value
+	}
+
+	bool_value, err := strconv.ParseBool(section.GetParamStr(key, REQUIRED_p))
+
+	if err != nil {
+		return default_value
+	}
+
+	return bool_value
 }
 
 // abc = qwe, 1, 2, 3, 4
