@@ -14,6 +14,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -58,6 +59,16 @@ func Parse(file1path string, dry_run bool) {
 	market_commodities.Read(filesystem.GetFile(market.FILENAME_COMMODITIES))
 	market_commodities.UpdateWithBasenames(&universe_config, &info_config)
 	market_commodities.Write(filesystem.GetFile(market.FILENAME_COMMODITIES)).WriteLines(dry_run)
+
+	for _, base := range universe_config.Bases {
+		end_objects := universe_config.SystemMap[universe.SystemNickname(base.System)].File.PathObjects()
+		for i := 0; i < 2; i++ {
+			end_objects[i] = strings.ToUpper(end_objects[i])
+		}
+		objects := append([]string{file1path, "DATA", "UNIVERSE"}, end_objects...)
+		path_to_systemfile := filepath.Join(objects...)
+		fmt.Println(path_to_systemfile)
+	}
 
 	// TODO implement preserving comments :|
 	// market_misc := market1ships.Config{}

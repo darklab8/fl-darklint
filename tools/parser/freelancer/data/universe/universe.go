@@ -54,8 +54,8 @@ func PathCreate(input string) Path {
 	return Path(input)
 }
 
-func (p Path) LinuxPath() string {
-	return string(p)
+func (p Path) PathObjects() []string {
+	return strings.Split(string(p), `/`)
 }
 
 func (p Path) WindowsPath() string {
