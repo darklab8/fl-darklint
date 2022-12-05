@@ -196,7 +196,7 @@ func UniParse(input string) (UniValue, error) {
 	input = strings.ReplaceAll(input, " ", "")
 
 	numberMatch := regexNumber.FindAllString(input, -1)
-	if len(numberMatch) > 0 {
+	if len(numberMatch) > 0 && !strings.ContainsAny(input, "") {
 		parsed_number, err := strconv.ParseFloat(input, 64)
 
 		if err != nil {
@@ -242,7 +242,7 @@ var regexSection *regexp.Regexp
 var regexParam *regexp.Regexp
 
 func init() {
-	initRegexExpression(&regexNumber, `^[0-9\-]+(?:\.)?([0-9\-]*)`)
+	initRegexExpression(&regexNumber, `^[0-9\-]+(?:\.)?([0-9\-]*)$`)
 	initRegexExpression(&regexComment, `;(.*)`)
 	initRegexExpression(&regexSection, `^\[.*\]`)
 	// param or commented out param
@@ -288,17 +288,21 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 				key = strings.ToLower(key)
 			}
 
-			splitted_values := strings.Split(param_match[3], ", ")
+			line_to_read := param_match[3]
+			if strings.Contains(line_to_read, ",") {
+				line_to_read = strings.ReplaceAll(line_to_read, " ", "")
+			}
+			splitted_values := strings.Split(line_to_read, ",")
 			first_value, err := UniParse(splitted_values[0])
 			if err != nil {
-				log.Fatal("ini reader, failing to parse line because of UniParse, line=", line)
+				log.Fatal("ini reader, failing to parse line because of UniParse, line=", line, "filepath=", fileref.Filepath)
 			}
 
 			var values []UniValue
 			for _, value := range splitted_values {
 				univalue, err := UniParse(value)
 				if err != nil {
-					log.Fatal("ini reader, failing to parse line because of UniParse, line=", line)
+					log.Fatal("ini reader, failing to parse line because of UniParse, line=", line, "filepath=", fileref.Filepath)
 				}
 				values = append(values, univalue)
 			}
