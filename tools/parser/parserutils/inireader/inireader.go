@@ -64,8 +64,9 @@ type Section struct {
 }
 
 func (section *Section) AddParam(key string, param *Param) {
-	section.Params = append(section.Params, param)
+	param.Key = key
 
+	section.Params = append(section.Params, param)
 	// Denormalization, adding to hashmap
 	if section.ParamMap == nil {
 		section.ParamMap = make(map[string][]*Param)
@@ -176,6 +177,17 @@ func UniParseF(input string) UniValue {
 		log.Fatal("unable to parse UniParseF=", input)
 	}
 	return value
+}
+
+func UniParseStr(input string) UniValue {
+	return ValueString(input)
+}
+
+func UniParseInt(input int) UniValue {
+	u := ValueNumber{}
+	u.Value = float64(input)
+	u.Precision = 0
+	return u
 }
 
 var regexNumber *regexp.Regexp

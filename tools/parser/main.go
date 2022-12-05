@@ -14,7 +14,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"strings"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -32,22 +31,21 @@ func init() {
 	initRegexExpression(&folderToLowerCaseRegex, `universe(\/|\\)`)
 }
 func Parse(file1path string, dry_run bool) {
-	log.Info("filefind. Checking fo", file1path)
-	filesystem := filefind.FindConfigs(file1path)
-	log.Info("")
-	for _, file := range filesystem.Files {
-		if strings.Contains(strings.ToLower(file.Filepath), "universe") && !utils.IsLower(filepath.Base(file.Filepath)) {
-			os.Rename(file.Filepath, strings.ToLower(file.Filepath))
-		}
-	}
+	// log.Info("filefind. Checking fo", file1path)
+	// filesystem := filefind.FindConfigs(file1path)
+	// log.Info("")
+	// for _, file := range filesystem.Files {
+	// 	if strings.Contains(strings.ToLower(file.Filepath), "universe") && !utils.IsLower(filepath.Base(file.Filepath)) {
+	// 		os.Rename(file.Filepath, strings.ToLower(file.Filepath))
+	// 	}
+	// }
 
 	log.Info("Parse START for FreelancerFolderLocation=", file1path)
-	filesystem = filefind.FindConfigs(file1path)
+	filesystem := filefind.FindConfigs(file1path)
 
 	universe_config := universe.Config{}
-	_, iniconfig := universe_config.Read(filesystem.GetFile(universe.FILENAME))
-	iniconfig.Write(filesystem.GetFile(universe.FILENAME)).WriteLines(dry_run)
-
+	universe_config.Read(filesystem.GetFile(universe.FILENAME))
+	universe_config.Write(filesystem.GetFile(universe.FILENAME)).WriteLines(dry_run)
 	info_config := service.Config{}
 	info_config.Read(filesystem.GetFile(service.FILENAME, service.FILENAME_FALLBACK))
 

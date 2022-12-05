@@ -6,7 +6,6 @@ package universe
 import (
 	"darktool/tools/parser/parserutils/inireader"
 	"darktool/tools/utils"
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -111,7 +110,7 @@ func (frelconfig *Config) AddSystem(system_to_add *System) {
 	frelconfig.SystemMap[SystemNickname(system_to_add.Nickname)] = system_to_add
 }
 
-func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFile) {
+func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	if frelconfig.BasesMap == nil {
 		frelconfig.BasesMap = make(map[BaseNickname]*Base)
 	}
@@ -217,7 +216,7 @@ func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFi
 		}
 
 		if len(system.ParamMap[KEY_SYSTEM_NAVMAPSCALE]) > 0 {
-			system_to_add.NavMapScale = system.ParamMap[KEY_SYSTEM_IDS_INFO][0].First.(inireader.ValueNumber)
+			system_to_add.NavMapScale = system.ParamMap[KEY_SYSTEM_NAVMAPSCALE][0].First.(inireader.ValueNumber)
 		}
 
 		frelconfig.AddSystem(&system_to_add)
@@ -230,7 +229,7 @@ func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFi
 	}
 	frelconfig.TimeSeconds = Time{Seconds_per_day: seconds_per_day}
 
-	return frelconfig, iniconfig
+	return frelconfig
 }
 
 func (frelconfig *Config) Write(output_file *utils.File) *utils.File {
@@ -238,23 +237,49 @@ func (frelconfig *Config) Write(output_file *utils.File) *utils.File {
 	inifile.File = output_file
 
 	time_section := inireader.Section{Type: KEY_TIME_TAG}
-	time_in_seconds := inireader.Param{Key: KEY_TIME_SECONDS}
-	time_as_univalue, _ := inireader.UniParse(fmt.Sprintf("%d", frelconfig.TimeSeconds.Seconds_per_day))
-	time_in_seconds.AddValue(time_as_univalue)
-	time_section.AddParam(KEY_TIME_SECONDS, &time_in_seconds)
+	time_section.AddParam(KEY_TIME_SECONDS, (&inireader.Param{Key: KEY_TIME_SECONDS}).AddValue(inireader.UniParseInt(frelconfig.TimeSeconds.Seconds_per_day)))
+	inifile.AddSection(KEY_SYSTEM_TAG, &time_section)
+
+	for _, base := range frelconfig.Bases {
+		base_to_add := inireader.Section{Type: KEY_BASE_TAG}
+
+		base_to_add.AddParam(KEY_NICKNAME, (&inireader.Param{}).AddValue(inireader.UniParseStr(base.Nickname)))
+		base_to_add.AddParam(KEY_SYSTEM, (&inireader.Param{}).AddValue(inireader.UniParseStr(base.System)))
+		base_to_add.AddParam(KEY_STRIDNAME, (&inireader.Param{}).AddValue(inireader.UniParseInt(base.StridName)))
+		base_to_add.AddParam(KEY_FILE, (&inireader.Param{}).AddValue(inireader.UniParseStr(base.File.WindowsPath())))
+		base_to_add.AddParam(KEY_BASE_BGCS, (&inireader.Param{}).AddValue(inireader.UniParseStr(base.BGCS_base_run_by)))
+
+		for terrain_key, terrain_value := range base.Terrains {
+			base_to_add.AddParam(terrain_key, (&inireader.Param{}).AddValue(inireader.UniParseStr(terrain_value)))
+		}
+
+		inifile.AddSection(KEY_BASE_TAG, &base_to_add)
+	}
 
 	for _, system := range frelconfig.Systems {
 		system_to_add := inireader.Section{Type: KEY_SYSTEM_TAG}
 
-		system_to_add.AddParam(KEY_NICKNAME, (&inireader.Param{}).AddValue(inireader.UniParseF(system.Nickname)))
+		system_to_add.AddParam(KEY_NICKNAME, (&inireader.Param{}).AddValue(inireader.UniParseStr(system.Nickname)))
 		if system.File.WindowsPath() != "" {
-			system_to_add.AddParam(KEY_FILE, (&inireader.Param{}).AddValue(inireader.UniParseF(system.File.WindowsPath())))
+			system_to_add.AddParam(KEY_FILE, (&inireader.Param{}).AddValue(inireader.UniParseStr(system.File.WindowsPath())))
 		}
-		// system_to_add.AddParam(KEY, (&inireader.Param{}).AddValue(inireader.UniParseF(system.Nickname)))
+		system_to_add.AddParam(KEY_SYSTEM_POS, (&inireader.Param{}).AddValue(system.Pos[0]).AddValue(system.Pos[1]))
+		system_to_add.AddParam(KEY_SYSTEM_MSG_ID_PREFIX, (&inireader.Param{}).AddValue(inireader.UniParseStr(system.Msg_id_prefix)))
+		system_to_add.AddParam(KEY_SYSTEM_VISIT, (&inireader.Param{}).AddValue(inireader.UniParseInt(system.Visit)))
+		system_to_add.AddParam(KEY_STRIDNAME, (&inireader.Param{}).AddValue(inireader.UniParseInt(system.Strid_name)))
+		system_to_add.AddParam(KEY_SYSTEM_IDS_INFO, (&inireader.Param{}).AddValue(inireader.UniParseInt(system.Ids_info)))
+
+		if system.NavMapScale.Value != 0 {
+
+			system_to_add.AddParam(KEY_SYSTEM_NAVMAPSCALE, (&inireader.Param{}).AddValue(system.NavMapScale))
+		}
 
 		inifile.AddSection(KEY_SYSTEM_TAG, &system_to_add)
+
 	}
 
+	log.Info("formed inifile for universe.ini for writing")
 	inifile.Write(output_file)
+	log.Info("wrote inifile for universe.ini back to disk")
 	return inifile.File
 }
