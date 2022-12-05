@@ -127,7 +127,7 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 		base_to_add.Nickname = base.GetParamStrToLower(KEY_NICKNAME, inireader.REQUIRED_p)
 		base_to_add.StridName = base.GetParamInt(KEY_STRIDNAME, inireader.REQUIRED_p)
 		base_to_add.System = base.GetParamStrToLower(KEY_SYSTEM, inireader.REQUIRED_p)
-		base_to_add.File = PathCreate(base.GetParamStr(KEY_FILE, inireader.REQUIRED_p))
+		base_to_add.File = PathCreate(base.GetParamStrToLower(KEY_FILE, inireader.REQUIRED_p))
 		base_to_add.BGCS_base_run_by = base.GetParamStr(KEY_BASE_BGCS, inireader.OPTIONAL_p)
 
 		if base_to_add.Terrains == nil {
@@ -170,7 +170,7 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 			}
 		}
 
-		system_to_add.File = PathCreate(system.GetParamStr(KEY_FILE, inireader.OPTIONAL_p))
+		system_to_add.File = PathCreate(system.GetParamStrToLower(KEY_FILE, inireader.OPTIONAL_p))
 		system_to_add.Msg_id_prefix = system.GetParamStrToLower(KEY_SYSTEM_MSG_ID_PREFIX, inireader.OPTIONAL_p)
 		system_to_add.Visit = system.GetParamInt(KEY_SYSTEM_VISIT, inireader.OPTIONAL_p)
 		system_to_add.Strid_name = system.GetParamInt(KEY_STRIDNAME, inireader.OPTIONAL_p)
