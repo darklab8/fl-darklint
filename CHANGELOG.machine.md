@@ -109,3 +109,8 @@
 *  write semantic universe\.ini back to inifile ([d087b66](https://github.com/darklab8/darklab_freelancer_darktool/commit/d087b66))
 *  almost built path to system file ([c1efb61](https://github.com/darklab8/darklab_freelancer_darktool/commit/c1efb61))
 *  correctly build path to systemfile ([54376f1](https://github.com/darklab8/darklab_freelancer_darktool/commit/54376f1), [#7](https://github.com/darklab8/darklab_freelancer_darktool/issues/#7))
+
+## **0.4.1** <sub><sup>2022-12-05 ([6898c81...6898c81](https://github.com/darklab8/darklab_freelancer_darktool/compare/6898c81...6898c81?diff=split))</sup></sub>
+
+### Bug Fixes
+*  missing to lowercase in file of universe ([6898c81](https://github.com/darklab8/darklab_freelancer_darktool/commit/6898c81))

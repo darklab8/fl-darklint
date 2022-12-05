@@ -41,3 +41,8 @@
 
 ### Features
  - semantic parse of universe.ini and writing it back
+
+ ## **0.4.1** <sub><sup>2022-12-05 ([6898c81...6898c81](https://github.com/darklab8/darklab_freelancer_darktool/compare/6898c81...6898c81?diff=split))</sup></sub>
+
+### Bug Fixes
+*  missing to lowercase in file of universe ([6898c81](https://github.com/darklab8/darklab_freelancer_darktool/commit/6898c81))
