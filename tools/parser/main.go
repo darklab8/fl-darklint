@@ -7,6 +7,7 @@ import (
 	"darktool/settings"
 	"darktool/tools/parser/freelancer/data/equipment/market"
 	"darktool/tools/parser/freelancer/data/universe"
+	"darktool/tools/parser/freelancer/data/universe/systems"
 	"darktool/tools/parser/freelancer/infocard"
 	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/utils"
@@ -14,7 +15,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"strings"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -51,11 +51,8 @@ func Parse(file1path string, dry_run bool) {
 	market_commodities.UpdateWithBasenames(&universe_config, &info_config)
 	market_commodities.Write(filesystem.GetFile(market.FILENAME_COMMODITIES)).WriteLines(dry_run)
 
-	for _, base := range universe_config.Bases {
-		filename := universe_config.SystemMap[universe.SystemNickname(base.System)].File.FileName()
-		path := filesystem.GetFile(strings.ToLower(filename))
-		fmt.Println(path.Filepath)
-	}
+	systems := (&systems.Config{}).Read(&universe_config, filesystem)
+	_ = systems
 
 	// TODO implement preserving comments :|
 	// market_misc := market1ships.Config{}
