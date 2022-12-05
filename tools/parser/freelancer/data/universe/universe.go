@@ -12,6 +12,15 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// terrain_tiny = nonmineable_asteroid90
+// terrain_sml = nonmineable_asteroid60
+// terrain_mdm = nonmineable_asteroid90
+// terrain_lrg = nonmineable_asteroid60
+// terrain_dyna_01 = mineable1_asteroid10
+// terrain_dyna_02 = mineable1_asteroid10
+
+var KEY_BASE_TERRAINS = [...]string{"terrain_tiny", "terrain_sml", "terrain_mdm", "terrain_lrg", "terrain_dyna_01", "terrain_dyna_02"}
+
 const (
 	FILENAME      = "universe.ini"
 	KEY_BASE_TAG  = "[Base]"
@@ -20,8 +29,21 @@ const (
 	KEY_SYSTEM    = "system"
 	KEY_FILE      = "file"
 
-	KEY_SYSTEM_TAG = "[system]"
+	KEY_BASE_BGCS = "BGCS_base_run_by"
+
+	KEY_SYSTEM_TAG           = "[system]"
+	KEY_SYSTEM_MSG_ID_PREFIX = "msg_id_prefix"
+	KEY_SYSTEM_VISIT         = "visit"
+	KEY_SYSTEM_IDS_INFO      = "ids_info"
+	KEY_SYSTEM_NAVMAPSCALE   = "NavMapScale"
+
+	KEY_TIME_TAG     = "[Time]"
+	KEY_TIME_SECONDS = "seconds_per_day"
 )
+
+type Time struct {
+	seconds_per_day int
+}
 
 // Linux friendly filepath, that can be returned to Windows way from linux
 type Path string
@@ -48,6 +70,8 @@ type Base struct {
 	// Hopefully filepath will read it
 	File             Path
 	BGCS_base_run_by string
+
+	Terrains map[string]string
 }
 
 type BaseNickname string
@@ -62,7 +86,7 @@ type System struct {
 	Strid_name    int
 	Ids_info      int
 	File          Path
-	NavMapScale   int
+	NavMapScale   inireader.ValueNumber
 }
 
 type Config struct {
@@ -71,6 +95,8 @@ type Config struct {
 
 	Systems   []*System
 	SystemMap map[SystemNickname]*System //key is
+
+	Time Time
 }
 
 func (frelconfig *Config) AddBase(base_to_add *Base) {
@@ -115,6 +141,20 @@ func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFi
 		base_to_add.System = strings.ToLower(base.ParamMap[KEY_SYSTEM][0].First.AsString())
 		base_to_add.File = PathCreate(base.ParamMap[KEY_FILE][0].First.AsString())
 
+		if len(base.ParamMap[KEY_BASE_BGCS]) > 0 {
+			base_to_add.BGCS_base_run_by = base.ParamMap[KEY_BASE_BGCS][0].First.AsString()
+		}
+
+		if base_to_add.Terrains == nil {
+			base_to_add.Terrains = make(map[string]string)
+		}
+		for _, terrain_key := range KEY_BASE_TERRAINS {
+			terrain_param, ok := base.ParamMap[terrain_key]
+			if ok {
+				base_to_add.Terrains[terrain_key] = terrain_param[0].First.AsString()
+			}
+		}
+
 		frelconfig.AddBase(&base_to_add)
 	}
 
@@ -133,14 +173,50 @@ func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFi
 	for _, system := range systems {
 		system_to_add := System{}
 
-		system_to_add.Nickname = system.ParamMap[KEY_NICKNAME][0].First.AsString()
+		system_to_add.Nickname = strings.ToLower(system.ParamMap[KEY_NICKNAME][0].First.AsString())
 
 		if len(system.ParamMap[KEY_FILE]) > 0 {
 			system_to_add.File = PathCreate(system.ParamMap[KEY_FILE][0].First.AsString())
 		}
 
+		if len(system.ParamMap[KEY_SYSTEM_MSG_ID_PREFIX]) > 0 {
+			system_to_add.Msg_id_prefix = strings.ToLower(system.ParamMap[KEY_SYSTEM_MSG_ID_PREFIX][0].First.AsString())
+		}
+
+		if len(system.ParamMap[KEY_SYSTEM_VISIT]) > 0 {
+			visits, err := strconv.Atoi(strings.ToLower(system.ParamMap[KEY_SYSTEM_VISIT][0].First.AsString()))
+			if err == nil {
+				system_to_add.Visit = visits
+			}
+		}
+
+		if len(system.ParamMap[KEY_STRIDNAME]) > 0 {
+			visits, err := strconv.Atoi(strings.ToLower(system.ParamMap[KEY_STRIDNAME][0].First.AsString()))
+			if err == nil {
+				system_to_add.Visit = visits
+			}
+		}
+
+		if len(system.ParamMap[KEY_SYSTEM_IDS_INFO]) > 0 {
+			visits, err := strconv.Atoi(strings.ToLower(system.ParamMap[KEY_SYSTEM_IDS_INFO][0].First.AsString()))
+			if err == nil {
+				system_to_add.Visit = visits
+			}
+		}
+
+		if len(system.ParamMap[KEY_SYSTEM_NAVMAPSCALE]) > 0 {
+			system_to_add.NavMapScale = system.ParamMap[KEY_SYSTEM_IDS_INFO][0].First.(inireader.ValueNumber)
+		}
+
 		frelconfig.AddSystem(&system_to_add)
 	}
+
+	// TIME
+	seconds_per_day, err := strconv.Atoi(iniconfig.SectionMap[KEY_TIME_TAG][0].ParamMap[KEY_TIME_SECONDS][0].First.AsString())
+	if err != nil {
+		log.Fatal("unable to parse time in universe.ini")
+	}
+	frelconfig.Time = Time{seconds_per_day: seconds_per_day}
 
 	return frelconfig, iniconfig
 }
