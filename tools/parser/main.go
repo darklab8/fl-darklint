@@ -41,18 +41,19 @@ func Parse(file1path string, dry_run bool) {
 	info_config := infocard.Config{}
 	info_config.Read(filesystem.GetFile(infocard.FILENAME, infocard.FILENAME_FALLBACK))
 
+	systems := (&systems.Config{}).Read(&universe_config, filesystem)
+
 	market_ships_config := market.Config{}
 	market_ships_config.Read(filesystem.GetFile(market.FILENAME_SHIPS))
 	market_ships_config.UpdateWithBasenames(&universe_config, &info_config)
+	market_ships_config.UpdateWithRecycle(&universe_config, systems)
 	market_ships_config.Write(filesystem.GetFile(market.FILENAME_SHIPS)).WriteLines(dry_run)
 
 	market_commodities := market.Config{}
 	market_commodities.Read(filesystem.GetFile(market.FILENAME_COMMODITIES))
 	market_commodities.UpdateWithBasenames(&universe_config, &info_config)
+	market_commodities.UpdateWithRecycle(&universe_config, systems)
 	market_commodities.Write(filesystem.GetFile(market.FILENAME_COMMODITIES)).WriteLines(dry_run)
-
-	systems := (&systems.Config{}).Read(&universe_config, filesystem)
-	_ = systems
 
 	// TODO implement preserving comments :|
 	// market_misc := market1ships.Config{}

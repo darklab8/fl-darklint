@@ -5,6 +5,7 @@ package market
 
 import (
 	"darktool/tools/parser/freelancer/data/universe"
+	"darktool/tools/parser/freelancer/data/universe/systems"
 	"darktool/tools/parser/freelancer/infocard"
 
 	log "github.com/sirupsen/logrus"
@@ -29,5 +30,39 @@ func (frelconfig *Config) UpdateWithBasenames(universeConfig *universe.Config, i
 		}
 
 		base_good.Name = (*record).Content()
+	}
+}
+
+var system_for_recycled_bases = [...]string{"ga13", "fp7"}
+
+func (frelconfig *Config) UpdateWithRecycle(universeConfig *universe.Config, systems *systems.Config) {
+	for _, base_good := range frelconfig.BaseGoods {
+		universe_base, ok := universeConfig.BasesMap[universe.BaseNickname(base_good.Base)]
+		if !ok {
+			log.Fatal("base_good=", base_good.Base, "is not having universe base data")
+		}
+
+		system, ok := systems.SystemsMap[universe_base.System]
+		if !ok {
+			log.Fatal("base ", universe_base.Nickname, "is leading to non existent system", universe_base.System)
+		}
+
+		_, ok = system.BasesByBase[base_good.Base]
+		if !ok {
+			base_good.isUniverseSystemAndFileMissmatch = true
+			base_good.isRecycleCandidate = true
+			log.Warn("base ", base_good.Base, " is not present in system ", system.Nickname, " potential crash situation")
+			continue
+			// log.Fatal("base ", base_good.Base, " is not present in system ", system.Nickname, " potential crash situation")
+		}
+
+		base_good.isRecycleCandidate = false
+		base_good.isUniverseSystemAndFileMissmatch = false
+
+		for _, recycle_system := range system_for_recycled_bases {
+			if universe_base.System == recycle_system {
+				base_good.isRecycleCandidate = true
+			}
+		}
 	}
 }
