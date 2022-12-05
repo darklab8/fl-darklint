@@ -32,15 +32,6 @@ func init() {
 	initRegexExpression(&folderToLowerCaseRegex, `universe(\/|\\)`)
 }
 func Parse(file1path string, dry_run bool) {
-	// log.Info("filefind. Checking fo", file1path)
-	// filesystem := filefind.FindConfigs(file1path)
-	// log.Info("")
-	// for _, file := range filesystem.Files {
-	// 	if strings.Contains(strings.ToLower(file.Filepath), "universe") && !utils.IsLower(filepath.Base(file.Filepath)) {
-	// 		os.Rename(file.Filepath, strings.ToLower(file.Filepath))
-	// 	}
-	// }
-
 	log.Info("Parse START for FreelancerFolderLocation=", file1path)
 	filesystem := filefind.FindConfigs(file1path)
 
@@ -61,13 +52,9 @@ func Parse(file1path string, dry_run bool) {
 	market_commodities.Write(filesystem.GetFile(market.FILENAME_COMMODITIES)).WriteLines(dry_run)
 
 	for _, base := range universe_config.Bases {
-		end_objects := universe_config.SystemMap[universe.SystemNickname(base.System)].File.PathObjects()
-		for i := 0; i < 2; i++ {
-			end_objects[i] = strings.ToUpper(end_objects[i])
-		}
-		objects := append([]string{file1path, "DATA", "UNIVERSE"}, end_objects...)
-		path_to_systemfile := filepath.Join(objects...)
-		fmt.Println(path_to_systemfile)
+		filename := universe_config.SystemMap[universe.SystemNickname(base.System)].File.FileName()
+		path := filesystem.GetFile(strings.ToLower(filename))
+		fmt.Println(path.Filepath)
 	}
 
 	// TODO implement preserving comments :|

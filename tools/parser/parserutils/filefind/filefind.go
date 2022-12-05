@@ -34,7 +34,7 @@ func FindConfigs(folderpath string) Filesystem {
 		file := utils.File{Filepath: path}
 		filesystem.Files = append(filesystem.Files, file)
 
-		key := filepath.Base(path)
+		key := strings.ToLower(filepath.Base(path))
 		filesystem.Hashmap[key] = file
 
 		return nil

@@ -49,17 +49,15 @@ type Time struct {
 type Path string
 
 func PathCreate(input string) Path {
-	input = strings.ReplaceAll(input, `\`, `/`)
-	input = strings.ToLower(input)
 	return Path(input)
 }
 
-func (p Path) PathObjects() []string {
-	return strings.Split(string(p), `/`)
+func (p Path) FileName() string {
+	return strings.Split(string(p), `\`)[2]
 }
 
 func (p Path) WindowsPath() string {
-	return strings.ReplaceAll(string(p), `/`, `\`)
+	return string(p)
 }
 
 type Base struct {
