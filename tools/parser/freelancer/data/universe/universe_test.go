@@ -18,4 +18,5 @@ func TestReader(t *testing.T) {
 	config.Read(fileref)
 
 	assert.Greater(t, len(config.Bases), 0)
+	assert.Greater(t, len(config.Systems), 0)
 }

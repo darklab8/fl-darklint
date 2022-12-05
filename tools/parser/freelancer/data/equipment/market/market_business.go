@@ -6,7 +6,6 @@ package market
 import (
 	"darktool/tools/parser/freelancer/data/universe"
 	"darktool/tools/parser/freelancer/service"
-	"darktool/tools/parser/parserutils/inireader"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -19,7 +18,7 @@ func (frelconfig *Config) UpdateWithBasenames(universeConfig *universe.Config, i
 			log.Warn("failed to get key: ", key, " from universe.txt for base during updating market_ships.txt, attempting to fix")
 		}
 
-		base_strid_name := int(base.StridName.(inireader.ValueNumber).Value)
+		base_strid_name := int(base.StridName)
 		record, ok := infocards.RecordsMap[base_strid_name]
 		if !ok {
 			log.Fatal("failed to get record from infocardts.txt, with id: ", base_strid_name, " for base: ", base, " record = ", record)
