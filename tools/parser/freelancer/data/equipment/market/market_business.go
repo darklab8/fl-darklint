@@ -7,6 +7,7 @@ import (
 	"darktool/tools/parser/freelancer/data/universe"
 	"darktool/tools/parser/freelancer/data/universe/systems"
 	"darktool/tools/parser/freelancer/infocard"
+	"fmt"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -47,21 +48,18 @@ func (frelconfig *Config) UpdateWithRecycle(universeConfig *universe.Config, sys
 			log.Fatal("base ", universe_base.Nickname, "is leading to non existent system", universe_base.System)
 		}
 
+		base_good.RecycleCandidate = ""
+
+		universe_system, ok := universeConfig.SystemMap[universe.SystemNickname(system.Nickname)]
 		_, ok = system.BasesByBase[base_good.Base]
 		if !ok {
-			base_good.isUniverseSystemAndFileMissmatch = true
-			base_good.isRecycleCandidate = true
-			log.Warn("base ", base_good.Base, " is not present in system ", system.Nickname, " potential crash situation")
-			continue
+			base_good.RecycleCandidate += fmt.Sprintf("base_good.base=%v not in universe.ini->Base.system->System.file->%v | ", base_good.Base, universe_system.File)
 			// log.Fatal("base ", base_good.Base, " is not present in system ", system.Nickname, " potential crash situation")
 		}
 
-		base_good.isRecycleCandidate = false
-		base_good.isUniverseSystemAndFileMissmatch = false
-
 		for _, recycle_system := range system_for_recycled_bases {
 			if universe_base.System == recycle_system {
-				base_good.isRecycleCandidate = true
+				base_good.RecycleCandidate += fmt.Sprintf("universe.ini->Base.system=%s in [%v]", recycle_system, system_for_recycled_bases)
 			}
 		}
 	}

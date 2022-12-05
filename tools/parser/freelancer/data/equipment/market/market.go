@@ -13,11 +13,10 @@ type MarketGood struct {
 }
 
 type BaseGood struct {
-	Base                             string
-	Name                             string // denormalized always disabled param
-	Goods                            []*MarketGood
-	isRecycleCandidate               bool // denormalized always disabled param
-	isUniverseSystemAndFileMissmatch bool // hidden param
+	Base             string
+	Name             string // denormalized always disabled param
+	Goods            []*MarketGood
+	RecycleCandidate string // denormalized always disabled param
 }
 
 type Config struct {
@@ -58,7 +57,6 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 		frelconfig.BaseGoods = append(frelconfig.BaseGoods, &current_base_good)
 
 		current_base_good.Name = section.GetParamStrToLower(KEY_NAME, inireader.OPTIONAL_p)
-		current_base_good.isRecycleCandidate = section.GetParamBool(KEY_RECYCLE, inireader.OPTIONAL_p, false)
 		current_base_good.Base = section.GetParamStrToLower(KEY_BASE, inireader.REQUIRED_p)
 
 		good_params, ok := section.ParamMap[KEY_MARKET_GOOD]
@@ -95,12 +93,8 @@ func (frelconfig *Config) Write(output_file *utils.File) *utils.File {
 		if baseGood.Name != "" {
 			section.AddParam(KEY_NAME, (&inireader.Param{IsComment: true}).AddValue(inireader.UniParseStr(baseGood.Name)))
 		}
-		if baseGood.isRecycleCandidate {
-			section.AddParam(KEY_RECYCLE, (&inireader.Param{IsComment: true}).AddValue(inireader.ValueBool(baseGood.isRecycleCandidate)))
-		}
-
-		if baseGood.isUniverseSystemAndFileMissmatch {
-			section.AddParam(KEY_MISSMATCH_SYSTEM_FILE, (&inireader.Param{IsComment: true}).AddValue(inireader.ValueBool(baseGood.isUniverseSystemAndFileMissmatch)))
+		if baseGood.RecycleCandidate != "" {
+			section.AddParam(KEY_RECYCLE, (&inireader.Param{IsComment: true}).AddValue(inireader.UniParseStr(baseGood.RecycleCandidate)))
 		}
 
 		for _, param := range baseGood.Goods {
