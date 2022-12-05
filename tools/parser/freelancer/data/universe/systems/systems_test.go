@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSaveRecycleParams(t *testing.T) {
@@ -20,5 +21,10 @@ func TestSaveRecycleParams(t *testing.T) {
 	universe_config.Read(&utils.File{Filepath: filesystem.Hashmap[universe.FILENAME].Filepath})
 
 	systems := (&Config{}).Read(&universe_config, filesystem)
-	_ = systems
+
+	system, ok := systems.SystemsMap["br01"]
+	assert.True(t, ok, "system should be present")
+
+	_, ok = system.BasesByBase["br01_01_base"]
+	assert.True(t, ok, "base should be present")
 }
