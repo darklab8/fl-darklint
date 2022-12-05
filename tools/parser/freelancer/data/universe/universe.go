@@ -191,16 +191,16 @@ func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFi
 		}
 
 		if len(system.ParamMap[KEY_STRIDNAME]) > 0 {
-			visits, err := strconv.Atoi(strings.ToLower(system.ParamMap[KEY_STRIDNAME][0].First.AsString()))
+			strid_name, err := strconv.Atoi(strings.ToLower(system.ParamMap[KEY_STRIDNAME][0].First.AsString()))
 			if err == nil {
-				system_to_add.Visit = visits
+				system_to_add.Strid_name = strid_name
 			}
 		}
 
 		if len(system.ParamMap[KEY_SYSTEM_IDS_INFO]) > 0 {
-			visits, err := strconv.Atoi(strings.ToLower(system.ParamMap[KEY_SYSTEM_IDS_INFO][0].First.AsString()))
+			ids_info, err := strconv.Atoi(strings.ToLower(system.ParamMap[KEY_SYSTEM_IDS_INFO][0].First.AsString()))
 			if err == nil {
-				system_to_add.Visit = visits
+				system_to_add.Ids_info = ids_info
 			}
 		}
 
@@ -219,4 +219,12 @@ func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFi
 	frelconfig.Time = Time{seconds_per_day: seconds_per_day}
 
 	return frelconfig, iniconfig
+}
+
+func (frelconfig *Config) Write(output_file *utils.File) *utils.File {
+	inifile := inireader.INIFile{}
+	inifile.File = output_file
+
+	inifile.Write(output_file)
+	return inifile.File
 }

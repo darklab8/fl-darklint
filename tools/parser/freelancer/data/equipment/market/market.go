@@ -15,9 +15,9 @@ type MarketGood struct {
 
 type BaseGood struct {
 	Base               string
-	Name               string
+	Name               string // denormalized always disabled param
 	Goods              []*MarketGood
-	isRecycleCandidate bool
+	isRecycleCandidate bool // denormalized always disabled param
 }
 
 type Config struct {
@@ -96,7 +96,7 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	return frelconfig
 }
 
-func (frelconfig Config) Write(output_file *utils.File) *utils.File {
+func (frelconfig *Config) Write(output_file *utils.File) *utils.File {
 
 	inifile := inireader.INIFile{}
 	inifile.File = output_file
