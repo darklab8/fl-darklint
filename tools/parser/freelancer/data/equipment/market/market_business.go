@@ -5,12 +5,12 @@ package market
 
 import (
 	"darktool/tools/parser/freelancer/data/universe"
-	"darktool/tools/parser/freelancer/service"
+	"darktool/tools/parser/freelancer/infocard"
 
 	log "github.com/sirupsen/logrus"
 )
 
-func (frelconfig *Config) UpdateWithBasenames(universeConfig *universe.Config, infocards *service.Config) {
+func (frelconfig *Config) UpdateWithBasenames(universeConfig *universe.Config, infocards *infocard.Config) {
 	for _, base_good := range frelconfig.BaseGoods {
 		key := universe.BaseNickname(base_good.Base)
 		base, ok := universeConfig.BasesMap[key]

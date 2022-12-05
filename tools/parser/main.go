@@ -7,7 +7,7 @@ import (
 	"darktool/settings"
 	"darktool/tools/parser/freelancer/data/equipment/market"
 	"darktool/tools/parser/freelancer/data/universe"
-	"darktool/tools/parser/freelancer/service"
+	"darktool/tools/parser/freelancer/infocard"
 	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/utils"
 	"fmt"
@@ -38,8 +38,8 @@ func Parse(file1path string, dry_run bool) {
 	universe_config := universe.Config{}
 	universe_config.Read(filesystem.GetFile(universe.FILENAME))
 	universe_config.Write(filesystem.GetFile(universe.FILENAME)).WriteLines(dry_run)
-	info_config := service.Config{}
-	info_config.Read(filesystem.GetFile(service.FILENAME, service.FILENAME_FALLBACK))
+	info_config := infocard.Config{}
+	info_config.Read(filesystem.GetFile(infocard.FILENAME, infocard.FILENAME_FALLBACK))
 
 	market_ships_config := market.Config{}
 	market_ships_config.Read(filesystem.GetFile(market.FILENAME_SHIPS))

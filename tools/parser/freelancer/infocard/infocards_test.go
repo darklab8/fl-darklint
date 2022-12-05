@@ -1,4 +1,4 @@
-package service
+package infocard
 
 import (
 	"darktool/tools/utils"

@@ -2,7 +2,7 @@ package market
 
 import (
 	"darktool/tools/parser/freelancer/data/universe"
-	"darktool/tools/parser/freelancer/service"
+	"darktool/tools/parser/freelancer/infocard"
 	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/utils"
 	"strings"
@@ -54,8 +54,8 @@ func TestSaveRecycleParams(t *testing.T) {
 	universe_config := universe.Config{}
 	universe_config.Read(&utils.File{Filepath: filesystem.Hashmap[universe.FILENAME].Filepath})
 
-	info_config := service.Config{}
-	info_config.Read(&utils.File{Filepath: filesystem.Hashmap[service.FILENAME].Filepath})
+	info_config := infocard.Config{}
+	info_config.Read(&utils.File{Filepath: filesystem.Hashmap[infocard.FILENAME].Filepath})
 
 	market_config.UpdateWithBasenames(&universe_config, &info_config)
 	market_config.Write(output_config)
