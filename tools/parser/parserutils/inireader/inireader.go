@@ -77,6 +77,20 @@ func (section *Section) AddParam(key string, param *Param) {
 	section.ParamMap[key] = append(section.ParamMap[key], param)
 }
 
+func (section *Section) GetParamStr(key string) string {
+	return section.ParamMap[key][0].First.AsString()
+}
+func (section *Section) GetParamInt(key string) int {
+	integer, err := strconv.Atoi(section.GetParamStr(key))
+	if err != nil {
+		log.Fatal("failed to parse strid in universe.ini for section=", section, "key=", key)
+	}
+	return integer
+}
+func (section *Section) GetParamNumber(key string) ValueNumber {
+	return section.ParamMap[key][0].First.(ValueNumber)
+}
+
 // abc = qwe, 1, 2, 3, 4
 // abc is key
 // qwe is first value

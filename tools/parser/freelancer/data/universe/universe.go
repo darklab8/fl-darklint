@@ -128,22 +128,18 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	for _, base := range bases {
 		base_to_add := Base{}
 
-		check_nickname := base.ParamMap[KEY_NICKNAME][0].First.(inireader.ValueString).AsString()
+		check_nickname := base.GetParamStr(KEY_NICKNAME)
 		if !utils.IsLower(check_nickname) {
 			log.Warn("nickname: ", check_nickname, "in file universe.txt is not in lower case. Autofixing")
 		}
-		base_to_add.Nickname = strings.ToLower(base.ParamMap[KEY_NICKNAME][0].First.AsString())
-		strid, err := strconv.Atoi(base.ParamMap[KEY_STRIDNAME][0].First.AsString())
-		if err != nil {
-			log.Fatal("failed to parse strid in universe.ini for base=", base_to_add)
-		}
-		base_to_add.StridName = strid
+		base_to_add.Nickname = strings.ToLower(base.GetParamStr(KEY_NICKNAME))
+		base_to_add.StridName = base.GetParamInt(KEY_STRIDNAME)
 
-		base_to_add.System = strings.ToLower(base.ParamMap[KEY_SYSTEM][0].First.AsString())
-		base_to_add.File = PathCreate(base.ParamMap[KEY_FILE][0].First.AsString())
+		base_to_add.System = strings.ToLower(base.GetParamStr(KEY_SYSTEM))
+		base_to_add.File = PathCreate(base.GetParamStr(KEY_FILE))
 
 		if len(base.ParamMap[KEY_BASE_BGCS]) > 0 {
-			base_to_add.BGCS_base_run_by = base.ParamMap[KEY_BASE_BGCS][0].First.AsString()
+			base_to_add.BGCS_base_run_by = base.GetParamStr(KEY_BASE_BGCS)
 		}
 
 		if base_to_add.Terrains == nil {
@@ -174,7 +170,7 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	for _, system := range systems {
 		system_to_add := System{}
 
-		system_to_add.Nickname = strings.ToLower(system.ParamMap[KEY_NICKNAME][0].First.AsString())
+		system_to_add.Nickname = strings.ToLower(system.GetParamStr(KEY_NICKNAME))
 
 		key_param, ok := system.ParamMap[KEY_SYSTEM_POS]
 		if ok {
@@ -187,36 +183,27 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 		}
 
 		if len(system.ParamMap[KEY_FILE]) > 0 {
-			system_to_add.File = PathCreate(system.ParamMap[KEY_FILE][0].First.AsString())
+			system_to_add.File = PathCreate(system.GetParamStr(KEY_FILE))
 		}
 
 		if len(system.ParamMap[KEY_SYSTEM_MSG_ID_PREFIX]) > 0 {
-			system_to_add.Msg_id_prefix = strings.ToLower(system.ParamMap[KEY_SYSTEM_MSG_ID_PREFIX][0].First.AsString())
+			system_to_add.Msg_id_prefix = strings.ToLower(system.GetParamStr(KEY_SYSTEM_MSG_ID_PREFIX))
 		}
 
 		if len(system.ParamMap[KEY_SYSTEM_VISIT]) > 0 {
-			visits, err := strconv.Atoi(strings.ToLower(system.ParamMap[KEY_SYSTEM_VISIT][0].First.AsString()))
-			if err == nil {
-				system_to_add.Visit = visits
-			}
+			system_to_add.Visit = system.GetParamInt(KEY_SYSTEM_VISIT)
 		}
 
 		if len(system.ParamMap[KEY_STRIDNAME]) > 0 {
-			strid_name, err := strconv.Atoi(strings.ToLower(system.ParamMap[KEY_STRIDNAME][0].First.AsString()))
-			if err == nil {
-				system_to_add.Strid_name = strid_name
-			}
+			system_to_add.Strid_name = system.GetParamInt(KEY_STRIDNAME)
 		}
 
 		if len(system.ParamMap[KEY_SYSTEM_IDS_INFO]) > 0 {
-			ids_info, err := strconv.Atoi(strings.ToLower(system.ParamMap[KEY_SYSTEM_IDS_INFO][0].First.AsString()))
-			if err == nil {
-				system_to_add.Ids_info = ids_info
-			}
+			system_to_add.Ids_info = system.GetParamInt(KEY_SYSTEM_IDS_INFO)
 		}
 
 		if len(system.ParamMap[KEY_SYSTEM_NAVMAPSCALE]) > 0 {
-			system_to_add.NavMapScale = system.ParamMap[KEY_SYSTEM_NAVMAPSCALE][0].First.(inireader.ValueNumber)
+			system_to_add.NavMapScale = system.GetParamNumber(KEY_SYSTEM_NAVMAPSCALE)
 		}
 
 		frelconfig.AddSystem(&system_to_add)
