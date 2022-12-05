@@ -170,6 +170,13 @@ func UniParse(input string) (UniValue, error) {
 	v := ValueString(input)
 	return v, nil
 }
+func UniParseF(input string) UniValue {
+	value, err := UniParse(input)
+	if err != nil {
+		log.Fatal("unable to parse UniParseF=", input)
+	}
+	return value
+}
 
 var regexNumber *regexp.Regexp
 var regexComment *regexp.Regexp

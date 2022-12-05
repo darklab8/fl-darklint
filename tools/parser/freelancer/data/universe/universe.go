@@ -6,6 +6,7 @@ package universe
 import (
 	"darktool/tools/parser/parserutils/inireader"
 	"darktool/tools/utils"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -36,13 +37,14 @@ const (
 	KEY_SYSTEM_VISIT         = "visit"
 	KEY_SYSTEM_IDS_INFO      = "ids_info"
 	KEY_SYSTEM_NAVMAPSCALE   = "NavMapScale"
+	KEY_SYSTEM_POS           = "pos"
 
 	KEY_TIME_TAG     = "[Time]"
 	KEY_TIME_SECONDS = "seconds_per_day"
 )
 
 type Time struct {
-	seconds_per_day int
+	Seconds_per_day int
 }
 
 // Linux friendly filepath, that can be returned to Windows way from linux
@@ -80,7 +82,7 @@ type SystemNickname string
 
 type System struct {
 	Nickname      string
-	Pos           [2]int
+	Pos           [2]inireader.ValueNumber
 	Msg_id_prefix string
 	Visit         int
 	Strid_name    int
@@ -96,7 +98,7 @@ type Config struct {
 	Systems   []*System
 	SystemMap map[SystemNickname]*System //key is
 
-	Time Time
+	TimeSeconds Time
 }
 
 func (frelconfig *Config) AddBase(base_to_add *Base) {
@@ -175,6 +177,16 @@ func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFi
 
 		system_to_add.Nickname = strings.ToLower(system.ParamMap[KEY_NICKNAME][0].First.AsString())
 
+		key_param, ok := system.ParamMap[KEY_SYSTEM_POS]
+		if ok {
+			if len(key_param[0].Values) < 2 {
+				log.Fatal("unable to parse Pos for system, incorrect len", system.Params, system_to_add, "pos=", system.ParamMap[KEY_SYSTEM_POS][0].First.AsString(), "nickname=", system_to_add.Nickname)
+			}
+			for index, number := range key_param[0].Values {
+				system_to_add.Pos[index] = number.(inireader.ValueNumber)
+			}
+		}
+
 		if len(system.ParamMap[KEY_FILE]) > 0 {
 			system_to_add.File = PathCreate(system.ParamMap[KEY_FILE][0].First.AsString())
 		}
@@ -216,7 +228,7 @@ func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFi
 	if err != nil {
 		log.Fatal("unable to parse time in universe.ini")
 	}
-	frelconfig.Time = Time{seconds_per_day: seconds_per_day}
+	frelconfig.TimeSeconds = Time{Seconds_per_day: seconds_per_day}
 
 	return frelconfig, iniconfig
 }
@@ -224,6 +236,24 @@ func (frelconfig *Config) Read(input_file *utils.File) (*Config, inireader.INIFi
 func (frelconfig *Config) Write(output_file *utils.File) *utils.File {
 	inifile := inireader.INIFile{}
 	inifile.File = output_file
+
+	time_section := inireader.Section{Type: KEY_TIME_TAG}
+	time_in_seconds := inireader.Param{Key: KEY_TIME_SECONDS}
+	time_as_univalue, _ := inireader.UniParse(fmt.Sprintf("%d", frelconfig.TimeSeconds.Seconds_per_day))
+	time_in_seconds.AddValue(time_as_univalue)
+	time_section.AddParam(KEY_TIME_SECONDS, &time_in_seconds)
+
+	for _, system := range frelconfig.Systems {
+		system_to_add := inireader.Section{Type: KEY_SYSTEM_TAG}
+
+		system_to_add.AddParam(KEY_NICKNAME, (&inireader.Param{}).AddValue(inireader.UniParseF(system.Nickname)))
+		if system.File.WindowsPath() != "" {
+			system_to_add.AddParam(KEY_FILE, (&inireader.Param{}).AddValue(inireader.UniParseF(system.File.WindowsPath())))
+		}
+		// system_to_add.AddParam(KEY, (&inireader.Param{}).AddValue(inireader.UniParseF(system.Nickname)))
+
+		inifile.AddSection(KEY_SYSTEM_TAG, &system_to_add)
+	}
 
 	inifile.Write(output_file)
 	return inifile.File
