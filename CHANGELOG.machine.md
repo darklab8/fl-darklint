@@ -97,3 +97,15 @@
 ### Bug Fixes
 *  ignore case sensetive values ([b555608](https://github.com/darklab8/darklab_freelancer_darktool/commit/b555608))
 *  test discovery ([48b57c0](https://github.com/darklab8/darklab_freelancer_darktool/commit/48b57c0))
+
+## **0.4.0** <sub><sup>2022-12-05 ([3a5d122...54376f1](https://github.com/darklab8/darklab_freelancer_darktool/compare/3a5d122...54376f1?diff=split))</sup></sub>
+
+### Features
+*  increased universe\.ini semantical parse ([dff0f87](https://github.com/darklab8/darklab_freelancer_darktool/commit/dff0f87), [#7](https://github.com/darklab8/darklab_freelancer_darktool/issues/#7))
+*  test data for parsing system files in [#7](https://github.com/darklab8/darklab_freelancer_darktool/issues/#7) ([65c7f08](https://github.com/darklab8/darklab_freelancer_darktool/commit/65c7f08))
+*  full semantic parse of universe\.ini ([9555160](https://github.com/darklab8/darklab_freelancer_darktool/commit/9555160))
+*  getting ready to write universe back ([7c8b11e](https://github.com/darklab8/darklab_freelancer_darktool/commit/7c8b11e))
+*  parse pos of system ([8dac5a3](https://github.com/darklab8/darklab_freelancer_darktool/commit/8dac5a3))
+*  write semantic universe\.ini back to inifile ([d087b66](https://github.com/darklab8/darklab_freelancer_darktool/commit/d087b66))
+*  almost built path to system file ([c1efb61](https://github.com/darklab8/darklab_freelancer_darktool/commit/c1efb61))
+*  correctly build path to systemfile ([54376f1](https://github.com/darklab8/darklab_freelancer_darktool/commit/54376f1), [#7](https://github.com/darklab8/darklab_freelancer_darktool/issues/#7))

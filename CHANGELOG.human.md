@@ -36,3 +36,8 @@
 ### Bug Fixes
 *  ignore case sensetive values ([b555608](https://github.com/darklab8/darklab_freelancer_darktool/commit/b555608))
 *  test discovery ([48b57c0](https://github.com/darklab8/darklab_freelancer_darktool/commit/48b57c0))
+
+## **0.4.0** <sub><sup>2022-12-05 ([3a5d122...54376f1](https://github.com/darklab8/darklab_freelancer_darktool/compare/3a5d122...54376f1?diff=split))</sup></sub>
+
+### Features
+ - semantic parse of universe.ini and writing it back
