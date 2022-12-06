@@ -29,6 +29,14 @@ currently built for:
 
 ![](assets/diff_example.png)
 
+# Future development
+
+The tool is intended to add additional features in linting configurational files.
+It is possible adding any other additional rules for checking foreign key data integrity between objects
+Or adding additional commented strings to objects with helpful information
+
+Request new features [here](https://github.com/darklab8/darklab_freelancer_darktool/issues)
+
 # Dev Requirements
 
 - cobra generator https://github.com/spf13/cobra-cli/blob/main/README.md
