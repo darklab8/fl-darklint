@@ -13,3 +13,8 @@ func (s *Model) Map(section *inireader.Section) {
 func (s *Model) Render() *inireader.Section {
 	return s.section
 }
+
+type ConfigModel struct {
+	Sections []*inireader.Section
+	Comments []string
+}

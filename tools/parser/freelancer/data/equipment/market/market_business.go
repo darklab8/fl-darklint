@@ -21,7 +21,7 @@ func (frelconfig *Config) UpdateWithBasenames(universeConfig *universe.Config, i
 			log.Warn("failed to get key: ", key, " from universe.txt for base during updating market_ships.txt, attempting to fix")
 		}
 
-		base_strid_name := int(base.StridName)
+		base_strid_name := int(base.StridName.Get())
 		record, ok := infocards.RecordsMap[base_strid_name]
 		if !ok {
 			log.Fatal("failed to get record from infocardts.txt, with id: ", base_strid_name, " for base: ", base, " record = ", record)
@@ -44,7 +44,7 @@ func (frelconfig *Config) UpdateWithRecycle(universeConfig *universe.Config, sys
 			log.Fatal("base_good=", base_good.Base, "is not having universe base data")
 		}
 
-		system, ok := systems.SystemsMap[universe_base.System]
+		system, ok := systems.SystemsMap[universe_base.System.Get()]
 		if !ok {
 			log.Fatal("base ", universe_base.Nickname, "is leading to non existent system", universe_base.System)
 		}
@@ -59,7 +59,7 @@ func (frelconfig *Config) UpdateWithRecycle(universeConfig *universe.Config, sys
 		}
 
 		for _, recycle_system := range system_for_recycled_bases {
-			if universe_base.System == recycle_system {
+			if universe_base.System.Get() == recycle_system {
 				recycle_builder.WriteString(fmt.Sprintf("universe.ini->Base.system=%s in [%v]", recycle_system, system_for_recycled_bases))
 			}
 		}

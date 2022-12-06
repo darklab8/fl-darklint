@@ -34,9 +34,9 @@ func (frelconfig *Config) Read(universe_config *universe.Config, filesystem file
 
 	var system_files map[string]*utils.File = make(map[string]*utils.File)
 	for _, base := range universe_config.Bases {
-		filename := universe_config.SystemMap[universe.SystemNickname(base.System)].File.FileName()
+		filename := universe_config.SystemMap[universe.SystemNickname(base.System.Get())].File.FileName()
 		path := filesystem.GetFile(strings.ToLower(filename))
-		system_files[base.System] = &(utils.File{Filepath: path.Filepath})
+		system_files[base.System.Get()] = &(utils.File{Filepath: path.Filepath})
 	}
 
 	var system_iniconfigs map[string]inireader.INIFile = make(map[string]inireader.INIFile)

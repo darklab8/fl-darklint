@@ -32,5 +32,4 @@ func TestIdentifySystemFiles(t *testing.T) {
 	config := Config{}
 	universe_fileref := &utils.File{Filepath: filepath.Join(test_directory, "testdata", FILENAME)}
 	config.Read(universe_fileref)
-	log.Debug("breakpoint")
 }
