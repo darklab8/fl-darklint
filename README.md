@@ -1,19 +1,6 @@
 # Darktool
-## Releases
 
-[download here](https://github.com/darklab8/darklab_freelancer_darktool/releases)
-
-currently built for:
-
-- linux amd64
-- windows amd64
-
-## How to use
-
-- copy executable file to root folder of freelancer
-- run `{{executable}} validate`
-- check help info in `{{executable}} --help`
-- check additional flag to command with `{{executable}} validate --help`
+![](assets/diff_example.png)
 
 ## Description
 
@@ -35,8 +22,6 @@ currently built for:
   - see picture example below
 - rounds all float numbers to have one digit after dot at maximum. `45.7465645656` to `45.7`
 
-![](assets/diff_example.png)
-
 ## Future development
 
 The tool is intended to add additional features in linting configurational files.
@@ -44,6 +29,22 @@ It is possible adding any other additional rules for checking foreign key data i
 Or adding additional commented strings to objects with helpful information
 
 Request new features [here](https://github.com/darklab8/darklab_freelancer_darktool/issues)
+
+## Downloads
+
+[download here](https://github.com/darklab8/darklab_freelancer_darktool/releases)
+
+currently built for:
+
+- linux amd64
+- windows amd64
+
+## How to use
+
+- copy executable file to root folder of freelancer
+- run `{{executable}} validate`
+- check help info in `{{executable}} --help`
+- check additional flag to command with `{{executable}} validate --help`
 
 ## Dev Requirements
 
