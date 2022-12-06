@@ -1,4 +1,5 @@
-# Releases
+# Darktool
+## Releases
 
 [download here](https://github.com/darklab8/darklab_freelancer_darktool/releases)
 
@@ -7,19 +8,19 @@ currently built for:
 - linux amd64
 - windows amd64
 
-# How to use
+## How to use
 
 - copy executable file to root folder of freelancer
 - run `{{executable}} validate`
 - check help info in `{{executable}} --help`
 - check additional flag to command with `{{executable}} validate --help`
 
-# Description
+## Description
 
 - Set of dev tools for Freelancer Discovery community, in order to help them in their effort
 - Main goal is to create classic linter for game files, whichi can autofix config files
 
-# Features:
+## Features:
 
 - Processes
   - `market_commodities.ini`
@@ -36,7 +37,7 @@ currently built for:
 
 ![](assets/diff_example.png)
 
-# Future development
+## Future development
 
 The tool is intended to add additional features in linting configurational files.
 It is possible adding any other additional rules for checking foreign key data integrity between objects
@@ -44,7 +45,7 @@ Or adding additional commented strings to objects with helpful information
 
 Request new features [here](https://github.com/darklab8/darklab_freelancer_darktool/issues)
 
-# Dev Requirements
+## Dev Requirements
 
 - cobra generator https://github.com/spf13/cobra-cli/blob/main/README.md
 - cobra guide https://github.com/spf13/cobra/blob/main/user_guide.md
@@ -52,10 +53,10 @@ Request new features [here](https://github.com/darklab8/darklab_freelancer_darkt
 - add binary discovery for cobra-cli, godoc detection
   - export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
 - Git hooks of conventional commits
-    - https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
-    - https://www.npmjs.com/package/git-conventional-commits
+  - https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13
+  - https://www.npmjs.com/package/git-conventional-commits
 
-# Contributors
+## Contributors
 
 - [@dd84ai](https://github.com/dd84ai) // coding
 - [@Groshyr](https://github.com/Groshyr) // spark of inspiration for project birth + beta tester + feature requester + domain expert
