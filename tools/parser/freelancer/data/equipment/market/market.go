@@ -23,6 +23,8 @@ type BaseGood struct {
 }
 
 type Config struct {
+	semantic.ConfigModel
+
 	BaseGoods []*BaseGood
 	Comments  []string
 }
@@ -41,6 +43,8 @@ const (
 
 func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
+	frelconfig.Comments = iniconfig.Comments
+	frelconfig.Sections = iniconfig.Sections
 	frelconfig.BaseGoods = make([]*BaseGood, 0)
 
 	for _, section := range iniconfig.Sections {
@@ -62,11 +66,7 @@ func (frelconfig *Config) Write(output_file *utils.File) *utils.File {
 	inifile := inireader.INIFile{}
 	inifile.File = output_file
 	inifile.Comments = frelconfig.Comments
-
-	for _, baseGood := range frelconfig.BaseGoods {
-		inifile.Sections = append(inifile.Sections, baseGood.Render())
-	}
-
+	inifile.Sections = frelconfig.Sections
 	inifile.Write(output_file)
 	return inifile.File
 }

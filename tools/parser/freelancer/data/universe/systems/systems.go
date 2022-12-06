@@ -4,6 +4,7 @@ import (
 	"darktool/tools/parser/freelancer/data/universe"
 	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/parser/parserutils/inireader"
+	"darktool/tools/parser/parserutils/semantic"
 	"darktool/tools/utils"
 	"strings"
 )
@@ -15,10 +16,12 @@ const (
 )
 
 type Base struct {
-	Nickname string
-	Base     string // base.nickname in universe.ini
+	semantic.Model
+	Nickname *semantic.String
+	Base     *semantic.String // base.nickname in universe.ini
 }
 type System struct {
+	semantic.ConfigModel
 	Nickname    string
 	Bases       []*Base
 	BasesByNick map[string]*Base
@@ -49,6 +52,9 @@ func (frelconfig *Config) Read(universe_config *universe.Config, filesystem file
 	frelconfig.Systems = make([]*System, 0)
 	for system_key, sysiniconf := range system_iniconfigs {
 		system_to_add := System{}
+		system_to_add.Comments = sysiniconf.Comments
+		system_to_add.Sections = sysiniconf.Sections
+
 		system_to_add.Nickname = system_key
 		system_to_add.BasesByNick = make(map[string]*Base)
 		system_to_add.BasesByBase = make(map[string]*Base)
@@ -63,13 +69,18 @@ func (frelconfig *Config) Read(universe_config *universe.Config, filesystem file
 				// check if it is base object
 				_, ok := obj.ParamMap[KEY_BASE]
 				if ok {
-					base_to_add := Base{}
+					base_to_add := &Base{}
+					base_to_add.Map(obj)
 
-					base_to_add.Nickname = obj.GetParamStrToLower(KEY_NICKNAME, inireader.REQUIRED_p)
-					base_to_add.Base = obj.GetParamStrToLower(KEY_BASE, inireader.REQUIRED_p)
-					system_to_add.BasesByBase[base_to_add.Base] = &base_to_add
-					system_to_add.BasesByNick[base_to_add.Nickname] = &base_to_add
-					system_to_add.Bases = append(system_to_add.Bases, &base_to_add)
+					base_to_add.Nickname = (&semantic.String{}).Map(obj, KEY_NICKNAME, semantic.TypeVisible, inireader.REQUIRED_p)
+					base_to_add.Base = (&semantic.String{}).Map(obj, KEY_BASE, semantic.TypeVisible, inireader.REQUIRED_p)
+
+					base_to_add.Nickname.Set(strings.ToLower(base_to_add.Nickname.Get()))
+					base_to_add.Base.Set(strings.ToLower(base_to_add.Base.Get()))
+
+					system_to_add.BasesByBase[base_to_add.Base.Get()] = base_to_add
+					system_to_add.BasesByNick[base_to_add.Nickname.Get()] = base_to_add
+					system_to_add.Bases = append(system_to_add.Bases, base_to_add)
 				}
 			}
 		}
