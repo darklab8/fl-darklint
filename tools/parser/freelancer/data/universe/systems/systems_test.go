@@ -27,4 +27,6 @@ func TestSaveRecycleParams(t *testing.T) {
 
 	_, ok = system.BasesByBase["br01_01_base"]
 	assert.True(t, ok, "base should be present")
+
+	system.Render()
 }

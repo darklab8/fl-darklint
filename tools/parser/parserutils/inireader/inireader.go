@@ -212,10 +212,13 @@ func (v ValueNumber) AsString() string {
 
 func UniParse(input string) (UniValue, error) {
 
-	input = strings.ReplaceAll(input, " ", "")
+	letterMatch := regexLetter.FindAllString(input, -1)
+	if len(letterMatch) == 0 {
+		input = strings.ReplaceAll(input, " ", "")
+	}
 
 	numberMatch := regexNumber.FindAllString(input, -1)
-	if len(numberMatch) > 0 && !strings.ContainsAny(input, "") {
+	if len(numberMatch) > 0 {
 		parsed_number, err := strconv.ParseFloat(input, 64)
 
 		if err != nil {
@@ -259,13 +262,15 @@ var regexNumber *regexp.Regexp
 var regexComment *regexp.Regexp
 var regexSection *regexp.Regexp
 var regexParam *regexp.Regexp
+var regexLetter *regexp.Regexp
 
 func init() {
 	initRegexExpression(&regexNumber, `^[0-9\-]+(?:\.)?([0-9\-]*)$`)
 	initRegexExpression(&regexComment, `;(.*)`)
 	initRegexExpression(&regexSection, `^\[.*\]`)
+	initRegexExpression(&regexLetter, `[a-zA-Z]`)
 	// param or commented out param
-	initRegexExpression(&regexParam, `(;%|^)([a-zA-Z_][a-zA-Z_0-9]+)\s=\s([a-zA-Z_, 0-9-.\\]+)`)
+	initRegexExpression(&regexParam, `(;%|^)([a-zA-Z_][a-zA-Z_0-9]+)\s=\s([a-zA-Z_, 0-9-.\/\\]+)`)
 }
 
 var CASE_SENSETIVE_KEYS = [...]string{"BGCS_base_run_by", "NavMapScale"}

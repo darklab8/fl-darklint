@@ -19,6 +19,7 @@ type Base struct {
 	semantic.Model
 	Nickname *semantic.String
 	Base     *semantic.String // base.nickname in universe.ini
+	DockWith *semantic.String
 }
 type System struct {
 	semantic.ConfigModel
@@ -73,9 +74,13 @@ func (frelconfig *Config) Read(universe_config *universe.Config, filesystem file
 
 					base_to_add.Nickname = (&semantic.String{}).Map(obj, KEY_NICKNAME, semantic.TypeVisible, inireader.REQUIRED_p)
 					base_to_add.Base = (&semantic.String{}).Map(obj, KEY_BASE, semantic.TypeVisible, inireader.REQUIRED_p)
+					base_to_add.DockWith = (&semantic.String{}).Map(obj, "dock_with", semantic.TypeVisible, inireader.OPTIONAL_p)
 
 					base_to_add.Nickname.Set(strings.ToLower(base_to_add.Nickname.Get()))
 					base_to_add.Base.Set(strings.ToLower(base_to_add.Base.Get()))
+					if base_to_add.DockWith.Get() != "" {
+						base_to_add.DockWith.Set(strings.ToLower(base_to_add.DockWith.Get()))
+					}
 
 					system_to_add.BasesByBase[base_to_add.Base.Get()] = base_to_add
 					system_to_add.BasesByNick[base_to_add.Nickname.Get()] = base_to_add
@@ -93,7 +98,7 @@ func (frelconfig *Config) Write() []*utils.File {
 	var files []*utils.File = make([]*utils.File, 0)
 	for _, system := range frelconfig.Systems {
 		inifile := system.Render()
-		inifile.Write(inifile.File)
+		files = append(files, inifile.Write(inifile.File))
 	}
 	return files
 }
