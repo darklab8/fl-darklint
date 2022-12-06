@@ -1,5 +1,5 @@
 /*
-ORM mapper for Freelancer ini reader
+ORM mapper for Freelancer ini reader. Easy mapping values to change.
 */
 package semantic
 
