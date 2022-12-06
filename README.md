@@ -7,6 +7,13 @@ currently built for:
 - linux amd64
 - windows amd64
 
+# How to use
+
+- copy executable file to root folder of freelancer
+- run `{{executable}} validate`
+- check help info in `{{executable}} --help`
+- check additional flag to command with `{{executable}} validate --help`
+
 # Description
 
 - Set of dev tools for Freelancer Discovery community, in order to help them in their effort
