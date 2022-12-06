@@ -82,9 +82,7 @@ type Config struct {
 func (frelconfig *Config) Read(input_file *utils.File) *Config {
 
 	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
-	frelconfig.Comments = iniconfig.Comments
-	frelconfig.Sections = iniconfig.Sections
-	frelconfig.Filepath = iniconfig.File.Filepath
+	frelconfig.Init(iniconfig.Sections, iniconfig.Comments, iniconfig.File.Filepath)
 
 	frelconfig.TimeSeconds = (&semantic.Int{}).Map(iniconfig.SectionMap[KEY_TIME_TAG][0], KEY_TIME_TAG, semantic.TypeVisible, inireader.REQUIRED_p)
 	frelconfig.BasesMap = make(map[BaseNickname]*Base)
@@ -139,10 +137,7 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 }
 
 func (frelconfig *Config) Write() *utils.File {
-	inifile := inireader.INIFile{}
-	inifile.Comments = frelconfig.Comments
-	inifile.Sections = frelconfig.Sections
-	inifile.File = &utils.File{Filepath: frelconfig.Filepath}
+	inifile := frelconfig.Render()
 	inifile.Write(inifile.File)
 	return inifile.File
 }

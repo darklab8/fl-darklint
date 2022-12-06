@@ -43,9 +43,7 @@ const (
 
 func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
-	frelconfig.Comments = iniconfig.Comments
-	frelconfig.Sections = iniconfig.Sections
-	frelconfig.Filepath = iniconfig.File.Filepath
+	frelconfig.Init(iniconfig.Sections, iniconfig.Comments, iniconfig.File.Filepath)
 	frelconfig.BaseGoods = make([]*BaseGood, 0)
 
 	for _, section := range iniconfig.Sections {
@@ -64,10 +62,7 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 
 func (frelconfig *Config) Write() *utils.File {
 
-	inifile := inireader.INIFile{}
-	inifile.Comments = frelconfig.Comments
-	inifile.Sections = frelconfig.Sections
-	inifile.File = &utils.File{Filepath: frelconfig.Filepath}
+	inifile := frelconfig.Render()
 	inifile.Write(inifile.File)
 	return inifile.File
 }

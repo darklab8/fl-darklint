@@ -42,6 +42,10 @@ func Parse(file1path string, dry_run bool) {
 	info_config.Read(filesystem.GetFile(infocard.FILENAME, infocard.FILENAME_FALLBACK))
 
 	systems := (&systems.Config{}).Read(&universe_config, filesystem)
+	system_files := systems.Write()
+	for _, system_file := range system_files {
+		system_file.WriteLines(dry_run)
+	}
 
 	market_ships_config := market.Config{}
 	market_ships_config.Read(filesystem.GetFile(market.FILENAME_SHIPS))

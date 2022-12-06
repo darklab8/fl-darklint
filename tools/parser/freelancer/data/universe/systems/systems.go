@@ -52,9 +52,7 @@ func (frelconfig *Config) Read(universe_config *universe.Config, filesystem file
 	frelconfig.Systems = make([]*System, 0)
 	for system_key, sysiniconf := range system_iniconfigs {
 		system_to_add := System{}
-		system_to_add.Comments = sysiniconf.Comments
-		system_to_add.Sections = sysiniconf.Sections
-		system_to_add.Filepath = sysiniconf.File.Filepath
+		system_to_add.Init(sysiniconf.Sections, sysiniconf.Comments, sysiniconf.File.Filepath)
 
 		system_to_add.Nickname = system_key
 		system_to_add.BasesByNick = make(map[string]*Base)
@@ -94,10 +92,7 @@ func (frelconfig *Config) Read(universe_config *universe.Config, filesystem file
 func (frelconfig *Config) Write() []*utils.File {
 	var files []*utils.File = make([]*utils.File, 0)
 	for _, system := range frelconfig.Systems {
-		inifile := inireader.INIFile{}
-		inifile.File = &utils.File{Filepath: system.Filepath}
-		inifile.Comments = system.Comments
-		inifile.Sections = system.Sections
+		inifile := system.Render()
 		inifile.Write(inifile.File)
 	}
 	return files

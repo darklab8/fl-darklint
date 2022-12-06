@@ -33,7 +33,7 @@ func TestWriter(t *testing.T) {
 
 	config := Config{}
 	config.Read(input_file)
-	config.Filepath = filepath.Join(temp_directory, FILENAME_SHIPS)
+	config.SetOutputPath(filepath.Join(temp_directory, FILENAME_SHIPS))
 	output_file := config.Write()
 
 	dry_run := true
@@ -58,7 +58,7 @@ func TestSaveRecycleParams(t *testing.T) {
 	info_config.Read(&utils.File{Filepath: filesystem.Hashmap[infocard.FILENAME].Filepath})
 
 	market_config.UpdateWithBasenames(&universe_config, &info_config)
-	market_config.Filepath = filepath.Join(temp_directory, FILENAME_SHIPS)
+	market_config.SetOutputPath(filepath.Join(temp_directory, FILENAME_SHIPS))
 	output_config := market_config.Write()
 
 	// isRecycleCandidate
