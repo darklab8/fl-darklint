@@ -18,7 +18,6 @@ currently built for:
 
 - Set of dev tools for Freelancer Discovery community, in order to help them in their effort
 - Main goal is to create classic linter for game files, whichi can autofix config files
-- Posisbly creating graphical web interface that utilizes ORM for automaticly validated configuration management
 
 # Features:
 
