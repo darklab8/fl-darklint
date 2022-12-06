@@ -55,11 +55,10 @@ func Parse(file1path string, dry_run bool) {
 	market_commodities.UpdateWithRecycle(&universe_config, systems)
 	market_commodities.Write(filesystem.GetFile(market.FILENAME_COMMODITIES)).WriteLines(dry_run)
 
-	// TODO implement preserving comments :|
-	// market_misc := market1ships.Config{}
-	// market_misc.Read(filesystem.GetFile(market1ships.FILENAME_MISC))
-	// market_misc.UpdateWithBasenames(&universe_config, &info_config)
-	// market_misc.Write(filesystem.GetFile(market1ships.FILENAME_MISC)).WriteLines(dry_run)
+	market_misc := market.Config{}
+	market_misc.Read(filesystem.GetFile(market.FILENAME_MISC))
+	market_misc.UpdateWithBasenames(&universe_config, &info_config)
+	market_misc.Write(filesystem.GetFile(market.FILENAME_MISC)).WriteLines(dry_run)
 
 	log.Info("Parse OK for FreelancerFolderLocation=", file1path)
 }

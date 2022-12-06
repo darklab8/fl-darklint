@@ -144,6 +144,11 @@ func (p *Param) AddValue(value UniValue) *Param {
 }
 
 func (p Param) ToString() string {
+
+	if p.Key == KEY_COMMENT {
+		return fmt.Sprintf(";%s", string(p.First.(ValueString)))
+	}
+
 	var sb strings.Builder
 
 	if p.IsComment {
@@ -274,7 +279,6 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 
 	log.Debug("setting current section")
 	var cur_section *Section
-	cur_section = &Section{}
 	for _, line := range lines {
 
 		comment_match := regexComment.FindStringSubmatch(line)
@@ -310,7 +314,12 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 			param := Param{Key: key, First: first_value, Values: values, IsComment: isComment}
 			cur_section.AddParam(key, &param)
 		} else if len(comment_match) > 0 {
-			config.Comments = append(config.Comments, comment_match[1])
+			if cur_section == nil {
+				config.Comments = append(config.Comments, comment_match[1])
+			} else {
+				comment := UniParseStr(comment_match[1])
+				cur_section.AddParam(KEY_COMMENT, &Param{Key: KEY_COMMENT, First: comment, Values: []UniValue{comment}, IsComment: true})
+			}
 		} else if len(section_match) > 0 {
 			cur_section = &Section{} // create new
 			cur_section.Type = section_match[0]
@@ -321,6 +330,8 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 
 	return config
 }
+
+const KEY_COMMENT string = "00e0fc91e00300ed" // random hash
 
 func (config INIFile) Write(fileref *utils.File) *utils.File {
 

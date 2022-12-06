@@ -3,20 +3,91 @@ package market
 import (
 	"darktool/tools/parser/parserutils/inireader"
 	"darktool/tools/utils"
-
-	log "github.com/sirupsen/logrus"
+	"strings"
 )
 
+// ORM values
+
+const (
+	TypeComment = true
+	TypeVisible = false
+)
+
+type SemanticValue struct {
+	section   *inireader.Section
+	key       string
+	optional  bool
+	isComment bool
+}
+
+type SemanticString struct {
+	SemanticValue
+}
+
+func (s *SemanticString) Map(section *inireader.Section, key string, isComment bool, optional bool) *SemanticString {
+	s.section = section
+	s.key = key
+	s.optional = optional
+	s.isComment = isComment
+	return s
+}
+
+func (s *SemanticString) Get() string {
+	if s.optional && len(s.section.ParamMap[s.key]) == 0 {
+		return ""
+	}
+	return s.section.ParamMap[s.key][0].First.AsString()
+}
+
+func (s *SemanticString) Set(value string) {
+	processed_value := inireader.UniParseStr(value)
+	if len(s.section.ParamMap[s.key]) == 0 {
+		s.section.AddParam(s.key, (&inireader.Param{IsComment: s.isComment}).AddValue(processed_value))
+	}
+	// implement SetValue in Section
+	s.section.ParamMap[s.key][0].First = processed_value
+	s.section.ParamMap[s.key][0].Values[0] = processed_value
+}
+
+func (s *SemanticString) Delete() {
+	delete(s.section.ParamMap, s.key)
+	for index, param := range s.section.Params {
+		if param.Key == s.key {
+			s.section.Params = append(s.section.Params[:index], s.section.Params[index+1:]...)
+			break
+		}
+	}
+}
+
+// ORM Model
+
+type SemanticModel struct {
+	section *inireader.Section
+}
+
+func (s *SemanticModel) Map(section *inireader.Section) {
+	s.section = section
+}
+
+func (s *SemanticModel) Render() *inireader.Section {
+	return s.section
+}
+
+// Market
+
+// Not implemented. Create SemanticMultiKeyValue
 type MarketGood struct {
-	Name   string
-	Values []inireader.ValueNumber
+	SemanticModel
+	Name *SemanticString
+	// Values SemanticIntArray
 }
 
 type BaseGood struct {
-	Base             string
-	Name             string // denormalized always disabled param
-	Goods            []*MarketGood
-	RecycleCandidate string // denormalized always disabled param
+	SemanticModel
+	Base *SemanticString
+	// TODO Goods          *SemanticMultiKey[MarketGood] (GetAll)
+	Name             *SemanticString // denormalized always disabled param
+	RecycleCandidate *SemanticString // denormalized always disabled param
 }
 
 type Config struct {
@@ -38,41 +109,17 @@ const (
 
 func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
-
-	if frelconfig.BaseGoods == nil {
-		frelconfig.BaseGoods = make([]*BaseGood, 0)
-	}
+	frelconfig.BaseGoods = make([]*BaseGood, 0)
 
 	for _, section := range iniconfig.Sections {
-		if section.Type != BaseGoodType {
-			log.Fatalf("%v != %v", section.Type, BaseGoodType)
-		}
-		if len(section.Params) == 0 {
-			continue
-		}
-		current_base_good := BaseGood{}
-		if current_base_good.Goods == nil {
-			current_base_good.Goods = make([]*MarketGood, 0)
-		}
-		frelconfig.BaseGoods = append(frelconfig.BaseGoods, &current_base_good)
+		base_to_add := &BaseGood{}
+		base_to_add.Map(section)
+		base_to_add.Base = (&SemanticString{}).Map(section, KEY_BASE, TypeVisible, inireader.REQUIRED_p)
+		base_to_add.Name = (&SemanticString{}).Map(section, KEY_NAME, TypeComment, inireader.OPTIONAL_p)
+		base_to_add.RecycleCandidate = (&SemanticString{}).Map(section, KEY_BASE, TypeVisible, inireader.OPTIONAL_p)
+		frelconfig.BaseGoods = append(frelconfig.BaseGoods, base_to_add)
 
-		current_base_good.Name = section.GetParamStrToLower(KEY_NAME, inireader.OPTIONAL_p)
-		current_base_good.Base = section.GetParamStrToLower(KEY_BASE, inireader.REQUIRED_p)
-
-		good_params, ok := section.ParamMap[KEY_MARKET_GOOD]
-		if ok {
-			for _, good_param := range good_params {
-
-				good := MarketGood{}
-				good.Name = string(good_param.First.(inireader.ValueString))
-
-				for _, value := range good_param.Values[1:] {
-					good.Values = append(good.Values, value.(inireader.ValueNumber))
-				}
-				current_base_good.Goods = append(current_base_good.Goods, &good)
-
-			}
-		}
+		base_to_add.Base.Set(strings.ToLower(base_to_add.Base.Get()))
 	}
 	frelconfig.Comments = iniconfig.Comments
 	return frelconfig
@@ -85,28 +132,7 @@ func (frelconfig *Config) Write(output_file *utils.File) *utils.File {
 	inifile.Comments = frelconfig.Comments
 
 	for _, baseGood := range frelconfig.BaseGoods {
-		section := inireader.Section{}
-		section.Type = BaseGoodType
-		section.AddParam(KEY_BASE, (&inireader.Param{}).AddValue(inireader.UniParseStr(baseGood.Base)))
-
-		// Optional
-		if baseGood.Name != "" {
-			section.AddParam(KEY_NAME, (&inireader.Param{IsComment: true}).AddValue(inireader.UniParseStr(baseGood.Name)))
-		}
-		if baseGood.RecycleCandidate != "" {
-			section.AddParam(KEY_RECYCLE, (&inireader.Param{IsComment: true}).AddValue(inireader.UniParseStr(baseGood.RecycleCandidate)))
-		}
-
-		for _, param := range baseGood.Goods {
-			market_good := inireader.Param{Key: KEY_MARKET_GOOD, IsComment: false}
-
-			market_good.AddValue(inireader.ValueString(param.Name))
-			for _, value := range param.Values {
-				market_good.AddValue(value)
-			}
-			section.Params = append(section.Params, &market_good)
-		}
-		inifile.Sections = append(inifile.Sections, &section)
+		inifile.Sections = append(inifile.Sections, baseGood.Render())
 	}
 
 	inifile.Write(output_file)

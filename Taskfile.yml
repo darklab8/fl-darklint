@@ -51,7 +51,7 @@ tasks:
 
   changelog:
     cmds:
-      - git-conventional-commits changelog
+      - git-conventional-commits changelog {{.CLI_ARGS}}
 
   setup-ln:
     cmds:
