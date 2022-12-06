@@ -82,6 +82,20 @@ func (section *Section) AddParam(key string, param *Param) {
 	section.ParamMap[key] = append(section.ParamMap[key], param)
 }
 
+func (section *Section) AddParamToStart(key string, param *Param) {
+	param.Key = key
+
+	section.Params = append([]*Param{param}, section.Params...)
+	// Denormalization, adding to hashmap
+	if section.ParamMap == nil {
+		section.ParamMap = make(map[string][]*Param)
+	}
+	if _, ok := section.ParamMap[key]; !ok {
+		section.ParamMap[key] = make([]*Param, 0)
+	}
+	section.ParamMap[key] = append(section.ParamMap[key], param)
+}
+
 func (section *Section) GetParamStr(key string, optional bool) string {
 	if optional && len(section.ParamMap[key]) == 0 {
 		return ""

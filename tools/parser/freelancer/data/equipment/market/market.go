@@ -40,9 +40,13 @@ func (s *SemanticString) Get() string {
 }
 
 func (s *SemanticString) Set(value string) {
+	if s.isComment {
+		s.Delete()
+	}
+
 	processed_value := inireader.UniParseStr(value)
 	if len(s.section.ParamMap[s.key]) == 0 {
-		s.section.AddParam(s.key, (&inireader.Param{IsComment: s.isComment}).AddValue(processed_value))
+		s.section.AddParamToStart(s.key, (&inireader.Param{IsComment: s.isComment}).AddValue(processed_value))
 	}
 	// implement SetValue in Section
 	s.section.ParamMap[s.key][0].First = processed_value
@@ -54,7 +58,6 @@ func (s *SemanticString) Delete() {
 	for index, param := range s.section.Params {
 		if param.Key == s.key {
 			s.section.Params = append(s.section.Params[:index], s.section.Params[index+1:]...)
-			break
 		}
 	}
 }
@@ -116,7 +119,7 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 		base_to_add.Map(section)
 		base_to_add.Base = (&SemanticString{}).Map(section, KEY_BASE, TypeVisible, inireader.REQUIRED_p)
 		base_to_add.Name = (&SemanticString{}).Map(section, KEY_NAME, TypeComment, inireader.OPTIONAL_p)
-		base_to_add.RecycleCandidate = (&SemanticString{}).Map(section, KEY_BASE, TypeVisible, inireader.OPTIONAL_p)
+		base_to_add.RecycleCandidate = (&SemanticString{}).Map(section, KEY_RECYCLE, TypeComment, inireader.OPTIONAL_p)
 		frelconfig.BaseGoods = append(frelconfig.BaseGoods, base_to_add)
 
 		base_to_add.Base.Set(strings.ToLower(base_to_add.Base.Get()))
