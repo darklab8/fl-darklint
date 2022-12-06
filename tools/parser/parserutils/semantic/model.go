@@ -17,4 +17,11 @@ func (s *Model) Render() *inireader.Section {
 type ConfigModel struct {
 	Sections []*inireader.Section
 	Comments []string
+	Filepath string
+}
+
+func (s *ConfigModel) Init(sections []*inireader.Section, comments []string, filepath string) {
+	s.Sections = sections
+	s.Comments = comments
+	s.Filepath = filepath
 }

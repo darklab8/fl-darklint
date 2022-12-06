@@ -37,7 +37,7 @@ func Parse(file1path string, dry_run bool) {
 
 	universe_config := universe.Config{}
 	universe_config.Read(filesystem.GetFile(universe.FILENAME))
-	universe_config.Write(filesystem.GetFile(universe.FILENAME)).WriteLines(dry_run)
+	universe_config.Write().WriteLines(dry_run)
 	info_config := infocard.Config{}
 	info_config.Read(filesystem.GetFile(infocard.FILENAME, infocard.FILENAME_FALLBACK))
 
@@ -47,18 +47,18 @@ func Parse(file1path string, dry_run bool) {
 	market_ships_config.Read(filesystem.GetFile(market.FILENAME_SHIPS))
 	market_ships_config.UpdateWithBasenames(&universe_config, &info_config)
 	market_ships_config.UpdateWithRecycle(&universe_config, systems)
-	market_ships_config.Write(filesystem.GetFile(market.FILENAME_SHIPS)).WriteLines(dry_run)
+	market_ships_config.Write().WriteLines(dry_run)
 
 	market_commodities := market.Config{}
 	market_commodities.Read(filesystem.GetFile(market.FILENAME_COMMODITIES))
 	market_commodities.UpdateWithBasenames(&universe_config, &info_config)
 	market_commodities.UpdateWithRecycle(&universe_config, systems)
-	market_commodities.Write(filesystem.GetFile(market.FILENAME_COMMODITIES)).WriteLines(dry_run)
+	market_commodities.Write().WriteLines(dry_run)
 
 	market_misc := market.Config{}
 	market_misc.Read(filesystem.GetFile(market.FILENAME_MISC))
 	market_misc.UpdateWithBasenames(&universe_config, &info_config)
-	market_misc.Write(filesystem.GetFile(market.FILENAME_MISC)).WriteLines(dry_run)
+	market_misc.Write().WriteLines(dry_run)
 
 	log.Info("Parse OK for FreelancerFolderLocation=", file1path)
 }

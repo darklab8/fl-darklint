@@ -30,11 +30,11 @@ func TestWriter(t *testing.T) {
 	input_file := &utils.File{Filepath: filepath.Join(test_directory, FILENAME_SHIPS)}
 
 	temp_directory := utils.GetCurrrentTempFolder()
-	output_file := &utils.File{Filepath: filepath.Join(temp_directory, FILENAME_SHIPS)}
 
 	config := Config{}
 	config.Read(input_file)
-	config.Write(output_file)
+	config.Filepath = filepath.Join(temp_directory, FILENAME_SHIPS)
+	output_file := config.Write()
 
 	dry_run := true
 	output_file.WriteLines(dry_run)
@@ -47,7 +47,6 @@ func TestSaveRecycleParams(t *testing.T) {
 	filesystem := filefind.FindConfigs(freelancer_folder)
 
 	temp_directory := utils.GetCurrrentTempFolder()
-	output_config := &utils.File{Filepath: filepath.Join(temp_directory, FILENAME_SHIPS)}
 
 	market_config := Config{}
 	market_config.Read(&utils.File{Filepath: filesystem.Hashmap[FILENAME_SHIPS].Filepath})
@@ -59,7 +58,8 @@ func TestSaveRecycleParams(t *testing.T) {
 	info_config.Read(&utils.File{Filepath: filesystem.Hashmap[infocard.FILENAME].Filepath})
 
 	market_config.UpdateWithBasenames(&universe_config, &info_config)
-	market_config.Write(output_config)
+	market_config.Filepath = filepath.Join(temp_directory, FILENAME_SHIPS)
+	output_config := market_config.Write()
 
 	// isRecycleCandidate
 	isRecyclePresent := false
