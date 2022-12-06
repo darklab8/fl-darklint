@@ -58,4 +58,4 @@ Request new features [here](https://github.com/darklab8/darklab_freelancer_darkt
 # Contributors
 
 - [@dd84ai](https://github.com/dd84ai) // coding
-- [@Groshyr](https://github.com/Groshyr) // spark of inspiration for project birth + beta tester + feature requester
+- [@Groshyr](https://github.com/Groshyr) // spark of inspiration for project birth + beta tester + feature requester + domain expert
