@@ -7,6 +7,7 @@ import (
 	"darktool/tools/parser/freelancer/data/universe"
 	"darktool/tools/parser/freelancer/data/universe/systems"
 	"darktool/tools/parser/freelancer/infocard"
+	"darktool/tools/utils/err"
 	"fmt"
 	"strings"
 
@@ -54,7 +55,7 @@ func (frelconfig *Config) UpdateWithRecycle(universeConfig *universe.Config, sys
 		universe_system, ok := universeConfig.SystemMap[universe.SystemNickname(system.Nickname)]
 		_, ok = system.BasesByBase[base_good.Base.Get()]
 		if !ok {
-			recycle_builder.WriteString(fmt.Sprintf("base_good.base=%v not in universe.ini->Base.system->System.file->%v | ", base_good.Base, universe_system.File))
+			recycle_builder.WriteString(fmt.Sprintf("%s base_good.base=%s not in universe.ini->Base.system->System.file->%s | ", err.Base_is_not_present_in_system, base_good.Base.Get(), universe_system.File.Get()))
 			// log.Fatal("base ", base_good.Base, " is not present in system ", system.Nickname, " potential crash situation")
 		}
 
