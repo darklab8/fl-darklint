@@ -4,7 +4,7 @@
 
 ## Description
 
-- Set of dev tools for Freelancer Discovery community, in order to help them in their effort
+- Set of dev tools for Freelancer Discovery community, in order to help them in their configurational effort
 - Main goal is to create classic linter for game files, whichi can autofix config files
 - For tool usage was developed freelancer ini reader/writer with easily mapping variables to access in ORM - object relational mapping fashion. This alone allows quickly accessing any config data with least amont of code effort for additional features.
 
