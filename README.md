@@ -21,7 +21,7 @@
 - to `market_*.ini` reports if base is recycle_candidate, by checking missmatch in its set system and pressence in files + if system is `fp7` or `ga13`, example:
   - `;%is_recycle_candidate = DARK_ERR_0001 base_good.base=ga06_03_base not in universe.ini->Base.system->System.file->systems\ga13\ga13.ini | universe.ini->Base.system=ga13 in [[ga13 fp7]]`
   - see picture example below
-- rounds all float numbers to have one digit after dot at maximum. `45.7465645656` to `45.7`
+- rounding float numbers for set keys to more preferable precision. `45.7465645656` to `45.7`
 
 ## Future development
 
