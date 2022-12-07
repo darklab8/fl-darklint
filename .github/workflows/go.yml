@@ -18,7 +18,6 @@ jobs:
 
     - name: Install Task
       run: |
-        apt update
         apt install -y curl
         sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
