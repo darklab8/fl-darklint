@@ -2,6 +2,7 @@ package market
 
 import (
 	"darktool/tools/parser/freelancer/data/universe"
+	"darktool/tools/parser/freelancer/data/universe/systems"
 	"darktool/tools/parser/freelancer/infocard"
 	"darktool/tools/parser/parserutils/filefind"
 	"darktool/tools/utils"
@@ -57,8 +58,12 @@ func TestSaveRecycleParams(t *testing.T) {
 	info_config := infocard.Config{}
 	info_config.Read(&utils.File{Filepath: filesystem.Hashmap[infocard.FILENAME].Filepath})
 
+	systems_config := systems.Config{}
+	systems_config.Read(&universe_config, filesystem)
+
 	denormalizer := (&Denormalizer{}).Create(&universe_config)
 	denormalizer.ReadBaseNames(&market_config, &universe_config, &info_config)
+	denormalizer.ReadRecycle(&market_config, &universe_config, &systems_config)
 	denormalizer.Write(&market_config)
 
 	market_config.SetOutputPath(filepath.Join(temp_directory, FILENAME_SHIPS))
