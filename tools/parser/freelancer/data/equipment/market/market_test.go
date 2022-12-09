@@ -57,7 +57,10 @@ func TestSaveRecycleParams(t *testing.T) {
 	info_config := infocard.Config{}
 	info_config.Read(&utils.File{Filepath: filesystem.Hashmap[infocard.FILENAME].Filepath})
 
-	market_config.UpdateWithBasenames(&universe_config, &info_config)
+	denormalizer := (&Denormalizer{}).Create(&universe_config)
+	denormalizer.ReadBaseNames(&market_config, &universe_config, &info_config)
+	denormalizer.Write(&market_config)
+
 	market_config.SetOutputPath(filepath.Join(temp_directory, FILENAME_SHIPS))
 	output_config := market_config.Write()
 

@@ -49,19 +49,21 @@ func Parse(file1path string, dry_run bool) {
 
 	market_ships_config := market.Config{}
 	market_ships_config.Read(filesystem.GetFile(market.FILENAME_SHIPS))
-	market_ships_config.UpdateWithBasenames(&universe_config, &info_config)
-	market_ships_config.UpdateWithRecycle(&universe_config, systems)
+
+	market_denormalizer := (&market.Denormalizer{}).Create(&universe_config)
+	market_denormalizer.ReadBaseNames(&market_ships_config, &universe_config, &info_config)
+	market_denormalizer.ReadRecycle(&market_ships_config, &universe_config, systems)
+	market_denormalizer.Write(&market_ships_config)
 	market_ships_config.Write().WriteLines(dry_run)
 
 	market_commodities := market.Config{}
 	market_commodities.Read(filesystem.GetFile(market.FILENAME_COMMODITIES))
-	market_commodities.UpdateWithBasenames(&universe_config, &info_config)
-	market_commodities.UpdateWithRecycle(&universe_config, systems)
+	market_denormalizer.Write(&market_commodities)
 	market_commodities.Write().WriteLines(dry_run)
 
 	market_misc := market.Config{}
 	market_misc.Read(filesystem.GetFile(market.FILENAME_MISC))
-	market_misc.UpdateWithBasenames(&universe_config, &info_config)
+	market_denormalizer.Write(&market_misc)
 	market_misc.Write().WriteLines(dry_run)
 
 	log.Info("Parse OK for FreelancerFolderLocation=", file1path)

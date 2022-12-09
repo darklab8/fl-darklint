@@ -14,8 +14,40 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func (frelconfig *Config) UpdateWithBasenames(universeConfig *universe.Config, infocards *infocard.Config) {
-	for _, base_good := range frelconfig.BaseGoods {
+type DenormalizedBaseGood struct {
+	name             string
+	recycleCandidate string
+}
+
+type Denormalizer struct {
+	baseGoods map[string]*DenormalizedBaseGood
+}
+
+func (denormalizer *Denormalizer) Create(universeConfig *universe.Config) *Denormalizer {
+	denormalizer.baseGoods = make(map[string]*DenormalizedBaseGood)
+
+	for _, base := range universeConfig.Bases {
+		denormalizer.baseGoods[base.Nickname.Get()] = &DenormalizedBaseGood{}
+	}
+
+	return denormalizer
+}
+
+func (denormalizer *Denormalizer) Write(marketconfig *Config) {
+
+	for _, base_good := range marketconfig.BaseGoods {
+		base_good.Name.Set(denormalizer.baseGoods[base_good.Base.Get()].name)
+
+		if denormalizer.baseGoods[base_good.Base.Get()].recycleCandidate != "" {
+			base_good.RecycleCandidate.Set(denormalizer.baseGoods[base_good.Base.Get()].recycleCandidate)
+		} else {
+			base_good.RecycleCandidate.Delete()
+		}
+	}
+}
+
+func (denormalizer *Denormalizer) ReadBaseNames(marketconfig *Config, universeConfig *universe.Config, infocards *infocard.Config) {
+	for _, base_good := range marketconfig.BaseGoods {
 		key := universe.BaseNickname(base_good.Base.Get())
 		base, ok := universeConfig.BasesMap[key]
 		if !ok {
@@ -32,14 +64,14 @@ func (frelconfig *Config) UpdateWithBasenames(universeConfig *universe.Config, i
 			log.Fatal("incorrect type in infocards, expected NAME for base_strid_name: ", base_strid_name, " record: ", *record, " base: ", base)
 		}
 
-		base_good.Name.Set((*record).Content())
+		denormalizer.baseGoods[base_good.Base.Get()].name = (*record).Content()
 	}
 }
 
 var system_for_recycled_bases = [...]string{"ga13", "fp7"}
 
-func (frelconfig *Config) UpdateWithRecycle(universeConfig *universe.Config, systems *systems.Config) {
-	for _, base_good := range frelconfig.BaseGoods {
+func (denormalizer *Denormalizer) ReadRecycle(marketconfig *Config, universeConfig *universe.Config, systems *systems.Config) {
+	for _, base_good := range marketconfig.BaseGoods {
 		universe_base, ok := universeConfig.BasesMap[universe.BaseNickname(base_good.Base.Get())]
 		if !ok {
 			log.Fatal("base_good=", base_good.Base, "is not having universe base data")
@@ -66,11 +98,7 @@ func (frelconfig *Config) UpdateWithRecycle(universeConfig *universe.Config, sys
 		}
 
 		recycleCandidate := recycle_builder.String()
-		if recycleCandidate != "" {
-			base_good.RecycleCandidate.Set(recycleCandidate)
-		} else {
-			base_good.RecycleCandidate.Delete()
-		}
+		denormalizer.baseGoods[base_good.Base.Get()].recycleCandidate = recycleCandidate
 
 	}
 }
