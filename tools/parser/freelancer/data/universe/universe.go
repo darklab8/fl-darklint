@@ -39,6 +39,9 @@ const (
 
 	KEY_TIME_TAG     = "[Time]"
 	KEY_TIME_SECONDS = "seconds_per_day"
+
+	KEY_NAME    = "name"
+	KEY_RECYCLE = "is_recycle_candidate"
 )
 
 type Base struct {
@@ -50,6 +53,9 @@ type Base struct {
 	File             *semantic.Path
 	BGCS_base_run_by *semantic.String
 	// Terrains *semantic.StringStringMap
+
+	Name             *semantic.String // denormalized always disabled param
+	RecycleCandidate *semantic.String // denormalized always disabled param
 }
 
 type BaseNickname string
@@ -104,6 +110,9 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 			base_to_add.Nickname.Set(strings.ToLower(base_to_add.Nickname.Get()))
 			base_to_add.System.Set(strings.ToLower(base_to_add.System.Get()))
 			base_to_add.File.Set(strings.ToLower(base_to_add.File.Get()))
+
+			base_to_add.Name = (&semantic.String{}).Map(base, KEY_NAME, semantic.TypeComment, inireader.OPTIONAL_p)
+			base_to_add.RecycleCandidate = (&semantic.String{}).Map(base, KEY_RECYCLE, semantic.TypeComment, inireader.OPTIONAL_p)
 
 			frelconfig.Bases = append(frelconfig.Bases, &base_to_add)
 			frelconfig.BasesMap[BaseNickname(base_to_add.Nickname.Get())] = &base_to_add

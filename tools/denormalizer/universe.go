@@ -1,7 +1,4 @@
-/*
-Business rule to market_ships.txt
-*/
-package market
+package denormalizer
 
 import (
 	"darktool/tools/parser/freelancer/data/universe"
@@ -12,6 +9,9 @@ import (
 	"strings"
 
 	log "github.com/sirupsen/logrus"
+
+	"darktool/tools/parser/freelancer/data/equipment/market"
+	_ "darktool/tools/parser/freelancer/data/universe"
 )
 
 type DenormalizedBaseGood struct {
@@ -33,7 +33,7 @@ func (denormalizer *Denormalizer) Create(universeConfig *universe.Config) *Denor
 	return denormalizer
 }
 
-func (denormalizer *Denormalizer) Write(marketconfig *Config) {
+func (denormalizer *Denormalizer) MarketWrite(marketconfig *market.Config) {
 
 	for _, base_good := range marketconfig.BaseGoods {
 		base_good.Name.Set(denormalizer.baseGoods[base_good.Base.Get()].name)
@@ -46,7 +46,7 @@ func (denormalizer *Denormalizer) Write(marketconfig *Config) {
 	}
 }
 
-func (denormalizer *Denormalizer) ReadBaseNames(marketconfig *Config, universeConfig *universe.Config, infocards *infocard.Config) {
+func (denormalizer *Denormalizer) ReadBaseNames(marketconfig *market.Config, universeConfig *universe.Config, infocards *infocard.Config) {
 	for _, base_good := range marketconfig.BaseGoods {
 		key := universe.BaseNickname(base_good.Base.Get())
 		base, ok := universeConfig.BasesMap[key]
@@ -70,7 +70,7 @@ func (denormalizer *Denormalizer) ReadBaseNames(marketconfig *Config, universeCo
 
 var system_for_recycled_bases = [...]string{"ga13", "fp7"}
 
-func (denormalizer *Denormalizer) ReadRecycle(marketconfig *Config, universeConfig *universe.Config, systems *systems.Config) {
+func (denormalizer *Denormalizer) ReadRecycle(marketconfig *market.Config, universeConfig *universe.Config, systems *systems.Config) {
 	for _, base_good := range marketconfig.BaseGoods {
 		universe_base, ok := universeConfig.BasesMap[universe.BaseNickname(base_good.Base.Get())]
 		if !ok {
@@ -100,5 +100,18 @@ func (denormalizer *Denormalizer) ReadRecycle(marketconfig *Config, universeConf
 		recycleCandidate := recycle_builder.String()
 		denormalizer.baseGoods[base_good.Base.Get()].recycleCandidate = recycleCandidate
 
+	}
+}
+
+func (denormalizer *Denormalizer) UniverseWrite(universeConfig *universe.Config) {
+
+	for base_nickname, base := range universeConfig.BasesMap {
+		base.Name.Set(denormalizer.baseGoods[string(base_nickname)].name)
+
+		if denormalizer.baseGoods[string(base_nickname)].recycleCandidate != "" {
+			base.RecycleCandidate.Set(denormalizer.baseGoods[string(base_nickname)].recycleCandidate)
+		} else {
+			base.RecycleCandidate.Delete()
+		}
 	}
 }

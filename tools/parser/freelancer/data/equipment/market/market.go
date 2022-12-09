@@ -34,11 +34,11 @@ const (
 	FILENAME_COMMODITIES      = "market_commodities.ini"
 	FILENAME_MISC             = "market_misc.ini"
 	BaseGoodType              = "[BaseGood]"
+	KEY_NAME                  = "name"
 	KEY_RECYCLE               = "is_recycle_candidate"
 	KEY_MISSMATCH_SYSTEM_FILE = "missmatched_universe_system_and_file"
 	KEY_MARKET_GOOD           = "marketgood"
 	KEY_BASE                  = "base"
-	KEY_NAME                  = "name"
 )
 
 func (frelconfig *Config) Read(input_file *utils.File) *Config {
