@@ -57,12 +57,7 @@ func (denormalizer *BaseDenormalizer) MarketWrite(marketconfig *market.Config) {
 }
 
 func (denormalizer *BaseDenormalizer) ReadBaseNames(marketconfig *market.Config, universeConfig *universe.Config, infocards *infocard.Config) {
-	for _, base_good := range marketconfig.BaseGoods {
-		key := universe.BaseNickname(base_good.Base.Get())
-		base, ok := universeConfig.BasesMap[key]
-		if !ok {
-			log.Warn("failed to get key: ", key, " from universe.txt for base during updating market_ships.txt, attempting to fix")
-		}
+	for _, base := range universeConfig.Bases {
 
 		base_strid_name := int(base.StridName.Get())
 		record, ok := infocards.RecordsMap[base_strid_name]
@@ -74,41 +69,37 @@ func (denormalizer *BaseDenormalizer) ReadBaseNames(marketconfig *market.Config,
 			log.Fatal("incorrect type in infocards, expected NAME for base_strid_name: ", base_strid_name, " record: ", *record, " base: ", base)
 		}
 
-		denormalizer.baseGoods[base_good.Base.Get()].name = (*record).Content()
+		denormalizer.baseGoods[base.Nickname.Get()].name = (*record).Content()
 	}
 }
 
 var system_for_recycled_bases = [...]string{"ga13", "fp7"}
 
 func (denormalizer *BaseDenormalizer) ReadRecycle(marketconfig *market.Config, universeConfig *universe.Config, systems *systems.Config) {
-	for _, base_good := range marketconfig.BaseGoods {
-		universe_base, ok := universeConfig.BasesMap[universe.BaseNickname(base_good.Base.Get())]
-		if !ok {
-			log.Fatal("base_good=", base_good.Base, "is not having universe base data")
-		}
+	for _, base := range universeConfig.Bases {
 
-		system, ok := systems.SystemsMap[universe_base.System.Get()]
+		system, ok := systems.SystemsMap[base.System.Get()]
 		if !ok {
-			log.Fatal("base ", universe_base.Nickname, "is leading to non existent system", universe_base.System)
+			log.Fatal("base ", base.Nickname, "is leading to non existent system", base.System.Get())
 		}
 
 		var recycle_builder strings.Builder
 
 		universe_system, ok := universeConfig.SystemMap[universe.SystemNickname(system.Nickname)]
-		_, ok = system.BasesByBase[base_good.Base.Get()]
+		_, ok = system.BasesByBase[base.Nickname.Get()]
 		if !ok {
-			recycle_builder.WriteString(fmt.Sprintf("%s base_good.base=%s not in universe.ini->Base.system->System.file->%s | ", err.Base_is_not_present_in_system, base_good.Base.Get(), universe_system.File.Get()))
+			recycle_builder.WriteString(fmt.Sprintf("%s base_good.base=%s not in universe.ini->Base.system->System.file->%s | ", err.Base_is_not_present_in_system, base.Nickname.Get(), universe_system.File.Get()))
 			// log.Fatal("base ", base_good.Base, " is not present in system ", system.Nickname, " potential crash situation")
 		}
 
 		for _, recycle_system := range system_for_recycled_bases {
-			if universe_base.System.Get() == recycle_system {
+			if base.System.Get() == recycle_system {
 				recycle_builder.WriteString(fmt.Sprintf("universe.ini->Base.system=%s in [%v]", recycle_system, system_for_recycled_bases))
 			}
 		}
 
 		recycleCandidate := recycle_builder.String()
-		denormalizer.baseGoods[base_good.Base.Get()].recycleCandidate = recycleCandidate
+		denormalizer.baseGoods[base.Nickname.Get()].recycleCandidate = recycleCandidate
 
 	}
 }
