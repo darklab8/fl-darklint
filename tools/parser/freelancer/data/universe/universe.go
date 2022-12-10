@@ -135,7 +135,10 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 
 			system_to_add.Nickname.Set(strings.ToLower(system_to_add.Nickname.Get()))
 			system_to_add.Msg_id_prefix.Set(strings.ToLower(system_to_add.Msg_id_prefix.Get()))
-			system_to_add.File.Set(strings.ToLower(system_to_add.File.Get()))
+
+			if system_to_add.File.Get() != "" {
+				system_to_add.File.Set(strings.ToLower(system_to_add.File.Get()))
+			}
 
 			frelconfig.Systems = append(frelconfig.Systems, &system_to_add)
 			frelconfig.SystemMap[SystemNickname(system_to_add.Nickname.Get())] = &system_to_add
