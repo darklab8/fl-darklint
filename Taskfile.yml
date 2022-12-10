@@ -15,6 +15,11 @@ tasks:
       TAG:
         sh: git-conventional-commits version
 
+  deploy:
+    cmds:
+      - task: tag
+      - task: tag-push
+
   version:
     cmds:
       - git-conventional-commits version
