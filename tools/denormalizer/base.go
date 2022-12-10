@@ -1,6 +1,7 @@
 package denormalizer
 
 import (
+	"darktool/tools/parser"
 	"darktool/tools/parser/freelancer/data/universe"
 	"darktool/tools/parser/freelancer/data/universe/systems"
 	"darktool/tools/parser/freelancer/infocard"
@@ -19,21 +20,30 @@ type DenormalizedBaseGood struct {
 	recycleCandidate string
 }
 
-type Denormalizer struct {
+type BaseDenormalizer struct {
 	baseGoods map[string]*DenormalizedBaseGood
 }
 
-func (denormalizer *Denormalizer) Create(universeConfig *universe.Config) *Denormalizer {
-	denormalizer.baseGoods = make(map[string]*DenormalizedBaseGood)
+func (d *BaseDenormalizer) Read(parsed *parser.Parsed) *BaseDenormalizer {
+	d.baseGoods = make(map[string]*DenormalizedBaseGood)
 
-	for _, base := range universeConfig.Bases {
-		denormalizer.baseGoods[base.Nickname.Get()] = &DenormalizedBaseGood{}
+	for _, base := range parsed.Universe_config.Bases {
+		d.baseGoods[base.Nickname.Get()] = &DenormalizedBaseGood{}
 	}
 
-	return denormalizer
+	d.ReadBaseNames(parsed.Market_ships_config, parsed.Universe_config, parsed.Info_config)
+	d.ReadRecycle(parsed.Market_ships_config, parsed.Universe_config, parsed.Systems)
+	return d
 }
 
-func (denormalizer *Denormalizer) MarketWrite(marketconfig *market.Config) {
+func (d *BaseDenormalizer) Write(parsed *parser.Parsed) {
+	d.MarketWrite(parsed.Market_commodities)
+	d.MarketWrite(parsed.Market_ships_config)
+	d.MarketWrite(parsed.Market_misc)
+	d.UniverseWrite(parsed.Universe_config)
+}
+
+func (denormalizer *BaseDenormalizer) MarketWrite(marketconfig *market.Config) {
 
 	for _, base_good := range marketconfig.BaseGoods {
 		base_good.Name.Set(denormalizer.baseGoods[base_good.Base.Get()].name)
@@ -46,7 +56,7 @@ func (denormalizer *Denormalizer) MarketWrite(marketconfig *market.Config) {
 	}
 }
 
-func (denormalizer *Denormalizer) ReadBaseNames(marketconfig *market.Config, universeConfig *universe.Config, infocards *infocard.Config) {
+func (denormalizer *BaseDenormalizer) ReadBaseNames(marketconfig *market.Config, universeConfig *universe.Config, infocards *infocard.Config) {
 	for _, base_good := range marketconfig.BaseGoods {
 		key := universe.BaseNickname(base_good.Base.Get())
 		base, ok := universeConfig.BasesMap[key]
@@ -70,7 +80,7 @@ func (denormalizer *Denormalizer) ReadBaseNames(marketconfig *market.Config, uni
 
 var system_for_recycled_bases = [...]string{"ga13", "fp7"}
 
-func (denormalizer *Denormalizer) ReadRecycle(marketconfig *market.Config, universeConfig *universe.Config, systems *systems.Config) {
+func (denormalizer *BaseDenormalizer) ReadRecycle(marketconfig *market.Config, universeConfig *universe.Config, systems *systems.Config) {
 	for _, base_good := range marketconfig.BaseGoods {
 		universe_base, ok := universeConfig.BasesMap[universe.BaseNickname(base_good.Base.Get())]
 		if !ok {
@@ -103,7 +113,7 @@ func (denormalizer *Denormalizer) ReadRecycle(marketconfig *market.Config, unive
 	}
 }
 
-func (denormalizer *Denormalizer) UniverseWrite(universeConfig *universe.Config) {
+func (denormalizer *BaseDenormalizer) UniverseWrite(universeConfig *universe.Config) {
 
 	for base_nickname, base := range universeConfig.BasesMap {
 		base.Name.Set(denormalizer.baseGoods[string(base_nickname)].name)
