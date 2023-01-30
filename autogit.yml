@@ -3,6 +3,9 @@ changelog:
   commitRangeUrl: "https://github.com/darklab8/darklab_freelancer_darktool/compare/{{.From}}...{{.To}}?diff=split"
   issueUrl: "https://github.com/darklab8/darklab_freelancer_darktool/issues/{{.Issue}}"
 
+git:
+  sshPath: id_rsa.dd84ai
+
 # set to non zero value to have custom definitions
 regex:
   conventionalCommit:
