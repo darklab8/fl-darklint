@@ -58,6 +58,23 @@ currently built for:
   - [docs](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13)
   - [app](https://www.npmjs.com/package/git-conventional-commits)
 
+## Architecture
+
+```mermaid
+flowchart TD
+    darktool --> cmd
+    cmd[cmd\nUser Commands to CLI interface]
+    cmd --> validator[validator\nlints freelancer configs to strict format]
+    validator --> parser[parser\nProvides static typed access to parsedFreelancer configs]
+    parser --> freelancer[freelancer\nFreelancer Data Parsers\npackage reflects\nFreelancer File Structure]
+    validator --> denormalizer[denormalizer\nDenormalizes parsed data for more\nhuman readable view of freelancer configs]
+    denormalizer --> parser
+    parser --> filefind[filefind\nfinds freelancer files]
+    freelancer --> inireader[inireader\nUniversal freelancer ini format reader\nLoads to changable structure\nThat can be rendered back]
+    freelancer --> semantic[ORM mapper of inireader values for quick typed acess to values\nfor reading and writing, without need to map all file structure]
+    semantic --> inireader
+```
+
 ## Contributors
 
 - [@dd84ai](https://github.com/dd84ai) // coding
