@@ -60,10 +60,7 @@ tasks:
 
   setup-ln:
     cmds:
-      - ln -s {{.PWD}}/dist/fldarklint-linux-amd64 {{.PWD}}/../Discovery-DEV-Groshyr/fldarklint || true
-      - ln -s {{.PWD}}/dist/fldarklint-linux-amd64 {{.PWD}}/../Discovery-Freelancer-Reimagined/fldarklint || true
-      - ln -s {{.PWD}}/../Discovery-DEV-Groshyr {{.PWD}}/Discovery-DEV-Groshyr || true
-      - ln -s {{.PWD}}/dist/fldarklint-linux-amd64 {{.PWD}}/fldarklint
+      - sudo ln -s {{.PWD}}/dist/fldarklint-linux-amd64 /usr/local/bin/fldarklint
     vars:
       PWD:
         sh: echo '$(pwd)'
