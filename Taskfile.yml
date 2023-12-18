@@ -26,14 +26,14 @@ tasks:
 
   build-version:
     cmds:
-      - git-conventional-commits version > settings/version.txt || echo 'not installed git-conventional-commits' > settings/version.txt
+      - autogit semver > settings/version.txt || echo 'not installed autogit' > settings/version.txt
   build:
     cmds:
       - task: build-version
       - mkdir -p dist
       - rm dist/* | true
-      - GOOS=windows GOARCH=amd64 go build -v -o dist/darktool-windows-amd64.exe main.go
-      - GOOS=linux GOARCH=amd64 go build -v -o dist/darktool-linux-amd64 main.go
+      - GOOS=windows GOARCH=amd64 go build -v -o dist/fldarklint-windows-amd64.exe main.go
+      - GOOS=linux GOARCH=amd64 go build -v -o dist/fldarklint-linux-amd64 main.go
   run:
     cmds:
       - go run .
@@ -60,10 +60,10 @@ tasks:
 
   setup-ln:
     cmds:
-      - ln -s {{.PWD}}/dist/darktool-linux-amd64 {{.PWD}}/../Discovery-DEV-Groshyr/darktool || true
-      - ln -s {{.PWD}}/dist/darktool-linux-amd64 {{.PWD}}/../Discovery-Freelancer-Reimagined/darktool || true
+      - ln -s {{.PWD}}/dist/fldarklint-linux-amd64 {{.PWD}}/../Discovery-DEV-Groshyr/fldarklint || true
+      - ln -s {{.PWD}}/dist/fldarklint-linux-amd64 {{.PWD}}/../Discovery-Freelancer-Reimagined/fldarklint || true
       - ln -s {{.PWD}}/../Discovery-DEV-Groshyr {{.PWD}}/Discovery-DEV-Groshyr || true
-      - ln -s {{.PWD}}/dist/darktool-linux-amd64 {{.PWD}}/darktool
+      - ln -s {{.PWD}}/dist/fldarklint-linux-amd64 {{.PWD}}/fldarklint
     vars:
       PWD:
         sh: echo '$(pwd)'
