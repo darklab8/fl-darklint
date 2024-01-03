@@ -6,7 +6,6 @@ package validator
 
 import (
 	"darktool/settings"
-	"darktool/tools/denormalizer"
 	"darktool/tools/parser"
 	"fmt"
 	"os"
@@ -25,6 +24,9 @@ func Run() {
 	}
 
 	data := (&parser.Parsed{}).Read(settings.FreelancerFreelancerLocation)
-	denormalizer.Run(data)
+
+	// see README.go in denormalizer why it was commented out but not removed.
+	// denormalizer.Run(data)
+
 	data.Write(settings.DryRun)
 }

@@ -23,12 +23,16 @@ func init() {
 	log.Info("init settings")
 
 	// =========== NORMAL SETTINGS ==================
-	exe_path, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
+	if path, ok := os.LookupEnv("FLDARKLINT_PROJECT_FOLDER"); ok {
+		FreelancerFreelancerLocation = path
+	} else {
+		exe_path, err := os.Getwd()
+		if err != nil {
+			panic(err)
+		}
 
-	FreelancerFreelancerLocation = exe_path
+		FreelancerFreelancerLocation = exe_path
+	}
 
 	// Enabling log
 	log.SetFormatter(&log.TextFormatter{

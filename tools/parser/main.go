@@ -7,15 +7,14 @@ import (
 	"darktool/tools/parser/freelancer/data/equipment/market"
 	"darktool/tools/parser/freelancer/data/universe"
 	"darktool/tools/parser/freelancer/data/universe/systems"
-	"darktool/tools/parser/freelancer/infocard"
 	"darktool/tools/parser/parserutils/filefind"
 
 	log "github.com/sirupsen/logrus"
 )
 
 type Parsed struct {
-	Universe_config     *universe.Config
-	Info_config         *infocard.Config
+	Universe_config *universe.Config
+	// Info_config         *infocard.Config
 	Systems             *systems.Config
 	Market_ships_config *market.Config
 	Market_commodities  *market.Config
@@ -27,7 +26,7 @@ func (p *Parsed) Read(file1path string) *Parsed {
 	filesystem := filefind.FindConfigs(file1path)
 
 	p.Universe_config = (&universe.Config{}).Read(filesystem.GetFile(universe.FILENAME))
-	p.Info_config = (&infocard.Config{}).Read(filesystem.GetFile(infocard.FILENAME, infocard.FILENAME_FALLBACK))
+	// p.Info_config = (&infocard.Config{}).Read(filesystem.GetFile(infocard.FILENAME, infocard.FILENAME_FALLBACK))
 	p.Systems = (&systems.Config{}).Read(p.Universe_config, filesystem)
 	p.Market_ships_config = (&market.Config{}).Read(filesystem.GetFile(market.FILENAME_SHIPS))
 	p.Market_commodities = (&market.Config{}).Read(filesystem.GetFile(market.FILENAME_COMMODITIES))

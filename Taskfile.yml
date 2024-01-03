@@ -58,9 +58,18 @@ tasks:
     cmds:
       - git-conventional-commits changelog {{.CLI_ARGS}}
 
-  setup-ln:
+  setup-prod:
     cmds:
       - sudo ln -s {{.PWD}}/dist/fldarklint-linux-amd64 /usr/local/bin/fldarklint
+    vars:
+      PWD:
+        sh: echo '$(pwd)'
+
+  setup-dev:
+    cmds:
+      - sudo rm /usr/local/bin/fldarklint | true
+      - echo -e '#!/bin/bash\nset -x\nfilepath=`pwd`\ncd /home/naa/repos/pet_projects/darklab_fldarklint && FLDARKLINT_PROJECT_FOLDER=$filepath go run . $@' | sudo tee /usr/local/bin/fldarklint
+      - sudo chmod 777 /usr/local/bin/fldarklint
     vars:
       PWD:
         sh: echo '$(pwd)'
