@@ -14,7 +14,7 @@ import (
 
 // findDuplicatesCmd represents the findDuplicates command
 var findDuplicatesCmd = &cobra.Command{
-	Use:   "findDuplicates",
+	Use:   "find_duplicates",
 	Short: "Find duplicates by regular expression",
 	Long: `
 	Finds all matching occurencies by fuzzy regular expression

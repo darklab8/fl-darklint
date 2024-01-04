@@ -8,7 +8,7 @@ import (
 )
 
 func TestHelp(t *testing.T) {
-	cmd := exec.Command("go", "run", "../.")
+	cmd := exec.Command("go", "run", "../..")
 	stdout, err := cmd.Output()
 
 	if err != nil {

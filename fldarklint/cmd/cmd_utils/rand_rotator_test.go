@@ -8,7 +8,7 @@ import (
 )
 
 func TestRandRotator(t *testing.T) {
-	cmd := exec.Command("go", "run", "../..", "utils", "rand_rotator")
+	cmd := exec.Command("go", "run", "../../..", "utils", "rand_rotator")
 	stdout, err := cmd.Output()
 
 	if err != nil {
