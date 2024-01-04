@@ -7,7 +7,7 @@ package cmd
 
 import (
 	"darklint/cmd/cmd_utils"
-	"darklint/settings"
+	"darklint/fldarklint/settings"
 	"os"
 
 	"github.com/spf13/cobra"

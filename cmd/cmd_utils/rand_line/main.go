@@ -1,8 +1,8 @@
 package rand_line
 
 import (
-	"darklint/fldarklint/logus"
-	"darklint/tools/parser/parserutils/filefind/file"
+	"darklint/fldarklint/parser/parserutils/filefind/file"
+	"darklint/fldarklint/settings/logus"
 	"fmt"
 	"math/rand"
 	"time"

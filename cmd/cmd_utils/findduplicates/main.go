@@ -4,7 +4,7 @@ Find duplicates in a file by regular expression
 package findduplicates
 
 import (
-	"darklint/fldarklint/logus"
+	"darklint/fldarklint/settings/logus"
 	"fmt"
 	"os"
 	"regexp"

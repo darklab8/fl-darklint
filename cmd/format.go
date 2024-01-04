@@ -4,9 +4,9 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"darklint/settings"
-	"darklint/tools/parser"
-	"darklint/tools/validator"
+	"darklint/fldarklint/parser"
+	"darklint/fldarklint/settings"
+	"darklint/fldarklint/validator"
 	"fmt"
 
 	"github.com/spf13/cobra"

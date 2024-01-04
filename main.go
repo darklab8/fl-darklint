@@ -8,7 +8,7 @@ package main
 
 import (
 	"darklint/cmd"
-	_ "darklint/settings" // bootstrapp settings for initialization
+	_ "darklint/fldarklint/settings" // bootstrapp settings for initialization
 )
 
 func main() {

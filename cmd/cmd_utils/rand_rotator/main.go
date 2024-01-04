@@ -4,7 +4,7 @@ Package generating random rotation for object
 package rand_rotator
 
 import (
-	"darklint/fldarklint/logus"
+	"darklint/fldarklint/settings/logus"
 	"fmt"
 	"math"
 	"math/rand"
