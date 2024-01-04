@@ -1,11 +1,12 @@
 package rand_line
 
 import (
-	"darklint/fldarklint/parser/parserutils/filefind/file"
 	"darklint/fldarklint/settings/logus"
 	"fmt"
 	"math/rand"
 	"time"
+
+	"github.com/darklab8/darklab_fldarkdata/fldarkdata/parser/parserutils/filefind/file"
 
 	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )

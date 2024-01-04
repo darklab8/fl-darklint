@@ -1,4 +1,6 @@
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
+github.com/darklab8/darklab_fldarkdata v0.1.0 h1:KjgZRDblpKRlG4kBQh7lXR64UZEI2CWKk+YtYC/ywWY=
+github.com/darklab8/darklab_fldarkdata v0.1.0/go.mod h1:s3DsnHgYRrlbjKAwY2qQUahj+UKVQGAO37F75Gf0lYA=
 github.com/darklab8/darklab_goutils v0.4.0 h1:+UmWEM5GDKTMwVVy5lghPQeh7UQGTIuO/Tck+5LznMs=
 github.com/darklab8/darklab_goutils v0.4.0/go.mod h1:sL2yFr77PquFePdB9tsTFzNYspyz+hkW3a3sVUjFyrU=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=

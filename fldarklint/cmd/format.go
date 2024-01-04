@@ -4,10 +4,11 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"darklint/fldarklint/parser"
 	"darklint/fldarklint/settings"
 	"darklint/fldarklint/validator"
 	"fmt"
+
+	"github.com/darklab8/darklab_fldarkdata/fldarkdata/parser"
 
 	"github.com/spf13/cobra"
 )

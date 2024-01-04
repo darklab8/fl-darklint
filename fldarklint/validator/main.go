@@ -5,12 +5,13 @@ And even suggesting autofixes to Freelancer config files
 package validator
 
 import (
-	"darklint/fldarklint/parser"
 	"darklint/fldarklint/settings"
 	"darklint/fldarklint/settings/logus"
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/darklab8/darklab_fldarkdata/fldarkdata/parser"
 
 	"github.com/darklab8/darklab_goutils/goutils/logus_core"
 	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
