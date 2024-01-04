@@ -1,12 +1,14 @@
 package systems
 
 import (
-	"darktool/tools/parser/freelancer/data/universe"
-	"darktool/tools/parser/parserutils/filefind"
-	"darktool/tools/parser/parserutils/inireader"
-	"darktool/tools/parser/parserutils/semantic"
-	"darktool/tools/utils"
+	"darklint/tools/parser/freelancer/data/universe"
+	"darklint/tools/parser/parserutils/filefind"
+	"darklint/tools/parser/parserutils/filefind/file"
+	"darklint/tools/parser/parserutils/inireader"
+	"darklint/tools/parser/parserutils/semantic"
 	"strings"
+
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )
 
 const (
@@ -36,11 +38,11 @@ type Config struct {
 
 func (frelconfig *Config) Read(universe_config *universe.Config, filesystem filefind.Filesystem) *Config {
 
-	var system_files map[string]*utils.File = make(map[string]*utils.File)
+	var system_files map[string]*file.File = make(map[string]*file.File)
 	for _, base := range universe_config.Bases {
 		filename := universe_config.SystemMap[universe.SystemNickname(base.System.Get())].File.FileName()
-		path := filesystem.GetFile(strings.ToLower(filename))
-		system_files[base.System.Get()] = &(utils.File{Filepath: path.Filepath})
+		path := filesystem.GetFile(utils_types.FilePath(strings.ToLower(filename)))
+		system_files[base.System.Get()] = file.NewFile(path.GetFilepath())
 	}
 
 	var system_iniconfigs map[string]inireader.INIFile = make(map[string]inireader.INIFile)
@@ -53,7 +55,7 @@ func (frelconfig *Config) Read(universe_config *universe.Config, filesystem file
 	frelconfig.Systems = make([]*System, 0)
 	for system_key, sysiniconf := range system_iniconfigs {
 		system_to_add := System{}
-		system_to_add.Init(sysiniconf.Sections, sysiniconf.Comments, sysiniconf.File.Filepath)
+		system_to_add.Init(sysiniconf.Sections, sysiniconf.Comments, sysiniconf.File.GetFilepath())
 
 		system_to_add.Nickname = system_key
 		system_to_add.BasesByNick = make(map[string]*Base)
@@ -94,8 +96,8 @@ func (frelconfig *Config) Read(universe_config *universe.Config, filesystem file
 	return frelconfig
 }
 
-func (frelconfig *Config) Write() []*utils.File {
-	var files []*utils.File = make([]*utils.File, 0)
+func (frelconfig *Config) Write() []*file.File {
+	var files []*file.File = make([]*file.File, 0)
 	for _, system := range frelconfig.Systems {
 		inifile := system.Render()
 		files = append(files, inifile.Write(inifile.File))

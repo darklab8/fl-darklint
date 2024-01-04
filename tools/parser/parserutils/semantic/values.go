@@ -4,7 +4,7 @@ ORM mapper for Freelancer ini reader. Easy mapping values to change.
 package semantic
 
 import (
-	"darktool/tools/parser/parserutils/inireader"
+	"darklint/tools/parser/parserutils/inireader"
 	"strings"
 )
 

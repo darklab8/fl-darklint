@@ -1,7 +1,7 @@
 package denormalizer
 
 // import (
-// 	"darktool/tools/parser"
+// 	"darklint/tools/parser"
 // )
 
 // func Run(parsed *parser.Parsed) {

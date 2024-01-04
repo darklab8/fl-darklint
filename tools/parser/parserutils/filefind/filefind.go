@@ -4,57 +4,59 @@ Package with reusable code for discovery of files and other reusable stuff like 
 package filefind
 
 import (
-	"darktool/tools/utils"
+	"darklint/fldarklint/logus"
+	"darklint/tools/parser/parserutils/filefind/file"
 	"io/fs"
 	"path/filepath"
 	"strings"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/darklab8/darklab_goutils/goutils/logus_core"
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )
 
 type Filesystem struct {
-	Files   []utils.File
-	Hashmap map[string]utils.File
+	Files   []*file.File
+	Hashmap map[utils_types.FilePath]*file.File
 }
 
 var FreelancerFolder Filesystem
 
-func FindConfigs(folderpath string) Filesystem {
+func FindConfigs(folderpath utils_types.FilePath) Filesystem {
 	var filesystem Filesystem
-	filesystem.Hashmap = make(map[string]utils.File)
+	filesystem.Hashmap = make(map[utils_types.FilePath]*file.File)
 
-	err := filepath.WalkDir(folderpath, func(path string, d fs.DirEntry, err error) error {
+	err := filepath.WalkDir(string(folderpath), func(path string, d fs.DirEntry, err error) error {
 
 		if !strings.Contains(path, ".ini") && !strings.Contains(path, ".txt") && !strings.Contains(path, ".xml") {
 			return nil
 		}
 
-		utils.CheckFatal(err, "unable to read file")
+		logus.Log.CheckFatal(err, "unable to read file")
 
-		file := utils.File{Filepath: path}
+		file := file.NewFile(utils_types.FilePath(path))
 		filesystem.Files = append(filesystem.Files, file)
 
-		key := strings.ToLower(filepath.Base(path))
+		key := utils_types.FilePath(strings.ToLower(filepath.Base(path)))
 		filesystem.Hashmap[key] = file
 
 		return nil
 	})
 
-	utils.CheckFatal(err, "unable to read files")
+	logus.Log.CheckFatal(err, "unable to read files")
 	return filesystem
 }
 
-func (file1system Filesystem) GetFile(file1names ...string) *utils.File {
+func (file1system Filesystem) GetFile(file1names ...utils_types.FilePath) *file.File {
 	for _, file1name := range file1names {
-		file, ok := file1system.Hashmap[file1name]
+		file_, ok := file1system.Hashmap[file1name]
 		if !ok {
-			log.Warn("Filesystem.GetFile, failed to find find in filesystesm filename=", file1name, ", trying to recover")
+			logus.Log.Warn("Filesystem.GetFile, failed to find find in filesystesm file trying to recover", logus_core.FilePath(file1name))
 			continue
 		}
-		log.Info("Filesystem.GetFile, found filepath=", file.Filepath)
-		result_file := utils.File{Filepath: file.Filepath}
-		return &result_file
+		logus.Log.Info("Filesystem.GetFile, found filepath=", logus_core.FilePath(file_.GetFilepath()))
+		result_file := file.NewFile(file_.GetFilepath())
+		return result_file
 	}
-	log.Fatal("unable to find filenames=", file1names)
+	logus.Log.Fatal("unable to find filenames=", logus_core.Filepaths(file1names))
 	return nil
 }

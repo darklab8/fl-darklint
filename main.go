@@ -7,8 +7,8 @@ in order to be more productive during its development configuration
 package main
 
 import (
-	"darktool/cmd"
-	_ "darktool/settings" // bootstrapp settings for initialization
+	"darklint/cmd"
+	_ "darklint/settings" // bootstrapp settings for initialization
 )
 
 func main() {

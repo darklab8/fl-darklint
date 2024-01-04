@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"darktool/tools/randrotator"
+	"darklint/tools/randrotator"
 	"fmt"
 
 	"github.com/spf13/cobra"

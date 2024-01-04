@@ -5,13 +5,13 @@ Prototype code, delete once inireader package established itself
 package main
 
 import (
-	"darktool/tools/utils"
+	"darklint/tools/parser/parserutils/filefind/file"
 	"fmt"
 	"strconv"
 )
 
 type INIFile struct {
-	File     *utils.File
+	File     *file.File
 	Sections []Section
 }
 

@@ -4,13 +4,12 @@ Package generating random rotation for object
 package randrotator
 
 import (
+	"darklint/fldarklint/logus"
 	"fmt"
 	"math"
 	"math/rand"
 	"strings"
 	"time"
-
-	log "github.com/sirupsen/logrus"
 )
 
 func round(num float64) int {
@@ -35,7 +34,7 @@ type Input struct {
 }
 
 func Run(input Input) string {
-	log.Info("randrotator: Run - start")
+	logus.Log.Info("randrotator: Run - start")
 	rand.Seed(time.Now().UnixNano())
 
 	x := rand.Float64() * 180
@@ -49,6 +48,6 @@ func Run(input Input) string {
 	sb.WriteString(fmt.Sprintf("%v", input.Delimiter))
 	sb.WriteString(fmt.Sprintf("%v", toFixed(z, *input.RoundedNumbers)))
 
-	log.Info("randrotator: Run - finished")
+	logus.Log.Info("randrotator: Run - finished")
 	return fmt.Sprintf("%v\n", sb.String())
 }

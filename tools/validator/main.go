@@ -5,28 +5,30 @@ And even suggesting autofixes to Freelancer config files
 package validator
 
 import (
-	"darktool/settings"
-	"darktool/tools/parser"
+	"darklint/fldarklint/logus"
+	"darklint/settings"
+	"darklint/tools/parser"
 	"fmt"
 	"os"
 	"path/filepath"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/darklab8/darklab_goutils/goutils/logus_core"
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )
 
-func Run() {
+func Run(is_dry_run parser.IsDruRun) {
 
 	_, err := os.Stat(filepath.Join(settings.FreelancerFreelancerLocation, "DATA"))
 
 	fmt.Println(err)
 	if os.IsNotExist(err) {
-		log.Fatal("freelancer folder is not detected at path=", settings.FreelancerFreelancerLocation, " because DATA folder was not found")
+		logus.Log.Fatal("freelancer folder is not detected because DATA folder was not found", logus_core.FilePath(utils_types.FilePath(settings.FreelancerFreelancerLocation)))
 	}
 
-	data := (&parser.Parsed{}).Read(settings.FreelancerFreelancerLocation)
+	data := (&parser.Parsed{}).Read(utils_types.FilePath(settings.FreelancerFreelancerLocation))
 
 	// see README.go in denormalizer why it was commented out but not removed.
 	// denormalizer.Run(data)
 
-	data.Write(settings.DryRun)
+	data.Write(is_dry_run)
 }

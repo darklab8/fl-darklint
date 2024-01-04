@@ -6,8 +6,9 @@ package cmd
 import (
 	"fmt"
 
-	"darktool/cmd/findduplicates"
+	"darklint/cmd/findduplicates"
 
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +24,7 @@ var findDuplicatesCmd = &cobra.Command{
 		fmt.Println("findDuplicates called")
 		fmt.Printf("filepath=%s\n", pathTofile)
 		fmt.Printf("regex=%s\n", regexExpression)
-		findduplicates.Main(pathTofile, regexExpression)
+		findduplicates.Main(utils_types.FilePath(pathTofile), regexExpression)
 	},
 }
 

@@ -1,10 +1,12 @@
 package market
 
 import (
-	"darktool/tools/parser/parserutils/inireader"
-	"darktool/tools/parser/parserutils/semantic"
-	"darktool/tools/utils"
+	"darklint/tools/parser/parserutils/filefind/file"
+	"darklint/tools/parser/parserutils/inireader"
+	"darklint/tools/parser/parserutils/semantic"
 	"strings"
+
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )
 
 // Not implemented. Create SemanticMultiKeyValue
@@ -30,20 +32,20 @@ type Config struct {
 }
 
 const (
-	FILENAME_SHIPS            = "market_ships.ini"
-	FILENAME_COMMODITIES      = "market_commodities.ini"
-	FILENAME_MISC             = "market_misc.ini"
-	BaseGoodType              = "[BaseGood]"
-	KEY_NAME                  = "name"
-	KEY_RECYCLE               = "is_recycle_candidate"
-	KEY_MISSMATCH_SYSTEM_FILE = "missmatched_universe_system_and_file"
-	KEY_MARKET_GOOD           = "marketgood"
-	KEY_BASE                  = "base"
+	FILENAME_SHIPS            utils_types.FilePath = "market_ships.ini"
+	FILENAME_COMMODITIES      utils_types.FilePath = "market_commodities.ini"
+	FILENAME_MISC             utils_types.FilePath = "market_misc.ini"
+	BaseGoodType                                   = "[BaseGood]"
+	KEY_NAME                                       = "name"
+	KEY_RECYCLE                                    = "is_recycle_candidate"
+	KEY_MISSMATCH_SYSTEM_FILE                      = "missmatched_universe_system_and_file"
+	KEY_MARKET_GOOD                                = "marketgood"
+	KEY_BASE                                       = "base"
 )
 
-func (frelconfig *Config) Read(input_file *utils.File) *Config {
+func (frelconfig *Config) Read(input_file *file.File) *Config {
 	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
-	frelconfig.Init(iniconfig.Sections, iniconfig.Comments, iniconfig.File.Filepath)
+	frelconfig.Init(iniconfig.Sections, iniconfig.Comments, iniconfig.File.GetFilepath())
 	frelconfig.BaseGoods = make([]*BaseGood, 0)
 
 	for _, section := range iniconfig.Sections {
@@ -60,7 +62,7 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	return frelconfig
 }
 
-func (frelconfig *Config) Write() *utils.File {
+func (frelconfig *Config) Write() *file.File {
 
 	inifile := frelconfig.Render()
 	inifile.Write(inifile.File)

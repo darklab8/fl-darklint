@@ -4,24 +4,27 @@ Find duplicates in a file by regular expression
 package findduplicates
 
 import (
-	"darktool/tools/utils"
+	"darklint/fldarklint/logus"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"regexp"
+
+	"github.com/darklab8/darklab_goutils/goutils/logus_core"
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )
 
 func regexCompile(expression string) *regexp.Regexp {
 	var err error
 
 	regex, err := regexp.Compile(expression)
-	utils.CheckFatal(err, "failed to compile regex expression ", expression)
+	logus.Log.CheckFatal(err, "failed to compile regex expression "+expression)
 	return regex
 }
 
-func Main(path string, regex string) {
+func Main(path utils_types.FilePath, regex string) {
 	regx := regexCompile(regex)
-	file, err := ioutil.ReadFile(path)
-	utils.CheckFatal(err, "failed to read file ", path)
+	file, err := os.ReadFile(string(path))
+	logus.Log.CheckFatal(err, "failed to read file ", logus_core.FilePath(path))
 	content := string(file)
 
 	foundlines := regx.FindAllString(content, -1)

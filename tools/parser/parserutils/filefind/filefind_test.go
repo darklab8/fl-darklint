@@ -1,8 +1,9 @@
 package filefind
 
 import (
-	"darktool/tools/utils"
 	"testing"
+
+	"github.com/darklab8/darklab_goutils/goutils/utils"
 
 	"github.com/stretchr/testify/assert"
 )

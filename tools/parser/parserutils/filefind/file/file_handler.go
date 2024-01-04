@@ -3,29 +3,39 @@
 
 F in OpenToReadF stands for... Do succesfully, or log to Fatal level and exit
 */
-package utils
+package file
 
 import (
 	"bufio"
+	"darklint/fldarklint/logus"
 	"fmt"
 	"os"
+
+	"github.com/darklab8/darklab_goutils/goutils/logus_core"
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )
 
 type File struct {
-	Filepath string
+	filepath utils_types.FilePath
 	file     *os.File
 	lines    []string
 }
+
+func NewFile(filepath utils_types.FilePath) *File {
+	return &File{filepath: filepath}
+}
+
+func (f *File) GetFilepath() utils_types.FilePath { return f.filepath }
 
 func (f *File) GetLines() []string {
 	return f.lines
 }
 
 func (f *File) OpenToReadF() *File {
-	file, err := os.Open(f.Filepath)
+	file, err := os.Open(string(f.filepath))
 	f.file = file
 
-	CheckFatal(err, "failed to open ", f.Filepath)
+	logus.Log.CheckFatal(err, "failed to open ", logus_core.FilePath(f.filepath))
 	return f
 }
 
@@ -47,11 +57,7 @@ func (f *File) ScheduleToWrite(value string) {
 	f.lines = append(f.lines, value)
 }
 
-func (f *File) WriteLines(dry_run bool) {
-	if dry_run {
-		return
-	}
-
+func (f *File) WriteLines() {
 	f.CreateToWriteF()
 	defer f.Close()
 
@@ -61,14 +67,14 @@ func (f *File) WriteLines(dry_run bool) {
 }
 
 func (f *File) CreateToWriteF() *File {
-	file, err := os.Create(f.Filepath)
+	file, err := os.Create(string(f.filepath))
 	f.file = file
-	CheckFatal(err, "failed to open ", f.Filepath)
+	logus.Log.CheckFatal(err, "failed to open ", logus_core.FilePath(f.filepath))
 
 	return f
 }
 func (f *File) WritelnF(msg string) {
 	_, err := f.file.WriteString(fmt.Sprintf("%v\n", msg))
 
-	CheckFatal(err, "failed to write string to file")
+	logus.Log.CheckFatal(err, "failed to write string to file")
 }

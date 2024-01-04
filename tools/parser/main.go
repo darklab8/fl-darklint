@@ -4,12 +4,15 @@ Tool to parse freelancer configs
 package parser
 
 import (
-	"darktool/tools/parser/freelancer/data/equipment/market"
-	"darktool/tools/parser/freelancer/data/universe"
-	"darktool/tools/parser/freelancer/data/universe/systems"
-	"darktool/tools/parser/parserutils/filefind"
+	"darklint/fldarklint/logus"
+	"darklint/tools/parser/freelancer/data/equipment/market"
+	"darklint/tools/parser/freelancer/data/universe"
+	"darklint/tools/parser/freelancer/data/universe/systems"
+	"darklint/tools/parser/parserutils/filefind"
+	"darklint/tools/parser/parserutils/filefind/file"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/darklab8/darklab_goutils/goutils/logus_core"
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )
 
 type Parsed struct {
@@ -21,8 +24,12 @@ type Parsed struct {
 	Market_misc         *market.Config
 }
 
-func (p *Parsed) Read(file1path string) *Parsed {
-	log.Info("Parse START for FreelancerFolderLocation=", file1path)
+func NewParsed() *Parsed {
+	return &Parsed{}
+}
+
+func (p *Parsed) Read(file1path utils_types.FilePath) *Parsed {
+	logus.Log.Info("Parse START for FreelancerFolderLocation=", logus_core.FilePath(file1path))
 	filesystem := filefind.FindConfigs(file1path)
 
 	p.Universe_config = (&universe.Config{}).Read(filesystem.GetFile(universe.FILENAME))
@@ -32,20 +39,30 @@ func (p *Parsed) Read(file1path string) *Parsed {
 	p.Market_commodities = (&market.Config{}).Read(filesystem.GetFile(market.FILENAME_COMMODITIES))
 	p.Market_misc = (&market.Config{}).Read(filesystem.GetFile(market.FILENAME_MISC))
 
-	log.Info("Parse OK for FreelancerFolderLocation=", file1path)
+	logus.Log.Info("Parse OK for FreelancerFolderLocation=", logus_core.FilePath(file1path))
 
 	return p
 }
 
-func (p *Parsed) Write(dry_run bool) {
+type IsDruRun bool
+
+func (p *Parsed) Write(is_dry_run IsDruRun) {
 	// write
-	p.Universe_config.Write().WriteLines(dry_run)
-	p.Market_ships_config.Write().WriteLines(dry_run)
-	p.Market_commodities.Write().WriteLines(dry_run)
-	p.Market_misc.Write().WriteLines(dry_run)
-	system_files := p.Systems.Write()
-	for _, system_file := range system_files {
-		system_file.WriteLines(dry_run)
+	files := []*file.File{}
+
+	files = append(files,
+		p.Universe_config.Write(),
+		p.Market_ships_config.Write(),
+		p.Market_commodities.Write(),
+		p.Market_misc.Write(),
+	)
+	files = append(files, p.Systems.Write()...)
+
+	if is_dry_run {
+		return
 	}
 
+	for _, file := range files {
+		file.WriteLines()
+	}
 }

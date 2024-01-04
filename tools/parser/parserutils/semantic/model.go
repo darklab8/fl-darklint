@@ -1,8 +1,10 @@
 package semantic
 
 import (
-	"darktool/tools/parser/parserutils/inireader"
-	"darktool/tools/utils"
+	"darklint/tools/parser/parserutils/filefind/file"
+	"darklint/tools/parser/parserutils/inireader"
+
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )
 
 type Model struct {
@@ -20,16 +22,16 @@ func (s *Model) Render() *inireader.Section {
 type ConfigModel struct {
 	sections []*inireader.Section
 	comments []string
-	filepath string
+	filepath utils_types.FilePath
 }
 
-func (s *ConfigModel) Init(sections []*inireader.Section, comments []string, filepath string) {
+func (s *ConfigModel) Init(sections []*inireader.Section, comments []string, filepath utils_types.FilePath) {
 	s.sections = sections
 	s.comments = comments
 	s.filepath = filepath
 }
 
-func (s *ConfigModel) SetOutputPath(filepath string) {
+func (s *ConfigModel) SetOutputPath(filepath utils_types.FilePath) {
 	s.filepath = filepath
 }
 
@@ -37,6 +39,6 @@ func (s *ConfigModel) Render() *inireader.INIFile {
 	inifile := &inireader.INIFile{}
 	inifile.Comments = s.comments
 	inifile.Sections = s.sections
-	inifile.File = &utils.File{Filepath: s.filepath}
+	inifile.File = file.NewFile(s.filepath)
 	return inifile
 }

@@ -1,13 +1,14 @@
 package findduplicates
 
 import (
-	"darktool/tools/utils"
-	"path/filepath"
 	"testing"
+
+	"github.com/darklab8/darklab_goutils/goutils/utils"
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_filepath"
 )
 
 func TestMain(t *testing.T) {
 	folder := utils.GetCurrrentTestFolder()
-	testfile := filepath.Join(folder, "example.txt")
+	testfile := utils_filepath.Join(folder, "example.txt")
 	Main(testfile, "nickname = .*")
 }

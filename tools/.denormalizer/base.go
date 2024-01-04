@@ -1,18 +1,18 @@
 package denormalizer
 
 // import (
-// 	"darktool/tools/parser"
-// 	"darktool/tools/parser/freelancer/data/universe"
-// 	"darktool/tools/parser/freelancer/data/universe/systems"
-// 	"darktool/tools/parser/freelancer/infocard"
-// 	"darktool/tools/utils/err"
+// 	"darklint/tools/parser"
+// 	"darklint/tools/parser/freelancer/data/universe"
+// 	"darklint/tools/parser/freelancer/data/universe/systems"
+// 	"darklint/tools/parser/freelancer/infocard"
+// 	"darklint/tools/utils/err"
 // 	"fmt"
 // 	"strings"
 
 // 	log "github.com/sirupsen/logrus"
 
-// 	"darktool/tools/parser/freelancer/data/equipment/market"
-// 	_ "darktool/tools/parser/freelancer/data/universe"
+// 	"darklint/tools/parser/freelancer/data/equipment/market"
+// 	_ "darklint/tools/parser/freelancer/data/universe"
 // )
 
 // type DenormalizedBaseGood struct {

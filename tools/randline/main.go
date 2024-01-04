@@ -1,12 +1,13 @@
 package randline
 
 import (
-	"darktool/tools/utils"
+	"darklint/fldarklint/logus"
+	"darklint/tools/parser/parserutils/filefind/file"
 	"fmt"
 	"math/rand"
 	"time"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )
 
 type Input struct {
@@ -16,18 +17,18 @@ type Input struct {
 }
 
 func Run(input Input) {
-	log.Info("Starting randLine")
-	log.Info("InputFile=", input.InputFilePath)
-	log.Info("OutputFile=", input.OutputFilePath)
-	log.Info("Times=", input.Times)
+	logus.Log.Info("Starting randLine")
+	logus.Log.Info("InputFile=" + input.InputFilePath)
+	logus.Log.Info("OutputFile=" + input.OutputFilePath)
+	logus.Log.Info(fmt.Sprintf("Times=%d", *input.Times))
 
-	input_file := (&utils.File{Filepath: input.InputFilePath}).OpenToReadF()
+	input_file := file.NewFile(utils_types.FilePath(input.InputFilePath)).OpenToReadF()
 	defer input_file.Close()
 	input_lines := input_file.ReadLines()
 
 	// write result
 
-	output_file := (&utils.File{Filepath: input.OutputFilePath}).CreateToWriteF()
+	output_file := file.NewFile(utils_types.FilePath(input.OutputFilePath)).CreateToWriteF()
 	defer output_file.Close()
 
 	rand.Seed(time.Now().UnixNano())

@@ -1,9 +1,11 @@
 package market
 
 import (
-	"darktool/tools/utils"
+	"darklint/tools/parser/parserutils/filefind/file"
 
-	"path/filepath"
+	"github.com/darklab8/darklab_goutils/goutils/utils"
+	"github.com/darklab8/darklab_goutils/goutils/utils/utils_filepath"
+
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,7 +13,7 @@ import (
 
 func TestReader(t *testing.T) {
 	test_directory := utils.GetCurrrentTestFolder()
-	fileref := &utils.File{Filepath: filepath.Join(test_directory, FILENAME_SHIPS)}
+	fileref := file.NewFile(utils_filepath.Join(test_directory, FILENAME_SHIPS))
 	config := Config{}
 	loaded_market_ships := config.Read(fileref)
 
@@ -22,15 +24,12 @@ func TestReader(t *testing.T) {
 
 func TestWriter(t *testing.T) {
 	test_directory := utils.GetCurrrentTestFolder()
-	input_file := &utils.File{Filepath: filepath.Join(test_directory, FILENAME_SHIPS)}
+	input_file := file.NewFile(utils_filepath.Join(test_directory, FILENAME_SHIPS))
 
 	temp_directory := utils.GetCurrrentTempFolder()
 
 	config := Config{}
 	config.Read(input_file)
-	config.SetOutputPath(filepath.Join(temp_directory, FILENAME_SHIPS))
-	output_file := config.Write()
-
-	dry_run := true
-	output_file.WriteLines(dry_run)
+	config.SetOutputPath(utils_filepath.Join(temp_directory, FILENAME_SHIPS))
+	config.Write()
 }

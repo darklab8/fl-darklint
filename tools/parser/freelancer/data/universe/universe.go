@@ -4,9 +4,9 @@ parse universe.ini
 package universe
 
 import (
-	"darktool/tools/parser/parserutils/inireader"
-	"darktool/tools/parser/parserutils/semantic"
-	"darktool/tools/utils"
+	"darklint/tools/parser/parserutils/filefind/file"
+	"darklint/tools/parser/parserutils/inireader"
+	"darklint/tools/parser/parserutils/semantic"
 	"strings"
 )
 
@@ -85,10 +85,10 @@ type Config struct {
 	TimeSeconds *semantic.Int
 }
 
-func (frelconfig *Config) Read(input_file *utils.File) *Config {
+func (frelconfig *Config) Read(input_file *file.File) *Config {
 
 	iniconfig := inireader.INIFile.Read(inireader.INIFile{}, input_file)
-	frelconfig.Init(iniconfig.Sections, iniconfig.Comments, iniconfig.File.Filepath)
+	frelconfig.Init(iniconfig.Sections, iniconfig.Comments, iniconfig.File.GetFilepath())
 
 	frelconfig.TimeSeconds = (&semantic.Int{}).Map(iniconfig.SectionMap[KEY_TIME_TAG][0], KEY_TIME_TAG, semantic.TypeVisible, inireader.REQUIRED_p)
 	frelconfig.BasesMap = make(map[BaseNickname]*Base)
@@ -148,7 +148,7 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 	return frelconfig
 }
 
-func (frelconfig *Config) Write() *utils.File {
+func (frelconfig *Config) Write() *file.File {
 	inifile := frelconfig.Render()
 	inifile.Write(inifile.File)
 	return inifile.File

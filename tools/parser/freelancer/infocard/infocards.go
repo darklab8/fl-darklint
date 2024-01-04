@@ -1,10 +1,11 @@
 package infocard
 
 import (
-	"darktool/tools/utils"
+	"darklint/fldarklint/logus"
+	"darklint/tools/parser/parserutils/filefind/file"
 	"strconv"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/darklab8/darklab_goutils/goutils/logus_core"
 )
 
 type Record interface {
@@ -54,7 +55,7 @@ const (
 	TYPE_INFOCAD      = "INFOCARD"
 )
 
-func (frelconfig *Config) Read(input_file *utils.File) *Config {
+func (frelconfig *Config) Read(input_file *file.File) *Config {
 	frelconfig.RecordsMap = make(map[int]*Record)
 	frelconfig.Records = make([]*Record, 0)
 
@@ -79,7 +80,12 @@ func (frelconfig *Config) Read(input_file *utils.File) *Config {
 		case TYPE_INFOCAD:
 			record_to_add = Infocard{id: id, content: content}
 		default:
-			log.Fatal("unrecognized object name in infocards.txt, id=", id, "name=", name, "content=", content)
+			logus.Log.Fatal(
+				"unrecognized object name in infocards.txt",
+				logus_core.Any("id", id),
+				logus_core.Any("name", name),
+				logus_core.Any("content", content),
+			)
 		}
 
 		frelconfig.Records = append(frelconfig.Records, &record_to_add)

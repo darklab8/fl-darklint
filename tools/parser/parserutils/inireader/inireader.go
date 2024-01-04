@@ -4,17 +4,19 @@ Okay we need to create syntax. To augment currently possible stuff
 package inireader
 
 import (
-	"darktool/tools/utils"
+	"darklint/tools/parser/parserutils/filefind/file"
 	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
 
-	log "github.com/sirupsen/logrus"
+	"darklint/fldarklint/logus"
+
+	"github.com/darklab8/darklab_goutils/goutils/logus_core"
 )
 
 type INIFile struct {
-	File     *utils.File
+	File     *file.File
 	Comments []string
 
 	Sections []*Section
@@ -45,7 +47,11 @@ func (config *INIFile) AddSection(key string, section *Section) {
 
 	if val, ok := config.ConstraintUniqueSectionType[strings.ToLower(key)]; ok {
 		if val != key {
-			log.Fatal("not uniform case sensetivity for config.path", config.File.Filepath, " key=", key, " section=", section)
+			logus.Log.Fatal("not uniform case sensetivity for config",
+				logus_core.FilePath(config.File.GetFilepath()),
+				logus_core.Any("key", key),
+				logus_core.Any("section", section),
+			)
 		}
 	} else {
 		config.ConstraintUniqueSectionType[strings.ToLower(key)] = key
@@ -112,7 +118,9 @@ func (section *Section) GetParamInt(key string, optional bool) int {
 
 	integer, err := strconv.Atoi(section.GetParamStr(key, false))
 	if err != nil {
-		log.Fatal("failed to parse strid in universe.ini for section=", section, "key=", key)
+		logus.Log.Fatal("failed to parse strid in universe.ini",
+			logus_core.Any("key", key),
+			logus_core.Any("section", section))
 	}
 	return integer
 }
@@ -222,7 +230,7 @@ func UniParse(input string) (UniValue, error) {
 		parsed_number, err := strconv.ParseFloat(input, 64)
 
 		if err != nil {
-			log.Warn("failed to read number, input=", input)
+			logus.Log.Warn("failed to read number", logus_core.Any("input", input))
 			return nil, err
 		}
 
@@ -243,7 +251,7 @@ func UniParse(input string) (UniValue, error) {
 func UniParseF(input string) UniValue {
 	value, err := UniParse(input)
 	if err != nil {
-		log.Fatal("unable to parse UniParseF=", input)
+		logus.Log.Fatal("unable to parse UniParseF", logus_core.Any("input", input))
 	}
 	return value
 }
@@ -285,19 +293,19 @@ func isKeyCaseSensetive(key string) bool {
 	return false
 }
 
-func (config INIFile) Read(fileref *utils.File) INIFile {
-	log.Debug("started reading INIFileRead for", fileref.Filepath)
+func (config INIFile) Read(fileref *file.File) INIFile {
+	logus.Log.Debug("started reading INIFileRead for", logus_core.FilePath(fileref.GetFilepath()))
 	config.File = fileref
 
-	log.Debug("opening file", fileref.Filepath)
+	logus.Log.Debug("opening file", logus_core.FilePath(fileref.GetFilepath()))
 	file := fileref.OpenToReadF()
-	log.Debug("defer file close", fileref.Filepath)
+	logus.Log.Debug("defer file close", logus_core.FilePath(fileref.GetFilepath()))
 	defer file.Close()
 
-	log.Debug("reading lines")
+	logus.Log.Debug("reading lines")
 	lines := file.ReadLines()
 
-	log.Debug("setting current section")
+	logus.Log.Debug("setting current section")
 	var cur_section *Section
 	for _, line := range lines {
 
@@ -319,14 +327,14 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 			splitted_values := strings.Split(line_to_read, ",")
 			first_value, err := UniParse(splitted_values[0])
 			if err != nil {
-				log.Fatal("ini reader, failing to parse line because of UniParse, line=", line, "filepath=", fileref.Filepath)
+				logus.Log.Fatal("ini reader, failing to parse line because of UniParse, line="+line, logus_core.FilePath(fileref.GetFilepath()))
 			}
 
 			var values []UniValue
 			for _, value := range splitted_values {
 				univalue, err := UniParse(value)
 				if err != nil {
-					log.Fatal("ini reader, failing to parse line because of UniParse, line=", line, "filepath=", fileref.Filepath)
+					logus.Log.Fatal("ini reader, failing to parse line because of UniParse, line="+line, logus_core.FilePath(fileref.GetFilepath()))
 				}
 				values = append(values, univalue)
 			}
@@ -353,7 +361,7 @@ func (config INIFile) Read(fileref *utils.File) INIFile {
 
 const KEY_COMMENT string = "00e0fc91e00300ed" // random hash
 
-func (config INIFile) Write(fileref *utils.File) *utils.File {
+func (config INIFile) Write(fileref *file.File) *file.File {
 
 	for _, comment := range config.Comments {
 		fileref.ScheduleToWrite(fmt.Sprintf(";%s", comment))

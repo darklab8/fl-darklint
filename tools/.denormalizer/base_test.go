@@ -1,9 +1,9 @@
 package denormalizer
 
 // import (
-// 	"darktool/tools/parser"
-// 	"darktool/tools/parser/freelancer/data/equipment/market"
-// 	"darktool/tools/utils"
+// 	"darklint/tools/parser"
+// 	"darklint/tools/parser/freelancer/data/equipment/market"
+// 	"github.com/darklab8/darklab_goutils/goutils/utils"
 // 	"strings"
 
 // 	"path/filepath"
