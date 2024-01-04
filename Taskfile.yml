@@ -1,32 +1,9 @@
 version: '3'
 
 tasks:
-  tag:
-    cmds:
-      - git tag v{{.TAG}}
-    vars:
-      TAG:
-        sh: git-conventional-commits version
-
-  tag-push:
-    cmds:
-      - git push origin v{{.TAG}}
-    vars:
-      TAG:
-        sh: git-conventional-commits version
-
-  deploy:
-    cmds:
-      - task: tag
-      - task: tag-push
-
-  version:
-    cmds:
-      - git-conventional-commits version
-
   build-version:
     cmds:
-      - autogit semver > settings/version.txt || echo 'not installed autogit' > settings/version.txt
+      - autogit semver > fldarklint/settings/version.txt || echo 'not installed autogit' > fldarklint/settings/version.txt
   build:
     cmds:
       - task: build-version
