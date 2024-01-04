@@ -1,6 +1,6 @@
 # Darktool
 
-![](assets/diff_example.png)
+![](docs/assets/diff_example.png)
 
 ## Description
 
