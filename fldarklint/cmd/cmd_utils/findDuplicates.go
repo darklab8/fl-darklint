@@ -6,7 +6,7 @@ package cmd_utils
 import (
 	"fmt"
 
-	"darklint/cmd/cmd_utils/findduplicates"
+	"darklint/fldarklint/cmd/cmd_utils/findduplicates"
 
 	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 	"github.com/spf13/cobra"
@@ -31,7 +31,7 @@ var findDuplicatesCmd = &cobra.Command{
 var pathTofile string
 var regexExpression string
 
-func inif() {
+func init() {
 	hookCmd.AddCommand(findDuplicatesCmd)
 	findDuplicatesCmd.Flags().StringVarP(&pathTofile, "filepath", "f", "", "Path to file where duplicates to find")
 	findDuplicatesCmd.Flags().StringVarP(&regexExpression, "regexp", "r", "", "Regular rexpression to match")

@@ -1,7 +1,7 @@
 package cmd_utils
 
 import (
-	"darklint/cmd/cmd_utils/rand_rotator"
+	"darklint/fldarklint/cmd/cmd_utils/rand_rotator"
 	"fmt"
 
 	"github.com/spf13/cobra"

@@ -6,7 +6,7 @@ P.S. It should be containing as zero code logic as possible
 package cmd
 
 import (
-	"darklint/cmd/cmd_utils"
+	"darklint/fldarklint/cmd/cmd_utils"
 	"darklint/fldarklint/settings"
 	"os"
 

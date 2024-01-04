@@ -3,7 +3,7 @@ package cmd_utils
 import (
 	"github.com/spf13/cobra"
 
-	randline "darklint/cmd/cmd_utils/rand_line"
+	"darklint/fldarklint/cmd/cmd_utils/rand_line"
 )
 
 // randLineCmd represents the randLine command
@@ -11,11 +11,11 @@ var randLineCmd = &cobra.Command{
 	Use:   "rand_line",
 	Short: "Tool to select `k` random lines from one file and copy to another one",
 	Run: func(cmd *cobra.Command, args []string) {
-		randline.Run(Input)
+		rand_line.Run(Input)
 	},
 }
 
-var Input randline.Input
+var Input rand_line.Input
 
 func init() {
 	hookCmd.AddCommand(randLineCmd)
