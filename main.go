@@ -7,7 +7,7 @@ in order to be more productive during its development configuration
 package main
 
 import (
-	"darklint/cmd"
+	"darklint/fldarklint/cmd"
 	_ "darklint/fldarklint/settings" // bootstrapp settings for initialization
 )
 
