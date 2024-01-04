@@ -1,12 +1,16 @@
-# Darktool
+# fldarklint
 
 ![](docs/assets/diff_example.png)
 
 ## Description
 
-- Set of dev tools for Freelancer Discovery community, in order to help them in their configurational effort
-- Main goal is to create classic linter for game files, whichi can autofix config files
+- Main goal of the tool is to be classic linter for game files, whichi can autofix config files
+  - inspired by `python black` linter that formats everything to same uniform standard
+  - `formatter` module is responsible for this
+- Additionally it is capable to supply human readable comments to config objects for easier life.
+  - `denormalizer` module is responsible for this
 - For tool usage was developed freelancer ini reader/writer with easily mapping variables to access in ORM - object relational mapping fashion. This alone allows quickly accessing any config data with least amont of code effort for additional features.
+  - (see fldarkdata library in a separate repo)
 
 ## Features:
 
