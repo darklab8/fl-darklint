@@ -1,14 +1,14 @@
-package cmd
+package cmd_utils
 
 import (
 	"github.com/spf13/cobra"
 
-	"darklint/tools/randline"
+	randline "darklint/cmd/cmd_utils/rand_line"
 )
 
 // randLineCmd represents the randLine command
 var randLineCmd = &cobra.Command{
-	Use:   "randLine",
+	Use:   "rand_line",
 	Short: "Tool to select `k` random lines from one file and copy to another one",
 	Run: func(cmd *cobra.Command, args []string) {
 		randline.Run(Input)
@@ -18,7 +18,7 @@ var randLineCmd = &cobra.Command{
 var Input randline.Input
 
 func init() {
-	rootCmd.AddCommand(randLineCmd)
+	hookCmd.AddCommand(randLineCmd)
 
 	randLineCmd.PersistentFlags().StringVarP(&Input.InputFilePath, "input", "i", "", "input input (required)")
 	randLineCmd.MarkPersistentFlagRequired("input")

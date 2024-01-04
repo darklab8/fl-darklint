@@ -6,6 +6,8 @@ P.S. It should be containing as zero code logic as possible
 package cmd
 
 import (
+	"darklint/cmd/cmd_utils"
+	"darklint/settings"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -15,7 +17,7 @@ const description = "set of tools for config development of Freelancer game"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "darklint",
+	Use:   settings.ToolName,
 	Short: description,
 	Long:  description + ``,
 
@@ -35,13 +37,6 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.darktool.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	cmd_utils.Hook(rootCmd)
 }

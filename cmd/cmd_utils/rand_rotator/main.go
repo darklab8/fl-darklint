@@ -1,7 +1,7 @@
 /*
 Package generating random rotation for object
 */
-package randrotator
+package rand_rotator
 
 import (
 	"darklint/fldarklint/logus"

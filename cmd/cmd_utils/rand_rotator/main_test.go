@@ -1,4 +1,4 @@
-package randrotator
+package rand_rotator
 
 import (
 	"fmt"

@@ -1,4 +1,4 @@
-package randline
+package rand_line
 
 import (
 	"testing"

@@ -1,12 +1,12 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 */
-package cmd
+package cmd_utils
 
 import (
 	"fmt"
 
-	"darklint/cmd/findduplicates"
+	"darklint/cmd/cmd_utils/findduplicates"
 
 	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 	"github.com/spf13/cobra"
@@ -31,17 +31,8 @@ var findDuplicatesCmd = &cobra.Command{
 var pathTofile string
 var regexExpression string
 
-func init() {
-	rootCmd.AddCommand(findDuplicatesCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// findDuplicatesCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
+func inif() {
+	hookCmd.AddCommand(findDuplicatesCmd)
 	findDuplicatesCmd.Flags().StringVarP(&pathTofile, "filepath", "f", "", "Path to file where duplicates to find")
 	findDuplicatesCmd.Flags().StringVarP(&regexExpression, "regexp", "r", "", "Regular rexpression to match")
 	findDuplicatesCmd.MarkFlagRequired("filepath")
