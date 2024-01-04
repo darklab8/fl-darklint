@@ -4,15 +4,13 @@ import (
 	"os"
 	"strings"
 
-	"darklint/fldarklint/settings/loglevel"
 	"darklint/fldarklint/settings/logus"
 	_ "embed"
 )
 
 var FreelancerFreelancerLocation string
+
 var TestingIntegration bool = false
-var Debug bool = false
-var LogLevel = loglevel.Warning
 
 //go:embed version.txt
 var Version string
@@ -38,4 +36,5 @@ func init() {
 	if _, ok := os.LookupEnv("TEST_INTEGRATION"); ok {
 		TestingIntegration = true
 	}
+
 }

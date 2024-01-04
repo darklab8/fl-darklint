@@ -1,6 +1,7 @@
 {
   "terminal.integrated.env.linux": {
-    "DEBUG": "true"
+    "DEBUG": "true",
+    "FLDARKLINT_LOG_LEVEL": "DEBUG"
   },
   // Show .git folder
     "files.exclude": {
