@@ -4,8 +4,8 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"darklint/fldarklint/formatter"
 	"darklint/fldarklint/settings"
-	"darklint/fldarklint/validator"
 	"fmt"
 
 	"github.com/darklab8/darklab_flconfigs/flconfigs/configs_mapped"
@@ -19,7 +19,7 @@ var validateCmd = &cobra.Command{
 	Long:  `Freelancer folder is automatically discovered in any child folders`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("format called")
-		validator.Run(configs_mapped.IsDruRun(is_dry_run))
+		formatter.Run(configs_mapped.IsDruRun(is_dry_run))
 		fmt.Println("OK")
 	},
 }
