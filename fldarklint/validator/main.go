@@ -11,7 +11,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/darklab8/darklab_fldarkdata/fldarkdata/configs_mapped"
+	"github.com/darklab8/darklab_flconfigs/flconfigs/configs_mapped"
 	"github.com/darklab8/darklab_goutils/goutils/logus_core"
 	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )

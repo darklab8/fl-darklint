@@ -8,7 +8,7 @@ import (
 	"darklint/fldarklint/validator"
 	"fmt"
 
-	"github.com/darklab8/darklab_fldarkdata/fldarkdata/configs_mapped"
+	"github.com/darklab8/darklab_flconfigs/flconfigs/configs_mapped"
 	"github.com/spf13/cobra"
 )
 

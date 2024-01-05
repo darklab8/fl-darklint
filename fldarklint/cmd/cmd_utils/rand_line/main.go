@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/darklab8/darklab_fldarkdata/fldarkdata/configs_mapped/parserutils/filefind/file"
+	"github.com/darklab8/darklab_flconfigs/flconfigs/configs_mapped/parserutils/filefind/file"
 
 	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )

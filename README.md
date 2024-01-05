@@ -69,9 +69,9 @@ flowchart TD
     darktool --> cmd
     cmd[cmd\nUser Commands to CLI interface]
     cmd --> validator[validator\nlints freelancer configs to strict format]
-    validator --> fldarkdata[fldarkdata\nProvides static typed access to parsedFreelancer configs]
+    validator --> flconfigs[flconfigs\nProvides static typed access to parsedFreelancer configs]
     validator --> denormalizer[denormalizer\nDenormalizes parsed data for more\nhuman readable view of freelancer configs]
-    denormalizer --> fldarkdata
+    denormalizer --> flconfigs
 ```
 
 ## Contributors
