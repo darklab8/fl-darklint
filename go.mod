@@ -3,7 +3,7 @@ module darklint
 go 1.21.1
 
 require (
-	github.com/darklab8/darklab_flconfigs v0.1.3
+	github.com/darklab8/darklab_flconfigs v0.1.4
 	github.com/darklab8/darklab_goutils v0.4.0
 	github.com/spf13/cobra v1.6.1
 )
