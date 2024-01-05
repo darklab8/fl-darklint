@@ -1,7 +1,9 @@
 package formatter
 
 import (
+	"darklint/fldarklint/formatter/freelancer_format/data_format/equipment_format/market_format"
 	"darklint/fldarklint/formatter/freelancer_format/data_format/universe_format"
+	"darklint/fldarklint/formatter/freelancer_format/data_format/universe_format/systems_mapped"
 	"darklint/fldarklint/settings"
 	"darklint/fldarklint/settings/logus"
 	"fmt"
@@ -26,7 +28,14 @@ func NewFormatter(configs *configs_mapped.MappedConfigs) *Formatter {
 	f := &Formatter{
 		configs: configs,
 	}
-	f.formatters = append(f.formatters, universe_format.NewUniverseFormatter(configs.Universe_config))
+	f.formatters = append(f.formatters, universe_format.NewFormatter(configs.Universe_config))
+	f.formatters = append(f.formatters, systems_mapped.NewFormatter(configs.Systems))
+
+	f.formatters = append(f.formatters,
+		market_format.NewFormatter(f.configs.Market_commodities),
+		market_format.NewFormatter(f.configs.Market_commodities),
+		market_format.NewFormatter(f.configs.Market_misc),
+	)
 	return f
 }
 

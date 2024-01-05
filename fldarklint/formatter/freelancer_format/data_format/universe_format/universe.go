@@ -6,22 +6,22 @@ import (
 	"github.com/darklab8/darklab_flconfigs/flconfigs/configs_mapped/freelancer_mapped/data_mapped/universe_mapped"
 )
 
-type UniverseFormatter struct {
-	universe_config *universe_mapped.Config
+type ConfigFormatter struct {
+	config *universe_mapped.Config
 }
 
-func NewUniverseFormatter(universe_config *universe_mapped.Config) *UniverseFormatter {
-	return &UniverseFormatter{universe_config: universe_config}
+func NewFormatter(universe_config *universe_mapped.Config) *ConfigFormatter {
+	return &ConfigFormatter{config: universe_config}
 }
 
-func (f *UniverseFormatter) Format() {
-	for _, base := range f.universe_config.Bases {
+func (f *ConfigFormatter) Format() {
+	for _, base := range f.config.Bases {
 		base.Nickname.Set(strings.ToLower(base.Nickname.Get()))
 		base.System.Set(strings.ToLower(base.System.Get()))
 		base.File.Set(strings.ToLower(base.File.Get()))
 	}
 
-	for _, system := range f.universe_config.Systems {
+	for _, system := range f.config.Systems {
 		system.Nickname.Set(strings.ToLower(system.Nickname.Get()))
 		system.Msg_id_prefix.Set(strings.ToLower(system.Msg_id_prefix.Get()))
 
