@@ -8,8 +8,7 @@ import (
 	"darklint/fldarklint/validator"
 	"fmt"
 
-	"github.com/darklab8/darklab_fldarkdata/fldarkdata/parser"
-
+	"github.com/darklab8/darklab_fldarkdata/fldarkdata/configs_mapped"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +19,7 @@ var validateCmd = &cobra.Command{
 	Long:  `Freelancer folder is automatically discovered in any child folders`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("format called")
-		validator.Run(parser.IsDruRun(is_dry_run))
+		validator.Run(configs_mapped.IsDruRun(is_dry_run))
 		fmt.Println("OK")
 	},
 }

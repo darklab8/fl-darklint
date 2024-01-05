@@ -11,13 +11,12 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/darklab8/darklab_fldarkdata/fldarkdata/parser"
-
+	"github.com/darklab8/darklab_fldarkdata/fldarkdata/configs_mapped"
 	"github.com/darklab8/darklab_goutils/goutils/logus_core"
 	"github.com/darklab8/darklab_goutils/goutils/utils/utils_types"
 )
 
-func Run(is_dry_run parser.IsDruRun) {
+func Run(is_dry_run configs_mapped.IsDruRun) {
 
 	_, err := os.Stat(filepath.Join(settings.FreelancerFreelancerLocation, "DATA"))
 
@@ -26,10 +25,10 @@ func Run(is_dry_run parser.IsDruRun) {
 		logus.Log.Fatal("freelancer folder is not detected because DATA folder was not found", logus_core.FilePath(utils_types.FilePath(settings.FreelancerFreelancerLocation)))
 	}
 
-	data := (&parser.Parsed{}).Read(utils_types.FilePath(settings.FreelancerFreelancerLocation))
+	configs := configs_mapped.NewMappedConfigs().Read(utils_types.FilePath(settings.FreelancerFreelancerLocation))
 
 	// see README.go in denormalizer why it was commented out but not removed.
 	// denormalizer.Run(data)
 
-	data.Write(is_dry_run)
+	configs.Write(is_dry_run)
 }
