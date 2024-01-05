@@ -1,6 +1,6 @@
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
-github.com/darklab8/darklab_fldarkdata v0.1.0 h1:KjgZRDblpKRlG4kBQh7lXR64UZEI2CWKk+YtYC/ywWY=
-github.com/darklab8/darklab_fldarkdata v0.1.0/go.mod h1:s3DsnHgYRrlbjKAwY2qQUahj+UKVQGAO37F75Gf0lYA=
+github.com/darklab8/darklab_flconfigs v0.1.2 h1:EygkEzV9wbavcNaxyrREBniNfCSTWP4zSoPFcQ+5e7I=
+github.com/darklab8/darklab_flconfigs v0.1.2/go.mod h1:pbcJ52c2Y7Op+v7ID7THqAOo4fLaxQwHxGd/bIDENFA=
 github.com/darklab8/darklab_goutils v0.4.0 h1:+UmWEM5GDKTMwVVy5lghPQeh7UQGTIuO/Tck+5LznMs=
 github.com/darklab8/darklab_goutils v0.4.0/go.mod h1:sL2yFr77PquFePdB9tsTFzNYspyz+hkW3a3sVUjFyrU=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
@@ -16,7 +16,6 @@ github.com/spf13/pflag v1.0.5 h1:iy+VFUOCP1a+8yFto/drg2CJ5u0yRoB7fZw3DKv/JXA=
 github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
-gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
