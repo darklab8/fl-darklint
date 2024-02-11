@@ -3,7 +3,7 @@ module github.com/darklab8/fl-darklint
 go 1.21.1
 
 require (
-	github.com/darklab8/fl-configs v0.2.1
+	github.com/darklab8/fl-configs v0.4.1
 	github.com/darklab8/go-typelog v0.3.2
 	github.com/darklab8/go-utils v0.10.6
 	github.com/spf13/cobra v1.6.1
