@@ -55,6 +55,10 @@ Request new features [here](https://github.com/darklab8/fl-darklint/issues) or t
 
 P.S. `~/bin/darklint.exe` must be any valid bin path (`echo $PATH`, `echo %PATH%` to get the list) accessable by your tool from where u are going to use it.
 
+## after installation
+
+- go to Freelancer folder root and apply with `darklint format`
+
 ## Simplified usage:
 
 - just [download here](https://github.com/darklab8/fl-darklint/releases)
