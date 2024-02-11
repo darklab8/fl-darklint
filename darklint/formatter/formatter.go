@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/darklab8/fl-darklint/darklint/denormalizer"
 	"github.com/darklab8/fl-darklint/darklint/formatter/freelancer_format/data_format/equipment_format/market_format"
 	"github.com/darklab8/fl-darklint/darklint/formatter/freelancer_format/data_format/universe_format"
 	"github.com/darklab8/fl-darklint/darklint/formatter/freelancer_format/data_format/universe_format/systems_mapped"
@@ -57,8 +58,7 @@ func Run(is_dry_run configs_mapped.IsDruRun) {
 
 	configs := configs_mapped.NewMappedConfigs().Read(utils_types.FilePath(settings.FreelancerFreelancerLocation))
 
-	// see README.go in denormalizer why it was commented out but not removed.
-	// denormalizer.Run(data)
+	denormalizer.Run(configs)
 
 	formator := NewFormatter(configs)
 	formator.Format()

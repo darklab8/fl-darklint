@@ -4,13 +4,31 @@ tasks:
   build-version:
     cmds:
       - autogit semver > darklint/settings/version.txt || echo 'not installed autogit' > darklint/settings/version.txt
+
+  build:test:
+    cmds:
+      - mkdir -p dist
+      - rm dist/darklint-linux-amd64 | true
+      - GOOS=linux GOARCH=amd64 go build -v -o dist/darklint-linux-amd64 main.go
+
   build:
     cmds:
       - task: build-version
       - mkdir -p dist
       - rm dist/* | true
-      - GOOS=windows GOARCH=amd64 go build -v -o dist/darklint-windows-amd64.exe main.go
       - GOOS=linux GOARCH=amd64 go build -v -o dist/darklint-linux-amd64 main.go
+      - GOOS=linux GOARCH=arm64 go build -v -o dist/darklint-linux-arm64 main.go
+      - GOOS=linux GOARCH=386 go build -v -o dist/darklint-linux-386 main.go
+      - GOOS=linux GOARCH=arm go build -v -o dist/darklint-linux-arm main.go
+
+      - GOOS=windows GOARCH=amd64 go build -v -o dist/darklint-windows-amd64.exe main.go
+      - GOOS=windows GOARCH=386 go build -v -o dist/darklint-windows-386.exe main.go
+      - GOOS=windows GOARCH=arm64 go build -v -o dist/darklint-windows-arm64.exe main.go
+      - GOOS=windows GOARCH=arm go build -v -o dist/darklint-windows-arm.exe main.go
+      
+      - GOOS=darwin GOARCH=amd64 go build -v -o dist/darklint-macos-amd64 main.go
+      - GOOS=darwin GOARCH=arm64 go build -v -o dist/darklint-macos-arm64 main.go
+
   run:
     cmds:
       - go run .
@@ -45,7 +63,7 @@ tasks:
   setup-dev:
     cmds:
       - sudo rm /usr/local/bin/darklint | true
-      - echo -e '#!/bin/bash\nset -x\nfilepath=`pwd`\ncd /home/naa/repos/pet_projects/fl-darklint && FLDARKLINT_PROJECT_FOLDER=$filepath go run . $@' | sudo tee /usr/local/bin/darklint
+      - echo -e '#!/bin/bash\nset -x\nfilepath=`pwd`\ncd /home/naa/repos/pet_projects/fl-darklint && DARKLINT_PROJECT_FOLDER=$filepath go run . $@' | sudo tee /usr/local/bin/darklint
       - sudo chmod 777 /usr/local/bin/darklint
     vars:
       PWD:
