@@ -55,7 +55,10 @@ func (denormalizer *BaseDenormalizer) MarketWrite(marketconfig *market_mapped.Co
 
 	for _, base_good := range marketconfig.BaseGoods {
 		base_denormalized_name := semantic.NewString(base_good.Render(), BASE_KEY_NAME, semantic.TypeComment, inireader.OPTIONAL_p)
-		base_denormalized_name.Set(denormalizer.baseGoods[base_good.Base.Get()].name)
+
+		if base_name := denormalizer.baseGoods[base_good.Base.Get()].name; base_name != "" {
+			base_denormalized_name.Set(base_name)
+		}
 
 		base_denorm_RecycleCandidate := semantic.NewString(base_good.Render(), BASE_KEY_RECYCLE, semantic.TypeComment, inireader.OPTIONAL_p)
 
@@ -73,7 +76,7 @@ func (denormalizer *BaseDenormalizer) ReadBaseNames(marketconfig *market_mapped.
 		base_strid_name := int(base.StridName.Get())
 		record, ok := infocards.RecordsMap[base_strid_name]
 		if !ok {
-			logus.Log.Error("failed to get record from infocardts.txt for base_strid_name", typelog.Int("base_strid_name", base_strid_name), typelog.Any("base", base), typelog.Any("record", record))
+			logus.Log.Error("failed to get record from infocards.txt for base_strid_name", typelog.Int("base_strid_name", base_strid_name), typelog.Any("base_nickname", base.Nickname.Get()), typelog.Any("base_nickname", base.File.Get()))
 			continue
 		}
 
@@ -121,7 +124,10 @@ func (denormalizer *BaseDenormalizer) UniverseWrite(universeConfig *universe_map
 
 	for base_nickname, base := range universeConfig.BasesMap.GetMap() {
 		base_name := semantic.NewString(base.Render(), BASE_KEY_NAME, semantic.TypeComment, inireader.OPTIONAL_p)
-		base_name.Set(denormalizer.baseGoods[string(base_nickname)].name)
+
+		if name := denormalizer.baseGoods[string(base_nickname)].name; name != "" {
+			base_name.Set(name)
+		}
 
 		base_recycle_candidate := semantic.NewString(base.Render(), BASE_KEY_RECYCLE, semantic.TypeComment, inireader.OPTIONAL_p)
 		if denormalizer.baseGoods[string(base_nickname)].recycleCandidate != "" {

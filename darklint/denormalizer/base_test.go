@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/darklab8/fl-configs/configs/configs_mapped"
-	"github.com/darklab8/fl-configs/configs/configs_mapped/freelancer_mapped/data_mapped/equipment_mapped/market_mapped"
 	"github.com/darklab8/fl-darklint/darklint/settings/logus"
 	"github.com/darklab8/go-utils/goutils/utils"
 	"github.com/darklab8/go-utils/goutils/utils/utils_filepath"
@@ -28,7 +27,7 @@ func TestSaveRecycleParams(t *testing.T) {
 	isRecyclePresent := false
 	lines := market_ship_lines
 	for _, line := range lines {
-		if strings.Contains(line, market_mapped.KEY_RECYCLE) {
+		if strings.Contains(line, BASE_KEY_RECYCLE) {
 			isRecyclePresent = true
 		}
 	}
