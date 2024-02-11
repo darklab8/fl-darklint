@@ -1,10 +1,4 @@
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
-github.com/darklab8/fl-configs v0.1.3 h1:ZwDO0YcdKPITlsYUAWfnvttjYMVY/A9julbsjIsOVtY=
-github.com/darklab8/fl-configs v0.1.3/go.mod h1:pbcJ52c2Y7Op+v7ID7THqAOo4fLaxQwHxGd/bIDENFA=
-github.com/darklab8/fl-configs v0.1.4 h1:B+guEqwjKd8O47yiz52Y/oEz9NXogOvlPWpAKTN+l9k=
-github.com/darklab8/fl-configs v0.1.4/go.mod h1:pbcJ52c2Y7Op+v7ID7THqAOo4fLaxQwHxGd/bIDENFA=
-github.com/darklab8/darklab_goutils v0.4.0 h1:+UmWEM5GDKTMwVVy5lghPQeh7UQGTIuO/Tck+5LznMs=
-github.com/darklab8/darklab_goutils v0.4.0/go.mod h1:sL2yFr77PquFePdB9tsTFzNYspyz+hkW3a3sVUjFyrU=
 github.com/darklab8/fl-configs v0.2.1 h1:+po1W24nSvJKMvtvqLlsMEt+uCyqHCFD1P3ruM1a7cc=
 github.com/darklab8/fl-configs v0.2.1/go.mod h1:7t4tkqBdItMMwB9B+JKWd71/HXxZZx91EEQLryOKSd4=
 github.com/darklab8/go-typelog v0.3.2 h1:LfQ4bUpKifNKZZFoAhrbasmpLhaXrjwnNL9GcquOy8w=
