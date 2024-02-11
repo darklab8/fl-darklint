@@ -1,4 +1,4 @@
-# fldarklint
+# fl-darklint
 
 ![](docs/assets/diff_example.png)
 

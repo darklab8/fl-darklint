@@ -3,14 +3,14 @@ version: '3'
 tasks:
   build-version:
     cmds:
-      - autogit semver > fldarklint/settings/version.txt || echo 'not installed autogit' > fldarklint/settings/version.txt
+      - autogit semver > darklint/settings/version.txt || echo 'not installed autogit' > fldarklint/settings/version.txt
   build:
     cmds:
       - task: build-version
       - mkdir -p dist
       - rm dist/* | true
-      - GOOS=windows GOARCH=amd64 go build -v -o dist/fldarklint-windows-amd64.exe main.go
-      - GOOS=linux GOARCH=amd64 go build -v -o dist/fldarklint-linux-amd64 main.go
+      - GOOS=windows GOARCH=amd64 go build -v -o dist/darklint-windows-amd64.exe main.go
+      - GOOS=linux GOARCH=amd64 go build -v -o dist/darklint-linux-amd64 main.go
   run:
     cmds:
       - go run .
@@ -37,16 +37,16 @@ tasks:
 
   setup-prod:
     cmds:
-      - sudo ln -s {{.PWD}}/dist/fldarklint-linux-amd64 /usr/local/bin/fldarklint
+      - sudo ln -s {{.PWD}}/dist/darklint-linux-amd64 /usr/local/bin/darklint
     vars:
       PWD:
         sh: echo '$(pwd)'
 
   setup-dev:
     cmds:
-      - sudo rm /usr/local/bin/fldarklint | true
+      - sudo rm /usr/local/bin/darklint | true
       - echo -e '#!/bin/bash\nset -x\nfilepath=`pwd`\ncd /home/naa/repos/pet_projects/darklab_fldarklint && FLDARKLINT_PROJECT_FOLDER=$filepath go run . $@' | sudo tee /usr/local/bin/fldarklint
-      - sudo chmod 777 /usr/local/bin/fldarklint
+      - sudo chmod 777 /usr/local/bin/darklint
     vars:
       PWD:
         sh: echo '$(pwd)'

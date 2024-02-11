@@ -7,8 +7,8 @@ in order to be more productive during its development configuration
 package main
 
 import (
-	"darklint/fldarklint/cmd"
-	_ "darklint/fldarklint/settings" // bootstrapp settings for initialization
+	"github.com/darklab8/fl-darklint/darklint/cmd"
+	_ "github.com/darklab8/fl-darklint/darklint/settings" // bootstrapp settings for initialization
 )
 
 func main() {
