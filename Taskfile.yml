@@ -55,6 +55,7 @@ tasks:
 
   setup-prod:
     cmds:
+      - sudo rm /usr/local/bin/darklint | true
       - sudo ln -s {{.PWD}}/dist/darklint-linux-amd64 /usr/local/bin/darklint
     vars:
       PWD:
