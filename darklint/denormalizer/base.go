@@ -56,16 +56,18 @@ func (denormalizer *BaseDenormalizer) MarketWrite(marketconfig *market_mapped.Co
 	for _, base_good := range marketconfig.BaseGoods {
 		base_denormalized_name := semantic.NewString(base_good.Render(), BASE_KEY_NAME, semantic.TypeComment, inireader.OPTIONAL_p)
 
-		if base_name := denormalizer.baseGoods[base_good.Base.Get()].name; base_name != "" {
-			base_denormalized_name.Set(base_name)
+		if denorm_base_good, ok := denormalizer.baseGoods[base_good.Base.Get()]; ok {
+			base_denormalized_name.Set(denorm_base_good.name)
 		}
 
 		base_denorm_RecycleCandidate := semantic.NewString(base_good.Render(), BASE_KEY_RECYCLE, semantic.TypeComment, inireader.OPTIONAL_p)
 
-		if denormalizer.baseGoods[base_good.Base.Get()].recycleCandidate != "" {
-			base_denorm_RecycleCandidate.Set(denormalizer.baseGoods[base_good.Base.Get()].recycleCandidate)
-		} else {
-			base_denorm_RecycleCandidate.Delete()
+		if denorm_base_good, ok := denormalizer.baseGoods[base_good.Base.Get()]; ok {
+			if denorm_base_good.recycleCandidate != "" {
+				base_denorm_RecycleCandidate.Set(denormalizer.baseGoods[base_good.Base.Get()].recycleCandidate)
+			} else {
+				base_denorm_RecycleCandidate.Delete()
+			}
 		}
 	}
 }
@@ -96,15 +98,15 @@ func (denormalizer *BaseDenormalizer) ReadRecycle(marketconfig *market_mapped.Co
 
 		system, ok := systems.SystemsMap.GetMap()[base.System.Get()]
 		if !ok {
-			logus.Log.Fatal("base is leading to non existent system", typelog.String("base_name", base.Nickname.Get()), typelog.String("system", base.System.Get()))
+			logus.Log.Error("base is leading to non existent system", typelog.String("base_name", base.Nickname.Get()), typelog.String("system", base.System.Get()))
+			continue
 		}
 
 		var recycle_builder strings.Builder
 
-		universe_system, ok := universeConfig.SystemMap.GetMap()[universe_mapped.SystemNickname(system.Nickname)]
 		_, ok = system.BasesByBase.GetMap()[base.Nickname.Get()]
 		if !ok {
-			recycle_builder.WriteString(fmt.Sprintf("%s base_good.base=%s not in universe.ini->Base.system->System.file->%s | ", errors.New("base is not present in a system"), base.Nickname.Get(), universe_system.File.Get()))
+			recycle_builder.WriteString(fmt.Sprintf("%s base_good.base=%s not in universe.ini->Base.system->System.file->%s | ", errors.New("base is not present in a system"), base.Nickname.Get(), system.Nickname))
 			// logus.Log.Fatal("base ", base_good.Base, " is not present in system ", system.Nickname, " potential crash situation")
 		}
 
@@ -125,15 +127,20 @@ func (denormalizer *BaseDenormalizer) UniverseWrite(universeConfig *universe_map
 	for base_nickname, base := range universeConfig.BasesMap.GetMap() {
 		base_name := semantic.NewString(base.Render(), BASE_KEY_NAME, semantic.TypeComment, inireader.OPTIONAL_p)
 
-		if name := denormalizer.baseGoods[string(base_nickname)].name; name != "" {
-			base_name.Set(name)
+		if denorm_base_good, ok := denormalizer.baseGoods[string(base_nickname)]; ok {
+			if denorm_base_good.name != "" {
+				base_name.Set(denorm_base_good.name)
+			}
+
 		}
 
 		base_recycle_candidate := semantic.NewString(base.Render(), BASE_KEY_RECYCLE, semantic.TypeComment, inireader.OPTIONAL_p)
-		if denormalizer.baseGoods[string(base_nickname)].recycleCandidate != "" {
-			base_recycle_candidate.Set(denormalizer.baseGoods[string(base_nickname)].recycleCandidate)
-		} else {
-			base_recycle_candidate.Delete()
+		if denorm_base_good, ok := denormalizer.baseGoods[string(base_nickname)]; ok {
+			if denorm_base_good.recycleCandidate != "" {
+				base_recycle_candidate.Set(denormalizer.baseGoods[string(base_nickname)].recycleCandidate)
+			} else {
+				base_recycle_candidate.Delete()
+			}
 		}
 	}
 }
