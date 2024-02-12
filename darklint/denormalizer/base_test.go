@@ -16,7 +16,7 @@ import (
 
 func TestSaveRecycleParams(t *testing.T) {
 	folder := utils.GetCurrentFolder()
-	freelancer_folder := utils_filepath.Dir(utils_filepath.Dir(utils_filepath.Dir(folder)))
+	freelancer_folder := utils_filepath.Dir(utils_filepath.Dir(folder))
 	logus.Log.Debug("beginning test", utils_logus.FilePath(freelancer_folder))
 
 	parsed := (&configs_mapped.MappedConfigs{}).Read(freelancer_folder)
