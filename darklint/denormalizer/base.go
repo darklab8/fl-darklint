@@ -96,15 +96,15 @@ var system_for_recycled_bases = [...]string{"ga13", "fp7"}
 func (denormalizer *BaseDenormalizer) ReadRecycle(marketconfig *market_mapped.Config, universeConfig *universe_mapped.Config, systems *systems_mapped.Config) {
 	for _, base := range universeConfig.Bases {
 
-		system, ok := systems.SystemsMap.GetMap()[base.System.Get()]
+		system, ok := systems.SystemsMap.MapGetValue(base.System.Get())
 		if !ok {
-			logus.Log.Error("base is leading to non existent system", typelog.String("base_name", base.Nickname.Get()), typelog.String("system", base.System.Get()))
+			logus.Log.Fatal("base is leading to non existent system", typelog.String("base_name", base.Nickname.Get()), typelog.String("system", base.System.Get()))
 			continue
 		}
 
 		var recycle_builder strings.Builder
 
-		_, ok = system.BasesByBase.GetMap()[base.Nickname.Get()]
+		_, ok = system.BasesByBase.MapGetValue(base.Nickname.Get())
 		if !ok {
 			recycle_builder.WriteString(fmt.Sprintf("%s base_good.base=%s not in universe.ini->Base.system->System.file->%s | ", errors.New("base is not present in a system"), base.Nickname.Get(), system.Nickname))
 			// logus.Log.Fatal("base ", base_good.Base, " is not present in system ", system.Nickname, " potential crash situation")
@@ -124,7 +124,7 @@ func (denormalizer *BaseDenormalizer) ReadRecycle(marketconfig *market_mapped.Co
 
 func (denormalizer *BaseDenormalizer) UniverseWrite(universeConfig *universe_mapped.Config) {
 
-	for base_nickname, base := range universeConfig.BasesMap.GetMap() {
+	universeConfig.BasesMap.Foreach(func(base_nickname universe_mapped.BaseNickname, base *universe_mapped.Base) {
 		base_name := semantic.NewString(base.Render(), BASE_KEY_NAME, semantic.TypeComment, inireader.OPTIONAL_p)
 
 		if denorm_base_good, ok := denormalizer.baseGoods[string(base_nickname)]; ok {
@@ -142,5 +142,5 @@ func (denormalizer *BaseDenormalizer) UniverseWrite(universeConfig *universe_map
 				base_recycle_candidate.Delete()
 			}
 		}
-	}
+	})
 }
