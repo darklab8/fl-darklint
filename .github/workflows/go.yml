@@ -25,10 +25,19 @@ jobs:
       with:
         go-version: 1.21
 
+    - uses: actions/checkout@v4
+      with:
+        repository: 'darklab8/fl-data'
+        path: '${{ github.workspace }}/fl-data'
+        token: ${{ secrets.FL_DATA_KEY }}
+
+    - run: ls ./fl-data
+
     - name: Build
       run: task build
 
     - name: Test
       run: task test -- -v
       env:
-        FLDARKLINT_LOG_LEVEL: "DEBUG"
+        DARKLINT_LOG_LEVEL: "DEBUG"
+        DARKLINT_FREELANCER_FOLDER: ${{ github.workspace }}/fl-data
