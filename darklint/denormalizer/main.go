@@ -8,5 +8,5 @@ regarding what they are. For example human readable base names to base object de
 */
 
 func Run(configs *configs_mapped.MappedConfigs) {
-	(&BaseDenormalizer{}).Read(configs).Write(configs)
+	NewBaseDenormalizer().Read(configs).Write(configs)
 }

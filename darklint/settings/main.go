@@ -23,7 +23,7 @@ func init() {
 	logus.Log.Info("init settings")
 
 	// =========== NORMAL SETTINGS ==================
-	if path, ok := os.LookupEnv(ToolNameCap + "_PROJECT_FOLDER"); ok {
+	if path, ok := os.LookupEnv(ToolNameCap + "_FREELANCER_FOLDER"); ok {
 		FreelancerFreelancerLocation = path
 	} else {
 		exe_path, err := os.Getwd()

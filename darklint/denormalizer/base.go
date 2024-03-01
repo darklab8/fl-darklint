@@ -22,6 +22,12 @@ type DenormalizedBaseGood struct {
 	recycleCandidate string
 }
 
+func NewBaseDenormalizer() *BaseDenormalizer {
+	return &BaseDenormalizer{
+		baseGoods: make(map[string]*DenormalizedBaseGood),
+	}
+}
+
 type BaseDenormalizer struct {
 	baseGoods map[string]*DenormalizedBaseGood
 }
