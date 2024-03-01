@@ -33,15 +33,15 @@ func (d *BaseDenormalizer) Read(parsed *configs_mapped.MappedConfigs) *BaseDenor
 		d.baseGoods[base.Nickname.Get()] = &DenormalizedBaseGood{}
 	}
 
-	d.ReadBaseNames(parsed.Market_ships_config, parsed.Universe_config, parsed.Infocards)
-	d.ReadRecycle(parsed.Market_ships_config, parsed.Universe_config, parsed.Systems)
+	d.ReadBaseNames(parsed.MarketShips, parsed.Universe_config, parsed.Infocards)
+	d.ReadRecycle(parsed.MarketShips, parsed.Universe_config, parsed.Systems)
 	return d
 }
 
 func (d *BaseDenormalizer) Write(parsed *configs_mapped.MappedConfigs) {
-	d.MarketWrite(parsed.Market_commodities)
-	d.MarketWrite(parsed.Market_ships_config)
-	d.MarketWrite(parsed.Market_misc)
+	d.MarketWrite(parsed.MarketCommidities)
+	d.MarketWrite(parsed.MarketShips)
+	d.MarketWrite(parsed.MarketMisc)
 	d.UniverseWrite(parsed.Universe_config)
 }
 

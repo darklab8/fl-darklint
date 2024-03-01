@@ -21,7 +21,7 @@ func TestSaveRecycleParams(t *testing.T) {
 
 	parsed := (&configs_mapped.MappedConfigs{}).Read(freelancer_folder)
 	(&BaseDenormalizer{}).Read(parsed).Write(parsed)
-	market_ship_lines := parsed.Market_ships_config.Write().GetLines()
+	market_ship_lines := parsed.MarketShips.Write().GetLines()
 
 	// isRecycleCandidate
 	isRecyclePresent := false
