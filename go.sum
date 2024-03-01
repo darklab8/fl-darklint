@@ -1,10 +1,16 @@
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/darklab8/fl-configs v0.4.2 h1:V3qM9er6Jes+d7vghWfpClUaPrRjh04myFLX2z+8XnU=
 github.com/darklab8/fl-configs v0.4.2/go.mod h1:7t4tkqBdItMMwB9B+JKWd71/HXxZZx91EEQLryOKSd4=
+github.com/darklab8/fl-configs v0.5.1 h1:U2IJxL93Vmx6oyabishnHrX8UwKZx963JKK+vDKnV5I=
+github.com/darklab8/fl-configs v0.5.1/go.mod h1:Wr66qzW5WRjt6Rb6BWyUHTY/KuIDquWgKngmoyt2iCE=
 github.com/darklab8/go-typelog v0.3.2 h1:LfQ4bUpKifNKZZFoAhrbasmpLhaXrjwnNL9GcquOy8w=
 github.com/darklab8/go-typelog v0.3.2/go.mod h1:AwwOf3dkp/tpevHFNbkB+PbwlDrUUgO1CVFkEnj+q5w=
+github.com/darklab8/go-typelog v0.5.0 h1:7/lG9BH1svf2vcSOdNhYbFhKBr8tveHBgw4D/ChaISA=
+github.com/darklab8/go-typelog v0.5.0/go.mod h1:AwwOf3dkp/tpevHFNbkB+PbwlDrUUgO1CVFkEnj+q5w=
 github.com/darklab8/go-utils v0.10.6 h1:BdBWa9b8uYJRDnf7C2A0GLXgCJwOAe96XIZ4uMTVE/M=
 github.com/darklab8/go-utils v0.10.6/go.mod h1:sbbAj7uyQU+PZOOeI60gOdM+ji+k4at93EcdAfRJZsI=
+github.com/darklab8/go-utils v0.11.0 h1:eryK1toYQ/FPFI3ZG3P8gzz0YT4QWkg3ryHuoxtiPU4=
+github.com/darklab8/go-utils v0.11.0/go.mod h1:zApy0zIFiGCw496OIot7dl8i2cAsQMyPyf3PCMMpS3g=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/inconshreveable/mousetrap v1.0.1 h1:U3uMjPSQEBMNp1lFxmllqCPM6P5u/Xq7Pgzkat/bFNc=
