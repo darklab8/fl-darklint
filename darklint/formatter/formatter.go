@@ -34,9 +34,7 @@ func NewFormatter(configs *configs_mapped.MappedConfigs) *Formatter {
 	f.formatters = append(f.formatters, systems_mapped.NewFormatter(configs.Systems))
 
 	f.formatters = append(f.formatters,
-		market_format.NewFormatter(f.configs.MarketCommidities),
-		market_format.NewFormatter(f.configs.MarketCommidities),
-		market_format.NewFormatter(f.configs.MarketMisc),
+		market_format.NewFormatter(f.configs.Market),
 	)
 	return f
 }

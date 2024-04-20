@@ -19,7 +19,7 @@ func TestSaveRecycleParams(t *testing.T) {
 
 	parsed := configs_mapped.NewMappedConfigs().Read(freelancer_folder)
 	NewBaseDenormalizer().Read(parsed).Write(parsed)
-	market_ship_lines := parsed.MarketShips.Write().GetLines()
+	market_ship_lines := parsed.Market.Write()
 	_ = market_ship_lines // geting file lines example
 
 	parsed.Write(configs_mapped.IsDruRun(true))
