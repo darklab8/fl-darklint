@@ -57,13 +57,13 @@ const (
 func (denormalizer *BaseDenormalizer) MarketWrite(marketconfig *market_mapped.Config) {
 
 	for _, base_good := range marketconfig.BaseGoods {
-		base_denormalized_name := semantic.NewString(base_good.Render(), BASE_KEY_NAME, semantic.OptsS(semantic.Optional(), semantic.Comment()))
+		base_denormalized_name := semantic.NewString(base_good.RenderModel(), BASE_KEY_NAME, semantic.OptsS(semantic.Optional(), semantic.Comment()))
 
 		if denorm_base_good, ok := denormalizer.baseGoods[base_good.Base.Get()]; ok {
 			base_denormalized_name.Set(denorm_base_good.name)
 		}
 
-		base_denorm_RecycleCandidate := semantic.NewString(base_good.Render(), BASE_KEY_RECYCLE, semantic.OptsS(semantic.Optional(), semantic.Comment()))
+		base_denorm_RecycleCandidate := semantic.NewString(base_good.RenderModel(), BASE_KEY_RECYCLE, semantic.OptsS(semantic.Optional(), semantic.Comment()))
 
 		if denorm_base_good, ok := denormalizer.baseGoods[base_good.Base.Get()]; ok {
 			if denorm_base_good.recycleCandidate != "" {
@@ -128,7 +128,7 @@ func (denormalizer *BaseDenormalizer) ReadRecycle(marketconfig *market_mapped.Co
 func (denormalizer *BaseDenormalizer) UniverseWrite(universeConfig *universe_mapped.Config) {
 
 	for base_nickname, base := range universeConfig.BasesMap {
-		base_name := semantic.NewString(base.Render(), BASE_KEY_NAME, semantic.OptsS(semantic.Optional(), semantic.Comment()))
+		base_name := semantic.NewString(base.RenderModel(), BASE_KEY_NAME, semantic.OptsS(semantic.Optional(), semantic.Comment()))
 
 		if denorm_base_good, ok := denormalizer.baseGoods[string(base_nickname)]; ok {
 			if denorm_base_good.name != "" {
@@ -137,7 +137,7 @@ func (denormalizer *BaseDenormalizer) UniverseWrite(universeConfig *universe_map
 
 		}
 
-		base_recycle_candidate := semantic.NewString(base.Render(), BASE_KEY_RECYCLE, semantic.OptsS(semantic.Optional(), semantic.Comment()))
+		base_recycle_candidate := semantic.NewString(base.RenderModel(), BASE_KEY_RECYCLE, semantic.OptsS(semantic.Optional(), semantic.Comment()))
 		if denorm_base_good, ok := denormalizer.baseGoods[string(base_nickname)]; ok {
 			if denorm_base_good.recycleCandidate != "" {
 				base_recycle_candidate.Set(denormalizer.baseGoods[string(base_nickname)].recycleCandidate)

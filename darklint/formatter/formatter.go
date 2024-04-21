@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
+	"sync"
 
 	"github.com/darklab8/fl-darklint/darklint/denormalizer"
 	"github.com/darklab8/fl-darklint/darklint/formatter/freelancer_format/data_format/equipment_format/market_format"
@@ -13,6 +15,8 @@ import (
 	"github.com/darklab8/fl-darklint/darklint/settings/logus"
 
 	"github.com/darklab8/fl-configs/configs/configs_mapped"
+	"github.com/darklab8/fl-configs/configs/configs_mapped/parserutils/filefind"
+	"github.com/darklab8/fl-configs/configs/configs_mapped/parserutils/iniload"
 	"github.com/darklab8/go-utils/goutils/utils/utils_logus"
 	"github.com/darklab8/go-utils/goutils/utils/utils_types"
 )
@@ -62,4 +66,30 @@ func Run(is_dry_run configs_mapped.IsDruRun) {
 	formator.Format()
 
 	configs.Write(is_dry_run)
+
+	if !is_dry_run {
+		ReformatAll()
+	}
+}
+
+func ReformatAll() {
+	filesystem := filefind.FindConfigs(utils_types.FilePath(settings.FreelancerFreelancerLocation))
+
+	var ini_files []*iniload.IniLoader
+	for filepath, file := range filesystem.Hashmap {
+		if strings.Contains(filepath.Base().ToString(), "ini") {
+			ini_files = append(ini_files, iniload.NewLoader(file))
+		}
+	}
+
+	var wg sync.WaitGroup
+	for _, file := range ini_files {
+		wg.Add(1)
+		go func(file *iniload.IniLoader) {
+			file.Scan()
+			file.File.WriteLines()
+			wg.Done()
+		}(file)
+	}
+	wg.Wait()
 }

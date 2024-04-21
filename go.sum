@@ -11,6 +11,8 @@ github.com/darklab8/fl-configs v0.40.0 h1:POXBts2DyX6v5AMFjXE4SS1omDxr3EgVBklnPF
 github.com/darklab8/fl-configs v0.40.0/go.mod h1:8zaCaFL21TvawP65KB9NOJ+nEpaMDQYsnoOi77RiSVY=
 github.com/darklab8/fl-configs v0.41.0 h1:NM9q9Dj0r0KJAEMk6AoBqEXzA5KGDRk1G4d/PqgyUi0=
 github.com/darklab8/fl-configs v0.41.0/go.mod h1:8zaCaFL21TvawP65KB9NOJ+nEpaMDQYsnoOi77RiSVY=
+github.com/darklab8/fl-configs v0.41.2 h1:p6+Ye4PQEx8pj/UPZLT3Xl7h3OujirN0kz0gmGn4wLQ=
+github.com/darklab8/fl-configs v0.41.2/go.mod h1:8zaCaFL21TvawP65KB9NOJ+nEpaMDQYsnoOi77RiSVY=
 github.com/darklab8/go-typelog v0.3.2 h1:LfQ4bUpKifNKZZFoAhrbasmpLhaXrjwnNL9GcquOy8w=
 github.com/darklab8/go-typelog v0.3.2/go.mod h1:AwwOf3dkp/tpevHFNbkB+PbwlDrUUgO1CVFkEnj+q5w=
 github.com/darklab8/go-typelog v0.5.0 h1:7/lG9BH1svf2vcSOdNhYbFhKBr8tveHBgw4D/ChaISA=
