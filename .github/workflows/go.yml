@@ -13,6 +13,13 @@ jobs:
 
   build:
     runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        freelancer-mod:
+          - "discovery"
+          - "vanilla"
+    name: Test ${{ matrix.freelancer-mod }}
     steps:
     - uses: actions/checkout@v3
 
@@ -25,13 +32,14 @@ jobs:
       with:
         go-version: 1.21
 
-    - uses: actions/checkout@v4
+    - uses: darklab8/fl-configs/.github/actions/checkout-freelancer@master
       with:
-        repository: 'darklab8/fl-data'
-        path: '${{ github.workspace }}/fl-data'
-        token: ${{ secrets.FL_DATA_KEY }}
+        freelancer-mod: "${{ matrix.freelancer-mod }}"
+        freelancer-folder: '${{ github.workspace }}/${{ matrix.freelancer-mod }}'
+        ssh-key-base64-discovery: ${{ secrets.ID_RSA_FILES_FREELANCER_DISCOVERY }}
+        ssh-key-base64-vanilla: ${{ secrets.ID_RSA_FILES_FREELANCER_VANILLA }}
 
-    - run: ls ./fl-data
+    - run: ls ./${{ matrix.freelancer-mod }}
 
     - name: Build
       run: task build
@@ -40,4 +48,4 @@ jobs:
       run: task test -- -v
       env:
         DARKLINT_LOG_LEVEL: "DEBUG"
-        DARKLINT_FREELANCER_FOLDER: ${{ github.workspace }}/fl-data
+        FREELANCER_FOLDER: ${{ github.workspace }}/${{ matrix.freelancer-mod }}

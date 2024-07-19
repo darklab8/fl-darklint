@@ -1,12 +1,9 @@
 {
   "go.testEnvVars": {
-    "DARKLINT_LOG_LEVEL": "DEBUG",
-    "DARKLINT_FREELANCER_FOLDER": "/home/naa/windows10shared/Discovery/DiscoveryFreelancer",
+    "ENVERANT_ENV_FILE": "${workspaceFolder}/.vscode/enverant.json",
   },
   "terminal.integrated.env.linux": {
-    "DEBUG": "true",
-    "DARKLINT_LOG_LEVEL": "DEBUG",
-    "DARKLINT_FREELANCER_FOLDER": "/home/naa/windows10shared/Discovery/DiscoveryFreelancer",
+    "ENVERANT_ENV_FILE": "${workspaceFolder}/.vscode/enverant.json",
   },
   // Show .git folder
     "files.exclude": {
