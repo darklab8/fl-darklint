@@ -26,8 +26,8 @@ func (f *ConfigFormatter) Format() {
 		system.Nickname.Set(strings.ToLower(system.Nickname.Get()))
 		system.Msg_id_prefix.Set(strings.ToLower(system.Msg_id_prefix.Get()))
 
-		if system.File.Get() != "" {
-			system.File.Set(utils_types.FilePath(strings.ToLower(system.File.Get().ToString())))
+		if value, ok := system.File.GetValue(); ok {
+			system.File.Set(utils_types.FilePath(strings.ToLower(value.ToString())))
 		}
 	}
 }

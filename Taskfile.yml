@@ -28,9 +28,16 @@ tasks:
       # - GOOS=darwin GOARCH=amd64 go build -v -o dist/darklint-macos-amd64 main.go
       # - GOOS=darwin GOARCH=arm64 go build -v -o dist/darklint-macos-arm64 main.go
 
+  clone:
+    cmds:
+      - git clone git@github.com-dd84ai:darklab8/fl-files-discovery.git
+    status:
+      - test -d fl-files-discovery
+
   run:
     cmds:
-      - go run .
+      - task: clone
+      - FREELANCER_FOLDER=$(pwd)/fl-files-discovery go run . format --dry
 
   cobra-cli-get:
     cmds:
