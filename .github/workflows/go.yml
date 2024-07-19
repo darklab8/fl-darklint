@@ -49,3 +49,9 @@ jobs:
       env:
         DARKLINT_LOG_LEVEL: "DEBUG"
         FREELANCER_FOLDER: ${{ github.workspace }}/${{ matrix.freelancer-mod }}
+
+    - name: Run
+      run: go run . format # normally run with --dry to check without writing ;)
+      env:
+        DARKLINT_LOG_LEVEL: "DEBUG"
+        FREELANCER_FOLDER: ${{ github.workspace }}/${{ matrix.freelancer-mod }}
