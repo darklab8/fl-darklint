@@ -10,8 +10,8 @@ import (
 
 	"github.com/darklab8/fl-darklint/darklint/settings/logus"
 
-	"github.com/darklab8/go-utils/goutils/utils/utils_logus"
-	"github.com/darklab8/go-utils/goutils/utils/utils_types"
+	"github.com/darklab8/go-utils/utils/utils_logus"
+	"github.com/darklab8/go-utils/utils/utils_types"
 )
 
 func regexCompile(expression string) *regexp.Regexp {
@@ -42,5 +42,4 @@ func Main(path utils_types.FilePath, regex string) {
 		}
 		fmt.Printf("%s (N %d times)\n", key, value)
 	}
-
 }

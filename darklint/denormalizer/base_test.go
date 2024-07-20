@@ -6,14 +6,14 @@ import (
 	"github.com/darklab8/fl-configs/configs/configs_mapped"
 	"github.com/darklab8/fl-darklint/darklint/settings"
 	"github.com/darklab8/fl-darklint/darklint/settings/logus"
-	"github.com/darklab8/go-utils/goutils/utils/utils_logus"
-	"github.com/darklab8/go-utils/goutils/utils/utils_types"
+	"github.com/darklab8/go-utils/utils/utils_logus"
+	"github.com/darklab8/go-utils/utils/utils_types"
 
 	"testing"
 )
 
 func TestSaveRecycleParams(t *testing.T) {
-	freelancer_folder := utils_types.FilePath(settings.FreelancerFreelancerLocation)
+	freelancer_folder := utils_types.FilePath(settings.Env.FreelancerFolder)
 	logus.Log.Info("beginning test", utils_logus.FilePath(freelancer_folder))
 	fmt.Println(freelancer_folder)
 

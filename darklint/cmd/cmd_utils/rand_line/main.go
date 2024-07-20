@@ -9,7 +9,7 @@ import (
 
 	"github.com/darklab8/fl-configs/configs/configs_mapped/parserutils/filefind/file"
 
-	"github.com/darklab8/go-utils/goutils/utils/utils_types"
+	"github.com/darklab8/go-utils/utils/utils_types"
 )
 
 type Input struct {
@@ -24,7 +24,8 @@ func Run(input Input) {
 	logus.Log.Info("OutputFile=" + input.OutputFilePath)
 	logus.Log.Info(fmt.Sprintf("Times=%d", *input.Times))
 
-	input_lines := file.NewFile(utils_types.FilePath(input.InputFilePath)).ReadLines()
+	input_lines, err := file.NewFile(utils_types.FilePath(input.InputFilePath)).ReadLines()
+	logus.Log.CheckPanic(err, "failed to read lines of a file")
 
 	// write result
 

@@ -8,6 +8,7 @@ import (
 
 	"github.com/darklab8/fl-darklint/darklint/formatter"
 	"github.com/darklab8/fl-darklint/darklint/settings"
+	"github.com/darklab8/go-utils/utils/utils_types"
 
 	"github.com/darklab8/fl-configs/configs/configs_mapped"
 	"github.com/spf13/cobra"
@@ -20,15 +21,24 @@ var validateCmd = &cobra.Command{
 	Long:  `Freelancer folder is automatically discovered in any child folders`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("format called")
-		formatter.Run(configs_mapped.IsDruRun(is_dry_run))
+
+		var FreelancerFolderTarget utils_types.FilePath
+		if freelancer_folder != "" {
+			FreelancerFolderTarget = utils_types.FilePath(freelancer_folder)
+		} else {
+			FreelancerFolderTarget = settings.Env.FreelancerFolder
+		}
+
+		formatter.Run(FreelancerFolderTarget, configs_mapped.IsDruRun(is_dry_run))
 		fmt.Println("OK")
 	},
 }
 
 var is_dry_run bool
+var freelancer_folder string
 
 func init() {
 	rootCmd.AddCommand(validateCmd)
 	validateCmd.PersistentFlags().BoolVarP(&is_dry_run, "dry", "d", false, "enable dry for checks without writing to file / good for CI")
-	validateCmd.PersistentFlags().StringVarP(&settings.FreelancerFreelancerLocation, "search", "s", settings.FreelancerFreelancerLocation, "Freelancer location to search for validate running")
+	validateCmd.PersistentFlags().StringVarP(&freelancer_folder, "search", "s", freelancer_folder, "Freelancer location to search for validate running")
 }

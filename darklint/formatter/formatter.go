@@ -3,7 +3,6 @@ package formatter
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 	"sync"
 
@@ -11,14 +10,13 @@ import (
 	"github.com/darklab8/fl-darklint/darklint/formatter/freelancer_format/data_format/equipment_format/market_format"
 	"github.com/darklab8/fl-darklint/darklint/formatter/freelancer_format/data_format/universe_format"
 	"github.com/darklab8/fl-darklint/darklint/formatter/freelancer_format/data_format/universe_format/systems_mapped"
-	"github.com/darklab8/fl-darklint/darklint/settings"
 	"github.com/darklab8/fl-darklint/darklint/settings/logus"
 
 	"github.com/darklab8/fl-configs/configs/configs_mapped"
 	"github.com/darklab8/fl-configs/configs/configs_mapped/parserutils/filefind"
 	"github.com/darklab8/fl-configs/configs/configs_mapped/parserutils/iniload"
-	"github.com/darklab8/go-utils/goutils/utils/utils_logus"
-	"github.com/darklab8/go-utils/goutils/utils/utils_types"
+	"github.com/darklab8/go-utils/utils/utils_logus"
+	"github.com/darklab8/go-utils/utils/utils_types"
 )
 
 type ConfigFormatter interface {
@@ -49,16 +47,16 @@ func (f *Formatter) Format() {
 	}
 }
 
-func Run(is_dry_run configs_mapped.IsDruRun) {
+func Run(freelancer_folder utils_types.FilePath, is_dry_run configs_mapped.IsDruRun) {
 
-	_, err := os.Stat(filepath.Join(settings.FreelancerFreelancerLocation, "DATA"))
+	_, err := os.Stat(freelancer_folder.Join("DATA").ToString())
 
 	fmt.Println(err)
 	if os.IsNotExist(err) {
-		logus.Log.Fatal("freelancer folder is not detected because DATA folder was not found", utils_logus.FilePath(utils_types.FilePath(settings.FreelancerFreelancerLocation)))
+		logus.Log.Fatal("freelancer folder is not detected because DATA folder was not found", utils_logus.FilePath(freelancer_folder))
 	}
 
-	configs := configs_mapped.NewMappedConfigs().Read(utils_types.FilePath(settings.FreelancerFreelancerLocation))
+	configs := configs_mapped.NewMappedConfigs().Read(utils_types.FilePath(freelancer_folder))
 
 	denormalizer.Run(configs)
 
@@ -68,12 +66,12 @@ func Run(is_dry_run configs_mapped.IsDruRun) {
 	configs.Write(is_dry_run)
 
 	if !is_dry_run {
-		ReformatAll()
+		ReformatAll(freelancer_folder)
 	}
 }
 
-func ReformatAll() {
-	filesystem := filefind.FindConfigs(utils_types.FilePath(settings.FreelancerFreelancerLocation))
+func ReformatAll(FreelancerFolder utils_types.FilePath) {
+	filesystem := filefind.FindConfigs(FreelancerFolder)
 
 	var ini_files []*iniload.IniLoader
 	for filepath, file := range filesystem.Hashmap {

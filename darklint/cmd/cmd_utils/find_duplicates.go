@@ -8,7 +8,7 @@ import (
 
 	"github.com/darklab8/fl-darklint/darklint/cmd/cmd_utils/findduplicates"
 
-	"github.com/darklab8/go-utils/goutils/utils/utils_types"
+	"github.com/darklab8/go-utils/utils/utils_types"
 	"github.com/spf13/cobra"
 )
 

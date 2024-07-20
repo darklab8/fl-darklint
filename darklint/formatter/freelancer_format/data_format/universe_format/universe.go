@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/darklab8/fl-configs/configs/configs_mapped/freelancer_mapped/data_mapped/universe_mapped"
-	"github.com/darklab8/go-utils/goutils/utils/utils_types"
+	"github.com/darklab8/go-utils/utils/utils_types"
 )
 
 type ConfigFormatter struct {
@@ -26,8 +26,8 @@ func (f *ConfigFormatter) Format() {
 		system.Nickname.Set(strings.ToLower(system.Nickname.Get()))
 		system.Msg_id_prefix.Set(strings.ToLower(system.Msg_id_prefix.Get()))
 
-		if system.File.Get() != "" {
-			system.File.Set(utils_types.FilePath(strings.ToLower(system.File.Get().ToString())))
+		if value, ok := system.File.GetValue(); ok {
+			system.File.Set(utils_types.FilePath(strings.ToLower(value.ToString())))
 		}
 	}
 }
