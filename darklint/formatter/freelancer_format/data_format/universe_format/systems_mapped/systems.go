@@ -18,9 +18,11 @@ func (f *ConfigFormatter) Format() {
 	for _, system := range f.config.Systems {
 		for _, base := range system.Bases {
 			base.Nickname.Set(strings.ToLower(base.Nickname.Get()))
-			base.Base.Set(strings.ToLower(base.Base.Get()))
-			if base.DockWith.Get() != "" {
-				base.DockWith.Set(strings.ToLower(base.DockWith.Get()))
+			if value, ok := base.Base.GetValue(); ok {
+				base.Base.Set(strings.ToLower(value))
+			}
+			if value, ok := base.DockWith.GetValue(); ok {
+				base.DockWith.Set(strings.ToLower(value))
 			}
 		}
 	}

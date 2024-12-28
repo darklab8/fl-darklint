@@ -32,7 +32,7 @@ func NewFormatter(configs *configs_mapped.MappedConfigs) *Formatter {
 	f := &Formatter{
 		configs: configs,
 	}
-	f.formatters = append(f.formatters, universe_format.NewFormatter(configs.Universe_config))
+	f.formatters = append(f.formatters, universe_format.NewFormatter(configs.Universe))
 	f.formatters = append(f.formatters, systems_mapped.NewFormatter(configs.Systems))
 
 	f.formatters = append(f.formatters,

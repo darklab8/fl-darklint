@@ -34,18 +34,18 @@ type BaseDenormalizer struct {
 func (d *BaseDenormalizer) Read(parsed *configs_mapped.MappedConfigs) *BaseDenormalizer {
 	d.baseGoods = make(map[string]*DenormalizedBaseGood)
 
-	for _, base := range parsed.Universe_config.Bases {
+	for _, base := range parsed.Universe.Bases {
 		d.baseGoods[base.Nickname.Get()] = &DenormalizedBaseGood{}
 	}
 
-	d.ReadBaseNames(parsed.Market, parsed.Universe_config, parsed.Infocards)
-	d.ReadRecycle(parsed.Market, parsed.Universe_config, parsed.Systems)
+	d.ReadBaseNames(parsed.Market, parsed.Universe, parsed.Infocards)
+	d.ReadRecycle(parsed.Market, parsed.Universe, parsed.Systems)
 	return d
 }
 
 func (d *BaseDenormalizer) Write(parsed *configs_mapped.MappedConfigs) {
 	d.MarketWrite(parsed.Market)
-	d.UniverseWrite(parsed.Universe_config)
+	d.UniverseWrite(parsed.Universe)
 }
 
 const (
