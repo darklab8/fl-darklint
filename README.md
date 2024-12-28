@@ -100,3 +100,4 @@ flowchart TD
 fl-darklint was originally created by Andrei Novoselov (aka darkwind, aka dd84ai)
 The work is released under GPL license, free to modify, copy and etc. as long as you keep code open source and mentioned original author.
 See [LICENSE](./LICENSE) file for details.
+
