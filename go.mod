@@ -5,7 +5,7 @@ go 1.22.5
 toolchain go1.23.4
 
 require (
-	github.com/darklab8/fl-configs v0.99.0
+	github.com/darklab8/fl-configs v0.95.9
 	github.com/darklab8/go-typelog v0.6.2
 	github.com/darklab8/go-utils v0.21.0
 	github.com/spf13/cobra v1.6.1
