@@ -94,3 +94,9 @@ flowchart TD
 
 - [@dd84ai](https://github.com/dd84ai) // coding
 - [@Groshyr](https://github.com/Groshyr) // spark of inspiration for project birth + beta tester + feature requester + domain expert
+
+# License
+
+fl-darklint was originally created by Andrei Novoselov (aka darkwind, aka dd84ai)
+The work is released under GPL license, free to modify, copy and etc. as long as you keep code open source and mentioned original author.
+See [LICENSE](./LICENSE) file for details.
