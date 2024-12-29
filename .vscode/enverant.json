@@ -1,7 +1,9 @@
 {
     # Define path to Freelancer Folder root
-    "FREELANCER_FOLDER": "${env:HOME}/windows10shared/fl-files-discovery",
+    # "FREELANCER_FOLDER": "${env:HOME}/windows10shared/fl-files-discovery",
     # "FREELANCER_FOLDER": "${env:HOME}/windows10shared/fl-files-vanilla",
+    "FREELANCER_FOLDER": "${env:HOME}/repos/pet_projects/FLSR/Freelancer",
+    "FREELANCER_FOLDER_FAILBACK": "${env:HOME}/windows10shared/fl-files-vanilla",
     "DEBUG": "true",
     "DARKLINT_LOG_LEVEL": "DEBUG"
 }

@@ -75,6 +75,10 @@ func ReformatAll(FreelancerFolder utils_types.FilePath) {
 
 	var ini_files []*iniload.IniLoader
 	for filepath, file := range filesystem.Hashmap {
+		if file.IsFailback {
+			continue
+		}
+
 		if strings.Contains(filepath.Base().ToString(), "ini") {
 			ini_files = append(ini_files, iniload.NewLoader(file))
 		}

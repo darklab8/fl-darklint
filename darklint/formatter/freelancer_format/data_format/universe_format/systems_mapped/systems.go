@@ -24,6 +24,9 @@ func (f *ConfigFormatter) Format() {
 			if value, ok := base.DockWith.GetValue(); ok {
 				base.DockWith.Set(strings.ToLower(value))
 			}
+			if value, ok := base.Archetype.GetValue(); ok {
+				base.Archetype.Set(strings.ToLower(value))
+			}
 		}
 	}
 }
