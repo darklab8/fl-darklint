@@ -2,32 +2,36 @@
 
 ![](docs/assets/diff_example.png)
 
-## Description
+Tool for validations, formatting and denormalization with human readable comments
 
-- Main goal of the tool is to be classic linter for game files, whichi can autofix config files
-  - inspired by `python black` linter that formats everything to same uniform standard
-  - `formatter` module is responsible for this
+## Features
+
+- Parses all game configs, and runs its sets of validation.
+  - By default package of validations to ensure this Freelancer folder game data is compatible with Darkstat
+  - list is expandable further. (to create validator folder later)
+- Darklint is able to format configs to more uniform way
+  - like having all specified parameters bringing to lower case.
+  - Or writing all sections [Section] in same way
+  - or it can round all floating numbers to exact same format.
+  - it uses ORM library fl-configs able to map all data for reading and writing back using Data structs to do that
+    so it is functionality easy to expand further. See [formmater](./darklint/formatter/) package for expanding.
 - Additionally it is capable to supply human readable comments to config objects for easier life.
   - `denormalizer` module is responsible for this
-- For tool usage was developed freelancer ini reader/writer with easily mapping variables to access in ORM - object relational mapping fashion. This alone allows quickly accessing any config data with least amont of code effort for additional features.
-  - (see fl-configs library in a separate repo)
+  - for example all [Base] entities in universe.ini file receive comment what is their infocard name right in a config file
 
-## Features:
+## Denormalization features:
 
-- Processes
-  - `market_commodities.ini`
-  - `market_misc.ini`
-  - `market_ships.ini`
-  - `universe_ini`
-  - all system files like `universe/systems/**/br01.ini`
-- For processed files brings to lower case allowed set of keys, like `base = GA06_03_base` to `base = ga06_03_base`
 - to `market_*.ini` files it adds to bases human readable name extracted from infocard.txt
 - to `market_*.ini` reports if base is recycle_candidate, by checking missmatch in its set system and pressence in files + if system is `fp7` or `ga13`, example:
   - `;%is_recycle_candidate = DARK_ERR_0001 base_good.base=ga06_03_base not in universe.ini->Base.system->System.file->systems\ga13\ga13.ini | universe.ini->Base.system=ga13 in [[ga13 fp7]]`
   - see picture example below
-- rounding float numbers for set keys to more preferable precision. `45.7465645656` to `45.7`
 
 ## Future development
+
+Currently the project reached Minimum Viable Product state.
+- As of version v1.7.0 succesfully managed to parse all comments in the way that they are written back without impacting development of game configs.
+- Example of usage is provided by [Github Workflow for FLSR](https://github.com/darklab8/FLSR/blob/main/.github/workflows/test.yml)
+- For applying formatting, u need to use it locally. 
 
 The tool is intended to add additional features in linting configurational files.
 It is possible adding any other additional rules for checking foreign key data integrity between objects
@@ -39,7 +43,6 @@ Request new features [here](https://github.com/darklab8/fl-darklint/issues) or t
 ### At linux
 
 - install curl if not installed.(`apt update && apt install -y curl` for debian/ubuntu)
-- install git if not present (`apt update && apt install -y git` for debian/ubuntu)
 - install darklint with `sudo rm $(which darklint) ; sudo curl -L $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/darklab8/fl-darklint/releases/latest | sudo sed "s/releases\/tag/releases\/download/")/darklint-linux-amd64 -o /usr/local/bin/darklint && sudo chmod 777 /usr/local/bin/darklint`
 - check installation with `darklint version` command. Expect to see `OK darklint version: v{version}`
 
@@ -54,6 +57,18 @@ Request new features [here](https://github.com/darklab8/fl-darklint/issues) or t
 - check installation with `darklint version` command. Expect to see `OK darklint version: v{version}`
 
 P.S. `~/bin/darklint.exe` must be any valid bin path (`echo $PATH`, `echo %PATH%` to get the list) accessable by your tool from where u are going to use it.
+
+### Manual installation
+
+Go to [releases](<https://github.com/darklab8/fl-darklint/releases>) and download necessary binary file on your own and put to some bin folder present in your $PATH.
+
+### Manual building
+
+- install `git`
+- install go of version [like in workflow](./.github/workflows/build.yml)
+- install [Taskfile](<https://taskfile.dev/usage/>)
+- run `task build`. The result is in dist folder.
+- if smth is incorrect, see github workflow mentioned above for up to date instructions
 
 ## after installation
 
@@ -100,4 +115,3 @@ flowchart TD
 fl-darklint was originally created by Andrei Novoselov (aka darkwind, aka dd84ai)
 The work is released under GPL license, free to modify, copy and etc. as long as you keep code open source and mentioned original author.
 See [LICENSE](./LICENSE) file for details.
-
