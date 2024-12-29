@@ -37,7 +37,10 @@ The tool is intended to add additional features in linting configurational files
 It is possible adding any other additional rules for checking foreign key data integrity between objects
 Or adding additional commented strings to objects with helpful information
 
-Request new features [here](https://github.com/darklab8/fl-darklint/issues) or there [Darklab Discord server](https://discord.gg/aukHmTK82J)
+Request new features [here](https://github.com/darklab8/fl-darklint/issues) or there [Darklab Discord server](https://discord.gg/zFzSs82y3W)
+
+
+
 
 ## Usage with installation
 ### At linux
