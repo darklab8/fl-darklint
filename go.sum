@@ -1,6 +1,6 @@
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
-github.com/darklab8/fl-configs v0.100.0 h1:z5lPsIdSALl4F/hxAcyZpx5lVxB8wY8f3BG+zE3ya+c=
-github.com/darklab8/fl-configs v0.100.0/go.mod h1:fbyKxEPv22FD2bvahG/Y6kYyhyvCMg0+J6mH230iB3s=
+github.com/darklab8/fl-configs v0.101.0 h1:wB4LK/BJ1pUqSL216Ijw+doIz1madM4lIrFxJ8I1pDM=
+github.com/darklab8/fl-configs v0.101.0/go.mod h1:fbyKxEPv22FD2bvahG/Y6kYyhyvCMg0+J6mH230iB3s=
 github.com/darklab8/fl-data-discovery v0.3.0 h1:+mG8QXOHSLRCB16jA+oK+Z+ONGBrE5tmaV1FRr7ZZjQ=
 github.com/darklab8/fl-data-discovery v0.3.0/go.mod h1:SgRh0N3cWrhslXVkc5LJXK52Mw4+Fdsbmv+0qkNJ6QI=
 github.com/darklab8/go-typelog v0.6.2 h1:R6urrs4zgtjWfAngB7UclxpkVMA1uW3hEw7PEgSU7pU=
