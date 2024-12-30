@@ -1,8 +1,6 @@
 package formatter
 
 import (
-	"fmt"
-	"os"
 	"strings"
 	"sync"
 
@@ -10,12 +8,10 @@ import (
 	"github.com/darklab8/fl-darklint/darklint/formatter/freelancer_format/data_format/equipment_format/market_format"
 	"github.com/darklab8/fl-darklint/darklint/formatter/freelancer_format/data_format/universe_format"
 	"github.com/darklab8/fl-darklint/darklint/formatter/freelancer_format/data_format/universe_format/systems_mapped"
-	"github.com/darklab8/fl-darklint/darklint/settings/logus"
 
 	"github.com/darklab8/fl-configs/configs/configs_mapped"
 	"github.com/darklab8/fl-configs/configs/configs_mapped/parserutils/filefind"
 	"github.com/darklab8/fl-configs/configs/configs_mapped/parserutils/iniload"
-	"github.com/darklab8/go-utils/utils/utils_logus"
 	"github.com/darklab8/go-utils/utils/utils_types"
 )
 
@@ -47,16 +43,7 @@ func (f *Formatter) Format() {
 	}
 }
 
-func Run(freelancer_folder utils_types.FilePath, is_dry_run configs_mapped.IsDruRun) {
-
-	_, err := os.Stat(freelancer_folder.Join("DATA").ToString())
-
-	fmt.Println(err)
-	if os.IsNotExist(err) {
-		logus.Log.Fatal("freelancer folder is not detected because DATA folder was not found", utils_logus.FilePath(freelancer_folder))
-	}
-
-	configs := configs_mapped.NewMappedConfigs().Read(utils_types.FilePath(freelancer_folder))
+func Run(configs *configs_mapped.MappedConfigs, freelancer_folder utils_types.FilePath, is_dry_run configs_mapped.IsDruRun) {
 
 	denormalizer.Run(configs)
 
