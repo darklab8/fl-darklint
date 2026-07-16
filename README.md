@@ -1,3 +1,12 @@
+# Deprecation
+
+This project has not active usage at the moment, and for now ARHICEVED ARAY.
+Even if it will be unarchived, it will be merged into fl-darkstat project as its cli sub group. Nay to many repos, yay to mono repo single app.
+
+If there will be time and suitable target, and lack of its own linters at some project, it will resurface back again
+
+Currently has some bug issues with file deletion also that need to be fixed.
+
 # fl-darklint
 
 ![](docs/assets/diff_example.png)
