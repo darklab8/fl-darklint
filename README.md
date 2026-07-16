@@ -7,6 +7,10 @@ If there will be time and suitable target, and lack of its own linters at some p
 
 Currently has some bug issues with file deletion also that need to be fixed.
 
+Note: There is actuallly sort of replacement approach instead in use
+Projects are embeded with dev version attempt to build darkstat and darkmap for the sake of checking their compatibility with those tools
+Works good enough for the needs as substitution giving sufficient gains.
+
 # fl-darklint
 
 ![](docs/assets/diff_example.png)
